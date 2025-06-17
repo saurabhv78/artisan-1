@@ -11,6 +11,7 @@ class UserLoginRequest {
   final String os;
   @JsonKey(name: 'device_id')
   final String deviceId;
+  final String loginSource;
 
   const UserLoginRequest({
     required this.email,
@@ -18,6 +19,7 @@ class UserLoginRequest {
     required this.fcmToken,
     required this.os,
     required this.deviceId,
+    this.loginSource = 'app',
   });
 
   factory UserLoginRequest.fromJson(Map<String, dynamic> json) {

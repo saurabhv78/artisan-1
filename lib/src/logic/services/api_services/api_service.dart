@@ -22,16 +22,18 @@ final apiServiceProvider = Provider<ApiService>(
 
 abstract class ApiService {
   //auth-api's
-  Future<ApiResponse<UserData>> registerUser({
+  Future<ApiResponse<bool>> registerUser({
     required UserRegisterData userData,
   });
   Future<ApiResponse<UserData>> loginUser({
     required UserLoginRequest userLoginRequest,
   });
   Future<ApiResponse<String>> sendOtp({
+    required String token,
     required SendEmailOtpRequest sendEmailOtpRequest,
   });
   Future<ApiResponse<String>> updateEmailOtp({
+    required String token,
     required SendEmailOtpRequest sendEmailOtpRequest,
   });
   Future<ApiResponse<UserLoggedData>> fetchUserDetails({
@@ -53,10 +55,10 @@ abstract class ApiService {
   Future<ApiResponse<String>> logOut({
     required UserLogoutRequest userLogoutRequest,
   });
-  Future<ApiResponse<String>> refreshToken({
-    required String userId,
-    required String type,
-  });
+  // Future<ApiResponse<String>> refreshToken({
+  //   required String userId,
+  //   required String type,
+  // });
 
   // basic-api's
 

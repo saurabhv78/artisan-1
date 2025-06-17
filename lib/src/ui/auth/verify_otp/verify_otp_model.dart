@@ -43,6 +43,8 @@ class VerifyOtpPageModel extends StateNotifier<VerifyOtpPageState> {
         return "No Internet Connection!";
       }
       final res = await apiService.sendOtp(
+          token: ref.read(authRepositoryProvider
+              .select((value) => value.authUser?.token ?? "")),
           sendEmailOtpRequest: SendEmailOtpRequest(
               email: ref.read(
                   authRepositoryProvider.select((value) => value.email!))));
@@ -62,13 +64,15 @@ class VerifyOtpPageModel extends StateNotifier<VerifyOtpPageState> {
       return "Please Enter Email";
     }
     try {
-      if (state.otp.length != 4) {
+      if (state.otp.length != 6) {
         return 'Please enter valid otp';
       }
       if (!await hasInternetAccess()) {
         return "No Internet Connection!";
       }
       final res = await apiService.updateEmailOtp(
+          token: ref.read(authRepositoryProvider
+              .select((value) => value.authUser?.token ?? "")),
           sendEmailOtpRequest: SendEmailOtpRequest(
               otp: state.otp,
               email: ref.read(

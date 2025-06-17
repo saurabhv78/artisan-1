@@ -13,6 +13,7 @@ UserLoginRequest _$UserLoginRequestFromJson(Map<String, dynamic> json) =>
       fcmToken: json['fcm_token'] as String,
       os: json['os'] as String,
       deviceId: json['device_id'] as String,
+      loginSource: json['loginSource'] as String? ?? 'app',
     );
 
 Map<String, dynamic> _$UserLoginRequestToJson(UserLoginRequest instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$UserLoginRequestToJson(UserLoginRequest instance) =>
       'fcm_token': instance.fcmToken,
       'os': instance.os,
       'device_id': instance.deviceId,
+      'loginSource': instance.loginSource,
     };

@@ -5,7 +5,6 @@ import 'package:Artisan/src/models/user_register_data.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../../../../models/requests/refresh_token_request.dart';
 import '../../../../../models/requests/social_login_request.dart';
 
 part 'auth_api_client.g.dart';
@@ -26,15 +25,17 @@ abstract class AuthApiClient {
   Future loginUser({
     @Body() required UserLoginRequest userLoginRequest,
   });
-  @POST('/auth/send_email_otp')
+  @POST('/auth/send/otp')
   Future sendEmailOtp({
+    @Header('Authorization') required String token,
     @Body() required SendEmailOtpRequest sendEmailOtpRequest,
   });
-  @POST('/auth/update_email_otp')
+  @POST('/auth/verify/email')
   Future updateEmailOtp({
+    @Header('Authorization') required String token,
     @Body() required SendEmailOtpRequest sendEmailOtpRequest,
   });
-  @POST('/auth/get_user_from_token')
+  @POST('/auth/user')
   Future fetchUserDetails({
     @Header('Authorization') required String token,
   });
@@ -58,8 +59,8 @@ abstract class AuthApiClient {
   Future logOut({
     @Body() required UserLogoutRequest userLogoutRequest,
   });
-  @POST('/auth/refresh')
-  Future refreshToken({
-    @Body() required RefreshTokenRequest refreshTokenRequest,
-  });
+  // @GET('/auth/user')
+  // Future getUserDetails(
+  //   @Header('Authorization') String token,
+  // );
 }

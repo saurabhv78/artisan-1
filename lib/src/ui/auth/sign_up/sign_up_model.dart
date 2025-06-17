@@ -69,7 +69,9 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
         userData: UserRegisterData(
           fullName: state.name,
           email: state.email,
+          phone: state.mobile,
           password: state.password,
+          confirmPassword: state.confirmPassword,
           deviceId: deviceId,
           isDefault: 1,
           isEmailVerified: 0,
@@ -79,13 +81,12 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
         ),
       );
       if (res.status != ApiStatus.success) {
-        if (mounted) {
-          return res.errorMessage ?? "Something Went Wrong";
-        }
+        return res.errorMessage ?? "Something Went Wrong";
       } else {
-        ref.read(authRepositoryProvider.notifier).setPass(state.password);
-        ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-        ref.read(authRepositoryProvider.notifier).setCheckBox(true);
+        /// READ: for register don't need to set any data in the repository, cauze need to login
+        // ref.read(authRepositoryProvider.notifier).setPass(state.password);
+        // ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+        // ref.read(authRepositoryProvider.notifier).setCheckBox(true);
         ref
             .read(authRepositoryProvider.notifier)
             .changeState(AuthStatus.authenticatedNotVerified);

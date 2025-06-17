@@ -26,7 +26,7 @@ class _OtpTextFieldState extends ConsumerState<OtpTextField> {
 
   @override
   Widget build(BuildContext context) {
-    const otpLength = 4;
+    const otpLength = 6;
 
     return OTPTextField(
       onCompleted: (value) {

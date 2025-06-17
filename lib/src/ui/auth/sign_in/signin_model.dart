@@ -72,13 +72,12 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
         }
       } else {
         ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-
         if (checkBox) {
           ref
               .read(authRepositoryProvider.notifier)
               .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
         }
-        if (res.data?.userData.isEmailVerified != 0) {
+        if (res.data?.userData.isEmailVerified == 1) {
           ref
               .read(authRepositoryProvider.notifier)
               .changeState(AuthStatus.authenticated);
@@ -88,7 +87,6 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
               .read(authRepositoryProvider.notifier)
               .changeState(AuthStatus.authenticatedNotVerified);
         }
-
         return '';
       }
 

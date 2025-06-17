@@ -82,11 +82,14 @@ class _AuthApiClient implements AuthApiClient {
   }
 
   @override
-  Future<dynamic> sendEmailOtp(
-      {required SendEmailOtpRequest sendEmailOtpRequest}) async {
+  Future<dynamic> sendEmailOtp({
+    required String token,
+    required SendEmailOtpRequest sendEmailOtpRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(sendEmailOtpRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -96,7 +99,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/send_email_otp',
+          '/auth/send/otp',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -111,11 +114,14 @@ class _AuthApiClient implements AuthApiClient {
   }
 
   @override
-  Future<dynamic> updateEmailOtp(
-      {required SendEmailOtpRequest sendEmailOtpRequest}) async {
+  Future<dynamic> updateEmailOtp({
+    required String token,
+    required SendEmailOtpRequest sendEmailOtpRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(sendEmailOtpRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -125,7 +131,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/update_email_otp',
+          '/auth/verify/email',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -153,7 +159,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/get_user_from_token',
+          '/auth/user',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -298,35 +304,6 @@ class _AuthApiClient implements AuthApiClient {
         .compose(
           _dio.options,
           '/auth/logout',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch(_options);
-    final _value = _result.data;
-    return _value;
-  }
-
-  @override
-  Future<dynamic> refreshToken(
-      {required RefreshTokenRequest refreshTokenRequest}) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(refreshTokenRequest.toJson());
-    final _options = _setStreamType<dynamic>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/auth/refresh',
           queryParameters: queryParameters,
           data: _data,
         )

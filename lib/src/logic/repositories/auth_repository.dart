@@ -56,7 +56,7 @@ class AuthRepository extends StateNotifier<AuthState> {
       state = state.copyWith(status: AuthStatus.unauthenticated);
       return;
     } else {
-      debugPrint(token);
+      debugPrint('token $token');
       final res = await apiService.fetchUserDetails(token: token);
       if (res.status != ApiStatus.success) {
         final id = ref
@@ -66,16 +66,15 @@ class AuthRepository extends StateNotifier<AuthState> {
           state = state.copyWith(status: AuthStatus.unauthenticated);
           return;
         }
-        final response =
-            await apiService.refreshToken(userId: id, type: 'auth');
-        if (response.status != ApiStatus.success) {
-          state = state.copyWith(status: AuthStatus.unauthenticated);
-          setIdToken('', '');
-
-          return;
-        }
-        setIdToken(response.data!, id);
-        fetchUserDetails();
+        // final response =
+        //     await apiService.refreshToken(userId: id, type: 'auth');
+        // if (response.status != ApiStatus.success) {
+        //   state = state.copyWith(status: AuthStatus.unauthenticated);
+        //   setIdToken('', '');
+        //   return;
+        // }
+        // setIdToken(response.data!, id);
+        // fetchUserDetails();
         return;
       } else {
         state = state.copyWith(
@@ -201,8 +200,10 @@ class AuthRepository extends StateNotifier<AuthState> {
   }
 
   getAllUserDetails() async {
-    await getWishlist();
-    await getCartData();
+    try {
+      await getWishlist();
+      await getCartData();
+    } catch (e) {}
   }
 
   Future<void> _refreshToken() async {
@@ -242,7 +243,7 @@ class AuthRepository extends StateNotifier<AuthState> {
         if (state.checkbox) {
           setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
         }
-        if (res.data?.userData.isEmailVerified != 0) {
+        if (res.data?.userData.isEmailVerified == 1) {
           changeState(AuthStatus.authenticated);
         } else {
           changeState(AuthStatus.authenticatedNotVerified);
