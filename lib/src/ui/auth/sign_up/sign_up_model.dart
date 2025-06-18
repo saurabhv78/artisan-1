@@ -92,7 +92,7 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
             .changeState(AuthStatus.authenticatedNotVerified);
         return '';
       }
-      return '';
+      // return '';
     } catch (e) {
       return e.toString();
     }

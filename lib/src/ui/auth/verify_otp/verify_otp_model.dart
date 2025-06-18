@@ -64,7 +64,7 @@ class VerifyOtpPageModel extends StateNotifier<VerifyOtpPageState> {
       return "Please Enter Email";
     }
     try {
-      if (state.otp.length != 6) {
+      if (state.otp.length != 4) {
         return 'Please enter valid otp';
       }
       if (!await hasInternetAccess()) {

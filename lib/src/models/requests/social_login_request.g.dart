@@ -17,7 +17,7 @@ SocialLoginRequest _$SocialLoginRequestFromJson(Map<String, dynamic> json) =>
       deviceId: json['device_id'] as String,
       googleId: json['google_id'] as String?,
       fbUid: json['fb_uid'] as String?,
-      isEmailVerified: (json['is_email_verified'] as num).toInt(),
+      isEmailVerified: (json['isEmailVerified'] as num).toInt(),
       loginSource: json['login_source'] as String,
       name: json['full_name'] as String,
       os: json['os'] as String,
@@ -36,6 +36,6 @@ Map<String, dynamic> _$SocialLoginRequestToJson(SocialLoginRequest instance) =>
       'loction': instance.loction,
       'google_id': instance.googleId,
       'fb_uid': instance.fbUid,
-      'is_email_verified': instance.isEmailVerified,
+      'isEmailVerified': instance.isEmailVerified,
       'full_name': instance.name,
     };

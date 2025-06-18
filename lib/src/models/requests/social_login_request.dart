@@ -22,7 +22,7 @@ class SocialLoginRequest {
   final String? googleId;
   @JsonKey(name: "fb_uid")
   final String? fbUid;
-  @JsonKey(name: "is_email_verified")
+  @JsonKey(name: "isEmailVerified")
   final int isEmailVerified;
   @JsonKey(name: "full_name")
   final String name;

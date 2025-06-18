@@ -9,7 +9,7 @@ class UserRegisterData {
   final String email;
   @JsonKey(name: 'profile_pic')
   final String? profilePic;
-  @JsonKey(name: 'is_email_verified')
+  @JsonKey(name: 'isEmailVerified')
   final int isEmailVerified;
   @JsonKey(name: 'is_phone_verified')
   final int isPhoneVerified;

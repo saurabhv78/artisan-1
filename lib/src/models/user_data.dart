@@ -27,7 +27,7 @@ class UserLoggedData {
   final String? email;
   @JsonKey(name: 'profilePicture')
   final String? profilePic;
-  @JsonKey(name: 'is_email_verified')
+  @JsonKey(name: 'isEmailVerified')
   final int? isEmailVerified;
   @JsonKey(name: 'is_phone_verified')
   final int? isPhoneVerified;
