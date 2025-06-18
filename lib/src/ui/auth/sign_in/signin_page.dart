@@ -271,6 +271,45 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                         ],
                       ),
                       const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              if (!isProcessing) {
+                                if (mounted) {
+                                  setState(() {
+                                    isProcessing = true;
+                                  });
+                                }
+                                final res = await ref
+                                    .read(authRepositoryProvider.notifier)
+                                    .loginAsGuest();
+                                if (res != '') {
+                                  showErrorMessage(res);
+                                }
+                                if (mounted) {
+                                  setState(() {
+                                    isProcessing = false;
+                                  });
+                                }
+                              }
+                            },
+                            child: Text(
+                              "Continue as Guest",
+                              style: GoogleFonts.nunitoSans(
+                                color: primaryColor,
+                                fontSize: 16,
+                                letterSpacing: -0.011,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
                         height: 60,
                       ),
                       Row(

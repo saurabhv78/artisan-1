@@ -6,6 +6,7 @@ import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/requests/social_login_request.dart';
 import 'package:Artisan/src/models/requests/user_login_request.dart';
+import 'package:Artisan/src/models/user_data.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
@@ -261,6 +262,8 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       return e.toString();
     }
   }
+
+
 }
 
 @freezed

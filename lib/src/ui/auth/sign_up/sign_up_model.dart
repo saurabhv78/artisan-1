@@ -84,9 +84,13 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
         return res.errorMessage ?? "Something Went Wrong";
       } else {
         /// READ: for register don't need to set any data in the repository, cauze need to login
-        // ref.read(authRepositoryProvider.notifier).setPass(state.password);
-        // ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-        // ref.read(authRepositoryProvider.notifier).setCheckBox(true);
+        ref.read(authRepositoryProvider.notifier).setEmail(state.email);
+        ref.read(authRepositoryProvider.notifier).setPass(state.password);
+        ref
+            .read(authRepositoryProvider.notifier)
+            .setIdToken(res.data?.token ?? '', res.data?.userData.id ?? '');
+        ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+        ref.read(authRepositoryProvider.notifier).setCheckBox(true);
         ref
             .read(authRepositoryProvider.notifier)
             .changeState(AuthStatus.authenticatedNotVerified);

@@ -35,7 +35,8 @@ class VerifyOtpPageModel extends StateNotifier<VerifyOtpPageState> {
   setPassword(String password) => state = state.copyWith(password: password);
   setOtp(String otp) => state = state.copyWith(otp: otp.toString());
   Future<String> sendEmailOtp() async {
-    if (ref.read(authRepositoryProvider.select((value) => value.email)) == '') {
+    if ([null, ''].contains(
+        ref.read(authRepositoryProvider.select((value) => value.email)))) {
       return "Please Enter Email";
     }
     try {

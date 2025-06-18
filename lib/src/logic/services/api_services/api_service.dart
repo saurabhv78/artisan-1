@@ -22,7 +22,7 @@ final apiServiceProvider = Provider<ApiService>(
 
 abstract class ApiService {
   //auth-api's
-  Future<ApiResponse<bool>> registerUser({
+  Future<ApiResponse<UserData>> registerUser({
     required UserRegisterData userData,
   });
   Future<ApiResponse<UserData>> loginUser({

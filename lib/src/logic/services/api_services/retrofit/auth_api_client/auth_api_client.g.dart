@@ -153,7 +153,7 @@ class _AuthApiClient implements AuthApiClient {
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<dynamic>(Options(
-      method: 'POST',
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
@@ -217,7 +217,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/send/reset/password',
+          '/auth/forgot',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -246,7 +246,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/reset/password',
+          '/auth/reset_password',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -275,7 +275,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/validate/otp',
+          '/auth/verify_otp',
           queryParameters: queryParameters,
           data: _data,
         )

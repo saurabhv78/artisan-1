@@ -16,21 +16,21 @@ class MainPage extends ConsumerStatefulWidget {
 class _MainPageState extends ConsumerState<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Home page"),
-      ),
-    );
-    // return AutoTabsScaffold(
-    //   routes: const [
-    //     HomeTabRoute(),
-    //     CategoryTabRoute(),
-    //     ChatTabRoute(),
-    //     ProfileTabRoute(),
-    //   ],
-    //   bottomNavigationBuilder: (context, tabsRouter) => BottomBar(
-    //     key: ValueKey(tabsRouter.activeIndex),
+    // return const Scaffold(
+    //   body: Center(
+    //     child: Text("Home page"),
     //   ),
     // );
+    return AutoTabsScaffold(
+      routes: const [
+        HomeTabRoute(),
+        CategoryTabRoute(),
+        ChatTabRoute(),
+        ProfileTabRoute(),
+      ],
+      bottomNavigationBuilder: (context, tabsRouter) => BottomBar(
+        key: ValueKey(tabsRouter.activeIndex),
+      ),
+    );
   }
 }

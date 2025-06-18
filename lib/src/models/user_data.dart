@@ -18,6 +18,9 @@ class UserData {
   }
 
   Map<String, dynamic> toJson() => _$UserDataToJson(this);
+
+  factory UserData.guest() =>
+      UserData(userData: UserLoggedData.guest(), token: 'guest', time: '');
 }
 
 @JsonSerializable()
@@ -47,6 +50,7 @@ class UserLoggedData {
   final String? role;
   final String? createdAt;
   final String? updatedAt;
+  final bool isGuest;
 
   const UserLoggedData({
     required this.fullName,
@@ -65,10 +69,17 @@ class UserLoggedData {
     this.loginSource = 'app',
     this.createdAt,
     this.updatedAt,
+    this.isGuest = false,
   });
   factory UserLoggedData.fromJson(Map<String, dynamic> json) {
     return _$UserLoggedDataFromJson(json);
   }
 
   Map<String, dynamic> toJson() => _$UserLoggedDataToJson(this);
+
+  factory UserLoggedData.guest() => const UserLoggedData(
+        id: 'guest',
+        email: '',
+        fullName: 'Guest',
+      );
 }

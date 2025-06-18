@@ -52,6 +52,10 @@ class AuthRepository extends StateNotifier<AuthState> {
     final token = ref
         .read(sharedPreferencesProvider)
         .getString(PreferenceService.authToken);
+    if (token == 'guest') {
+      loginAsGuest();
+      return;
+    }
     if (token == null || token.isEmpty) {
       state = state.copyWith(status: AuthStatus.unauthenticated);
       return;
@@ -158,15 +162,15 @@ class AuthRepository extends StateNotifier<AuthState> {
     }
     try {
       final deviceId = await getId();
-      final res = await apiService.logOut(
+      /* final res = await apiService.logOut(
           userLogoutRequest: UserLogoutRequest(
               deviceId: deviceId, id: state.authUser?.userData.id ?? ""));
       if (res.status != ApiStatus.success) {
         return res.errorMessage ?? "Something Went Wrong!!!";
-      }
+      } */
       setIdToken("", "");
 
-      GoogleSignIn().disconnect();
+      // GoogleSignIn().disconnect();
       state = state.copyWith(
           authUser: null,
           status: AuthStatus.unauthenticated,
@@ -184,7 +188,7 @@ class AuthRepository extends StateNotifier<AuthState> {
           wishlist: [],
           password: null);
       setIdToken('', '');
-      GoogleSignIn().disconnect();
+      // GoogleSignIn().disconnect();
       changeState(AuthStatus.unauthenticated);
       return e.toString();
     }
@@ -209,6 +213,15 @@ class AuthRepository extends StateNotifier<AuthState> {
   Future<void> _refreshToken() async {
     //TODO: add refresh token feature
   }
+
+  Future<String> loginAsGuest() async {
+    final user = UserData.guest();
+    updateUser(user);
+    setIdToken(user.token, user.userData.id);
+    changeState(AuthStatus.authenticated);
+    return '';
+  }
+
   Future<String> loginUser() async {
     try {
       if (!await hasInternetAccess()) {

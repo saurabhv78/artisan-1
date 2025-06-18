@@ -36,6 +36,7 @@ UserLoggedData _$UserLoggedDataFromJson(Map<String, dynamic> json) =>
       loginSource: json['login_source'] as String? ?? 'app',
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
+      isGuest: json['isGuest'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UserLoggedDataToJson(UserLoggedData instance) =>
@@ -56,4 +57,5 @@ Map<String, dynamic> _$UserLoggedDataToJson(UserLoggedData instance) =>
       'role': instance.role,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
+      'isGuest': instance.isGuest,
     };

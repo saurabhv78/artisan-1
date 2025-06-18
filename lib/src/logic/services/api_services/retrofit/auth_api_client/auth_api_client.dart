@@ -35,7 +35,7 @@ abstract class AuthApiClient {
     @Header('Authorization') required String token,
     @Body() required SendEmailOtpRequest sendEmailOtpRequest,
   });
-  @POST('/auth/user')
+  @GET('/auth/user')
   Future fetchUserDetails({
     @Header('Authorization') required String token,
   });

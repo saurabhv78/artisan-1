@@ -42,12 +42,12 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<ApiResponse<bool>> registerUser({
+  Future<ApiResponse<UserData>> registerUser({
     required UserRegisterData userData,
   }) async {
-    return await safeApiCall<bool>(
+    return await safeApiCall<UserData>(
       () async => await _authApiClient.registerUser(userRegisterData: userData),
-      (response) => ApiResponse.success(true),
+      (response) => ApiResponse.success(UserData.fromJson(response['data'])),
     );
   }
 
