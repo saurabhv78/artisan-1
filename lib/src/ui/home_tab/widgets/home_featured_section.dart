@@ -1,13 +1,15 @@
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../models/product_data/featured_product.dart';
 import '../../../models/product_data/product_data.dart';
 import '../../../routing/router.dart';
 
 class FeaturedSection extends ConsumerWidget {
-  final List<ProductData> data;
+  final List<FeaturedProduct> data;
   const FeaturedSection({
     super.key,
     required this.data,
@@ -75,7 +77,7 @@ class FeaturedSection extends ConsumerWidget {
 }
 
 class _FeaturedCard extends ConsumerWidget {
-  final ProductData productData;
+  final FeaturedProduct productData;
   final int index;
   const _FeaturedCard({
     required this.index,
@@ -94,8 +96,9 @@ class _FeaturedCard extends ConsumerWidget {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Image.asset(
-              'assets/images/img_featured${index + 1}.png',
+            NetworkImageWidget(
+              image:
+                  productData.images.isNotEmpty ? productData.images.first : '',
               fit: BoxFit.cover,
               height: 190,
               width: MediaQuery.sizeOf(context).width,
@@ -117,7 +120,7 @@ class _FeaturedCard extends ConsumerWidget {
             Positioned(
               bottom: 10,
               child: Text(
-                productData.prodName,
+                productData.name,
                 style: GoogleFonts.nunitoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,

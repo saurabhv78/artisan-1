@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/category_data/category_data.dart';
+import '../../../widgets/components/images.dart';
 
 class TrendingArtStylesSection extends ConsumerStatefulWidget {
   final List<CategoryData> categoryData;
@@ -52,9 +53,7 @@ class _TrendingArtStylesSectionState
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(
@@ -69,7 +68,7 @@ class _TrendingArtStylesSectionState
                                   .catName));
                         },
                         child: _TrendingArtStyleCard(
-                          imageUrl: 'assets/images/img_featured2.png',
+                          imageUrl: widget.categoryData.last.catImage,
                           artStyle: widget
                               .categoryData[widget.categoryData.length - 1]
                               .catName,
@@ -89,7 +88,9 @@ class _TrendingArtStylesSectionState
                                   .catName));
                         },
                         child: _TrendingArtStyleCard(
-                          imageUrl: 'assets/images/img_featured3.png',
+                          imageUrl: widget
+                              .categoryData[widget.categoryData.length - 2]
+                              .catImage,
                           artStyle: widget
                               .categoryData[widget.categoryData.length - 2]
                               .catName,
@@ -116,50 +117,53 @@ class _TrendingArtStyleCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-      height: 232,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.25),
-                offset: Offset(1, 2),
-                blurRadius: 4,
-              )
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.asset(
-                imageUrl,
-                fit: BoxFit.cover,
-                height: 200,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Center(
-                    child: Text(
-                      artStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.nunitoSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
+    return LayoutBuilder(builder: (context, b) {
+      return SizedBox(
+        height: 232,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                  offset: Offset(1, 2),
+                  blurRadius: 4,
+                )
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NetworkImageWidget(
+                  image: imageUrl,
+                  height: 200,
+                  width: b.maxWidth,
+                  fit: BoxFit.cover,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Center(
+                      child: Text(
+                        artStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.nunitoSans(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

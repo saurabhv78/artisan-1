@@ -217,7 +217,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/forgot',
+          '/auth/send/reset/password',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -275,7 +275,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/verify_otp',
+          '/auth/validate/otp',
           queryParameters: queryParameters,
           data: _data,
         )

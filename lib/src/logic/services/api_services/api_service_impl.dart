@@ -20,6 +20,7 @@ import 'package:Artisan/src/models/user_register_data.dart';
 import 'package:dio/dio.dart';
 
 import '../../../models/api_response.dart';
+import '../../../models/product_data/featured_product.dart';
 import '../../../models/product_data/product_data.dart';
 import '../../../models/requests/social_login_request.dart';
 import '../../../models/wishlist_product_data/wishlist_product_data.dart';
@@ -288,29 +289,30 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<Map<int, List<ProductData>>>> getAllProduct({
     required GetListDataRequest getListDataRequest,
   }) async {
-    try {
-      final response = await _basicApiClient.getAllProducts(
-          getListDataRequest: getListDataRequest) as Map<String, dynamic>;
-      if (response['success'] == false) {
-        return ApiResponse.error(
-            response['message'] ?? "Something Went Wrong!");
-      } else if (response['success'] == true) {
-        return ApiResponse.success({
-          response['other']['total'] as int: ((response['data'] as List?) ?? [])
-              .map((e) => ProductData.fromJson(e))
-              .toList()
-        });
-      } else {
-        return ApiResponse.error('Something Went Wrong');
-      }
-    } on DioException catch (e) {
-      final hasInternet = await hasInternetAccess();
-      if (!hasInternet) {
-        return ApiResponse.noInternet();
-      }
-      return ApiResponse.error(
-          e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
-    }
+    return await safeApiCall<Map<int, List<ProductData>>>(
+      () async => await _basicApiClient.getAllProducts(
+          getListDataRequest: getListDataRequest),
+      (response) => ApiResponse.success({
+        response['other']['total'] as int: ((response['data'] as List?) ?? [])
+            .map((e) => ProductData.fromJson(e))
+            .toList()
+      }),
+    );
+  }
+
+  @override
+  Future<ApiResponse<List<FeaturedProduct>>> getAllFeatured({
+    required GetListDataRequest getListDataRequest,
+  }) async {
+    return await safeApiCall< List<FeaturedProduct>>(
+      () async => await _basicApiClient.getAllFeatured(
+          getListDataRequest: getListDataRequest),
+      (response) => ApiResponse.success(
+        ((response['data'] as List?) ?? [])
+            .map((e) => FeaturedProduct.fromJson(e))
+            .toList()
+      ),
+    );
   }
 
   @override

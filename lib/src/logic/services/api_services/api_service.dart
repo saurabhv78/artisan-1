@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/api_response.dart';
 import '../../../models/artist_data/artist_data.dart';
 import '../../../models/cart_data/cart_data.dart';
+import '../../../models/product_data/featured_product.dart';
 import '../../../models/product_data/product_data.dart';
 import '../../../models/requests/get_list_data_request.dart';
 import '../../../models/requests/social_login_request.dart';
@@ -66,6 +67,9 @@ abstract class ApiService {
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<Map<int, List<ProductData>>>> getAllProduct({
+    required GetListDataRequest getListDataRequest,
+  });
+  Future<ApiResponse<List<FeaturedProduct>>> getAllFeatured({
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<ProductData>> getProductDetail({

@@ -51,8 +51,8 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
         .watch(homeTabPageModelProvider.select((value) => value.categoryData));
     // final discountData = ref
     //     .watch(homeTabPageModelProvider.select((value) => value.discountData));
-    // final featuredProducts = ref.watch(
-    //     homeTabPageModelProvider.select((value) => value.featuredProducts));
+    final featuredProducts = ref.watch(
+        homeTabPageModelProvider.select((value) => value.featuredProducts));
     final status =
         ref.watch(homeTabPageModelProvider.select((value) => value.status));
 
@@ -116,23 +116,17 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                       child: Column(
                         children: [
                           const SizedBox(height: 20),
-                          HomeCategorySection(
-                            data: categoryData,
-                          ),
+                          HomeCategorySection(data: categoryData),
                           const SizedBox(height: 20),
                           // HomeDiscountSection(
-                          //   data: discountData ?? [],
+                          //   data: discountData ?? []
                           // ),
                           const SizedBox(height: 25),
-                          // FeaturedSection(
-                          //   data: featuredProducts ?? [],
-                          // ),
+                          FeaturedSection(data: featuredProducts ?? []),
                           const SizedBox(height: 20),
-                          // const TrendingArtistSection(),
+                          const TrendingArtistSection(),
                           const SizedBox(height: 20),
-                          TrendingArtStylesSection(
-                            categoryData: categoryData,
-                          ),
+                          TrendingArtStylesSection(categoryData: categoryData),
                           const SizedBox(height: 40),
                         ],
                       ),

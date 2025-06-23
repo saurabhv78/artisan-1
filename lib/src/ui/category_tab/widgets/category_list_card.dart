@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../widgets/components/images.dart';
+
 class CategoryListCard extends ConsumerStatefulWidget {
   final CategoryData data;
   final int index;
@@ -42,14 +44,12 @@ class _CategoryListCardState extends ConsumerState<CategoryListCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(
-                'assets/images/category${(widget.index) % 3 + 1}.png',
+              NetworkImageWidget(
+                image: widget.data.catImage,
                 height: (((widget.index + 1) % 4 == 1) ||
                         ((widget.index + 1) % 4 == 0))
                     ? 165
                     : 226,
-                width: MediaQuery.sizeOf(context).width,
-                fit: BoxFit.fill,
               ),
               Expanded(
                 child: Container(

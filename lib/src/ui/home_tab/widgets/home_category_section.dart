@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/category_data/category_data.dart';
+import '../../../widgets/components/images.dart';
 
 class HomeCategorySection extends ConsumerWidget {
   final List<CategoryData> data;
@@ -71,12 +72,13 @@ class _CategoryCard extends ConsumerWidget {
           ),
           child: Column(
             children: [
-              Image.asset(
-                'assets/images/category${index + 1}.png',
+              NetworkImageWidget(
+                image: data.catImage,
+                height: 121,
                 width: 131,
                 fit: BoxFit.cover,
-                height: 121,
               ),
+              
               const SizedBox(
                 height: 5,
               ),

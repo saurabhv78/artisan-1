@@ -17,7 +17,11 @@ abstract class BasicApiClient {
   Future getAllCategory({
     @Body() required GetListDataRequest getListDataRequest,
   });
-  @POST('/products/get_all_products')
+  @GET('/products/featured/products')
+  Future getAllFeatured({
+    @Body() required GetListDataRequest getListDataRequest,
+  });
+  @GET('/products/products')
   Future getAllProducts({
     @Body() required GetListDataRequest getListDataRequest,
   });

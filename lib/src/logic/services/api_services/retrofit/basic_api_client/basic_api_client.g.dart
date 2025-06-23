@@ -53,6 +53,35 @@ class _BasicApiClient implements BasicApiClient {
   }
 
   @override
+  Future<dynamic> getAllFeatured(
+      {required GetListDataRequest getListDataRequest}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(getListDataRequest.toJson());
+    final _options = _setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/products/featured/products',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    return _value;
+  }
+
+  @override
   Future<dynamic> getAllProducts(
       {required GetListDataRequest getListDataRequest}) async {
     final _extra = <String, dynamic>{};
@@ -61,13 +90,13 @@ class _BasicApiClient implements BasicApiClient {
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
-      method: 'POST',
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/products/get_all_products',
+          '/products/products',
           queryParameters: queryParameters,
           data: _data,
         )

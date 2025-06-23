@@ -11,6 +11,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../logic/services/api_services/api_service.dart';
 import '../../models/artist_data/artist_data.dart';
 import '../../models/category_data/category_data.dart';
+import '../../models/product_data/featured_product.dart';
 part 'home_tab_page_model.freezed.dart';
 
 final homeTabPageModelProvider =
@@ -71,6 +72,7 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
           errorMessage: "",
           categoryData: res.data!.values.first,
         );
+
         await getFeaturedProduct();
       }
       return;
@@ -82,6 +84,12 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         featuredProducts: null,
         errorMessage: e.toString(),
       );
+    } finally {
+      if (mounted) {
+        state = state.copyWith(
+          status: HomePageStatus.loaded,
+        );
+      }
     }
   }
 
@@ -98,7 +106,7 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         );
         return;
       }
-      final res = await apiService.getAllProduct(
+      final res = await apiService.getAllFeatured(
           getListDataRequest: const GetListDataRequest(
         page: 1,
         limit: 3,
@@ -117,9 +125,10 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
       if (mounted) {
         state = state.copyWith(
           errorMessage: "",
-          featuredProducts: res.data!.values.first,
+          featuredProducts: res.data ?? [],
         );
-        await getTrendingArtist();
+        /// TODO : do it later
+        // await getTrendingArtist();
       }
       return;
     } catch (e) {
@@ -266,7 +275,7 @@ class HomeTabPageState with _$HomeTabPageState {
   const factory HomeTabPageState({
     @Default(null) List<CategoryData>? categoryData,
     @Default(null) List<DiscountData>? discountData,
-    @Default(null) List<ProductData>? featuredProducts,
+    @Default(null) List<FeaturedProduct>? featuredProducts,
     @Default(null) List<ProductData>? trendingArtists,
     @Default('') String errorMessage,
     @Default(HomePageStatus.initial) HomePageStatus status,
