@@ -43,15 +43,15 @@ abstract class AuthApiClient {
   Future soicalLogin({
     @Body() required SocialLoginRequest socialLoginRequest,
   });
-  @POST('/auth/forgot')
+  @POST('/auth/send/reset/password')
   Future sendChangePassOtp({
     @Body() required SendEmailOtpRequest sendEmailOtpRequest,
   });
-  @POST('/auth/reset_password')
+  @POST('/auth/reset/password')
   Future changePassword({
     @Body() required SendEmailOtpRequest sendEmailOtpRequest,
   });
-  @POST('/auth/verify_otp')
+  @POST('/auth/validate/otp')
   Future verifyOtp({
     @Body() required SendEmailOtpRequest sendEmailOtpRequest,
   });

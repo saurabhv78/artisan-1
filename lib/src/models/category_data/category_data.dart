@@ -7,11 +7,11 @@ part 'category_data.g.dart';
 class CategoryData {
   @JsonKey(name: 'cat_name')
   final String catName;
-  final int status;
+  // final int status;
   @JsonKey(name: 'created_on')
-  final int createdOn;
+  final String createdOn;
   @JsonKey(name: 'updated_on')
-  int? updatedOn;
+  String? updatedOn;
   @JsonKey(name: '_id')
   final String id;
   @JsonKey(name: 'cat_image')
@@ -19,7 +19,7 @@ class CategoryData {
 
   CategoryData({
     required this.catName,
-    required this.status,
+    // required this.status,
     required this.createdOn,
     this.updatedOn,
     required this.id,

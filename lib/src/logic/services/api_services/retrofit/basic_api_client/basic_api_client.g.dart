@@ -14,7 +14,7 @@ class _BasicApiClient implements BasicApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://65.2.137.161/api/v1';
+    baseUrl ??= 'http://3.111.86.244:3000/api/v1';
   }
 
   final Dio _dio;
@@ -38,7 +38,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/category/get_all_category_app',
+          '/products/Categories',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -214,7 +214,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/fav/get_all_fav',
+          '/products/products/favourits',
           queryParameters: queryParameters,
           data: _data,
         )

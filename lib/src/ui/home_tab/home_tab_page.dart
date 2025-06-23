@@ -8,7 +8,6 @@ import 'package:Artisan/src/widgets/try_again_widget.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'widgets/widgets.dart';
 
 @RoutePage()
@@ -50,10 +49,10 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
     });
     final categoryData = ref
         .watch(homeTabPageModelProvider.select((value) => value.categoryData));
-    final discountData = ref
-        .watch(homeTabPageModelProvider.select((value) => value.discountData));
-    final featuredProducts = ref.watch(
-        homeTabPageModelProvider.select((value) => value.featuredProducts));
+    // final discountData = ref
+    //     .watch(homeTabPageModelProvider.select((value) => value.discountData));
+    // final featuredProducts = ref.watch(
+    //     homeTabPageModelProvider.select((value) => value.featuredProducts));
     final status =
         ref.watch(homeTabPageModelProvider.select((value) => value.status));
 
@@ -110,7 +109,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                   if (status == HomePageStatus.loaded &&
                       categoryData != null) ...[
                     AnimatedOpacity(
-                      // key: ValueKey(opacity),
+                      key: ValueKey(opacity),
                       opacity: opacity,
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
@@ -121,15 +120,15 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                             data: categoryData,
                           ),
                           const SizedBox(height: 20),
-                          HomeDiscountSection(
-                            data: discountData ?? [],
-                          ),
+                          // HomeDiscountSection(
+                          //   data: discountData ?? [],
+                          // ),
                           const SizedBox(height: 25),
-                          FeaturedSection(
-                            data: featuredProducts ?? [],
-                          ),
+                          // FeaturedSection(
+                          //   data: featuredProducts ?? [],
+                          // ),
                           const SizedBox(height: 20),
-                          const TrendingArtistSection(),
+                          // const TrendingArtistSection(),
                           const SizedBox(height: 20),
                           TrendingArtStylesSection(
                             categoryData: categoryData,

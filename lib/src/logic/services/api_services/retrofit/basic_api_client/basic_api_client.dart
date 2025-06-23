@@ -6,14 +6,14 @@ import 'package:retrofit/retrofit.dart';
 part 'basic_api_client.g.dart';
 
 //base url
-@RestApi(baseUrl: 'http://65.2.137.161/api/v1')
+@RestApi(baseUrl: 'http://3.111.86.244:3000/api/v1')
 abstract class BasicApiClient {
   factory BasicApiClient(
     Dio dio, {
     String baseUrl,
   }) = _BasicApiClient;
 
-  @POST('/category/get_all_category_app')
+  @POST('/products/Categories')
   Future getAllCategory({
     @Body() required GetListDataRequest getListDataRequest,
   });
@@ -38,7 +38,7 @@ abstract class BasicApiClient {
     @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
   });
-  @POST('/fav/get_all_fav')
+  @POST('/products/products/favourits')
   Future getAllFav({
     @Header('Authorization') required String token,
     // @Body() required SendEmailOtpRequest sendEmailOtpRequest,

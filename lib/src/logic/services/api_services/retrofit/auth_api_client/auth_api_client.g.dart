@@ -246,7 +246,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/reset_password',
+          '/auth/reset/password',
           queryParameters: queryParameters,
           data: _data,
         )
