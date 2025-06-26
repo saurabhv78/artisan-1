@@ -7,7 +7,7 @@ part of 'product_data.dart';
 // **************************************************************************
 
 ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(
-      prodName: json['prod_name'] as String,
+      prodName: json['name'] as String,
       prodDesc: json['prod_desc'] as String,
       prodCount: (json['prod_count'] as num).toInt(),
       totalRating: (json['totalRating'] as num).toInt(),
@@ -19,7 +19,7 @@ ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(
           CategoryData.fromJson(json['cat_id'] as Map<String, dynamic>),
       artistData:
           ArtistData.fromJson(json['artist_id'] as Map<String, dynamic>),
-      prodPrice: (json['prod_price'] as num).toInt(),
+      prodPrice: (json['price'] as num?)?.toInt() ?? 0,
       prodSimilar: json['prod_similar'] as List<dynamic>?,
       prodMedia: (json['prod_media'] as List<dynamic>?)
           ?.map((e) => MediaData.fromJson(e as Map<String, dynamic>))
@@ -32,7 +32,7 @@ ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(
 
 Map<String, dynamic> _$ProductDataToJson(ProductData instance) =>
     <String, dynamic>{
-      'prod_name': instance.prodName,
+      'name': instance.prodName,
       'prod_desc': instance.prodDesc,
       'prod_count': instance.prodCount,
       'totalRating': instance.totalRating,
@@ -42,7 +42,7 @@ Map<String, dynamic> _$ProductDataToJson(ProductData instance) =>
       '_id': instance.id,
       'cat_id': instance.categoryData,
       'artist_id': instance.artistData,
-      'prod_price': instance.prodPrice,
+      'price': instance.prodPrice,
       'prod_similar': instance.prodSimilar,
       'prod_media': instance.prodMedia,
       'review': instance.review,

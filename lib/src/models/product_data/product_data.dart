@@ -9,7 +9,7 @@ part 'product_data.g.dart';
 
 @JsonSerializable()
 class ProductData {
-  @JsonKey(name: 'prod_name')
+  @JsonKey(name: 'name')
   final String prodName;
   @JsonKey(name: 'prod_desc')
   final String prodDesc;
@@ -27,7 +27,7 @@ class ProductData {
   final CategoryData categoryData;
   @JsonKey(name: 'artist_id')
   final ArtistData artistData;
-  @JsonKey(name: 'prod_price')
+  @JsonKey(name: 'price')
   final int prodPrice;
   @JsonKey(name: 'prod_similar')
   List<dynamic>? prodSimilar;
@@ -48,7 +48,7 @@ class ProductData {
     required this.id,
     required this.categoryData,
     required this.artistData,
-    required this.prodPrice,
+    this.prodPrice = 0,
     this.prodSimilar,
     this.prodMedia,
     this.discountData,

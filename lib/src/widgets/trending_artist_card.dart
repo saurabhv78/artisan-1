@@ -49,7 +49,7 @@ class TrendingArtistsCard extends ConsumerWidget {
                           fit: BoxFit.cover,
                           width: MediaQuery.sizeOf(context).width,
                           height: 212,
-                          image: data.images.toString(),
+                          image: data.images.isNotEmpty ? data.images[0] : '',
                           // Image.asset(
                           //   'assets/images/category${index + 1}.png',
                           //   fit: BoxFit.cover,
@@ -94,11 +94,17 @@ class TrendingArtistsCard extends ConsumerWidget {
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 0,
             child: CircleAvatar(
               radius: 28,
               backgroundColor: primaryColor,
+              backgroundImage: NetworkImageWidget(
+                fit: BoxFit.cover,
+                width: MediaQuery.sizeOf(context).width,
+                height: 212,
+                image: data.artist.profilePicture ?? '',
+              ).image,
             ),
           )
         ],

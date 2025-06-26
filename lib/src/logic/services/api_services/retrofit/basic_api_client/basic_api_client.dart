@@ -17,6 +17,12 @@ abstract class BasicApiClient {
   Future getAllCategory({
     @Body() required GetListDataRequest getListDataRequest,
   });
+
+  @GET('/products/products/category/{id}')
+  Future getProductsByCategory({
+    @Path("id") required String catId,
+  });
+
   @GET('/products/featured/products')
   Future getAllFeatured({
     @Body() required GetListDataRequest getListDataRequest,
@@ -34,7 +40,7 @@ abstract class BasicApiClient {
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/products/products/trending/artist')
-  Future getAllArtists({
+  Future getTrendingArtists({
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/fav/add_remove_fav')

@@ -35,7 +35,7 @@ class FeaturedSection extends ConsumerWidget {
                 const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    context.pushRoute(ProductRoute(id: data[0].id));
+                    context.pushRoute(ProductRoute(id: data[0].id ?? ''));
                   },
                   child: _FeaturedCard(
                     index: 0,
@@ -48,7 +48,7 @@ class FeaturedSection extends ConsumerWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushRoute(ProductRoute(id: data[1].id));
+                      context.pushRoute(ProductRoute(id: data[1].id ?? ""));
                     },
                     child: _FeaturedCard(
                       index: 1,
@@ -62,7 +62,7 @@ class FeaturedSection extends ConsumerWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushRoute(ProductRoute(id: data[2].id));
+                      context.pushRoute(ProductRoute(id: data[2].id ?? ''));
                     },
                     child: _FeaturedCard(
                       index: 2,
@@ -120,7 +120,7 @@ class _FeaturedCard extends ConsumerWidget {
             Positioned(
               bottom: 10,
               child: Text(
-                productData.name,
+                productData.name ?? '',
                 style: GoogleFonts.nunitoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,

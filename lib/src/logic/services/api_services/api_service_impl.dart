@@ -260,29 +260,30 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<Map<int, List<CategoryData>>>> getAllCategory({
     required GetListDataRequest getListDataRequest,
   }) async {
-    try {
-      final response = await _basicApiClient.getAllCategory(
-          getListDataRequest: getListDataRequest) as Map<String, dynamic>;
-      if (response['success'] == false) {
-        return ApiResponse.error(
-            response['message'] ?? "Something Went Wrong!");
-      } else if (response['success'] == true) {
-        return ApiResponse.success({
-          response['other']['total'] as int: ((response['data'] as List?) ?? [])
-              .map((e) => CategoryData.fromJson(e))
-              .toList()
-        });
-      } else {
-        return ApiResponse.error('Something Went Wrong');
-      }
-    } on DioException catch (e) {
-      final hasInternet = await hasInternetAccess();
-      if (!hasInternet) {
-        return ApiResponse.noInternet();
-      }
-      return ApiResponse.error(
-          e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
-    }
+    return await safeApiCall<Map<int, List<CategoryData>>>(
+      () async => await _basicApiClient.getAllCategory(
+          getListDataRequest: getListDataRequest),
+      (response) => ApiResponse.success({
+        response['other']['total'] as int: ((response['data'] as List?) ?? [])
+            .map((e) => CategoryData.fromJson(e))
+            .toList()
+      }),
+    );
+  }
+
+  @override
+  Future<ApiResponse<Map<int, List<CategoryData>>>> getProductsByCategory({
+    required GetListDataRequest getListDataRequest,
+  }) async {
+    return await safeApiCall<Map<int, List<CategoryData>>>(
+      () async => await _basicApiClient.getProductsByCategory(
+          catId: getListDataRequest.categoryId ?? ''),
+      (response) => ApiResponse.success({
+        response['other']['total'] as int: ((response['data'] as List?) ?? [])
+            .map((e) => CategoryData.fromJson(e))
+            .toList()
+      }),
+    );
   }
 
   @override
@@ -304,14 +305,12 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<List<FeaturedProduct>>> getAllFeatured({
     required GetListDataRequest getListDataRequest,
   }) async {
-    return await safeApiCall< List<FeaturedProduct>>(
+    return await safeApiCall<List<FeaturedProduct>>(
       () async => await _basicApiClient.getAllFeatured(
           getListDataRequest: getListDataRequest),
-      (response) => ApiResponse.success(
-        ((response['data'] as List?) ?? [])
-            .map((e) => FeaturedProduct.fromJson(e))
-            .toList()
-      ),
+      (response) => ApiResponse.success(((response['data'] as List?) ?? [])
+          .map((e) => FeaturedProduct.fromJson(e))
+          .toList()),
     );
   }
 
@@ -370,11 +369,11 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<ApiResponse<Map<int, List<ArtistData>>>> getAllArtists({
+  Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtists({
     required GetListDataRequest getListDataRequest,
   }) async {
     try {
-      final response = await _basicApiClient.getAllArtists(
+      final response = await _basicApiClient.getTrendingArtists(
           getListDataRequest: getListDataRequest) as Map<String, dynamic>;
       if (response['success'] == false) {
         return ApiResponse.error(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+/* 
 class NetworkImageWidget extends StatelessWidget {
   const NetworkImageWidget({
     super.key,
@@ -56,4 +56,55 @@ class NetworkImageWidget extends StatelessWidget {
       },
     );
   }
+}
+
+ */
+
+
+class NetworkImageWidget extends Image {
+  NetworkImageWidget({
+    Key? key,
+    required String image,
+    double? height,
+    double? width,
+    BoxFit fit = BoxFit.cover,
+  }) : super.network(
+          image,
+          key: key,
+          height: height ?? 150,
+          width: width ?? double.infinity,
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              height: height ?? 150,
+              width: width ?? double.infinity,
+              color: Colors.grey.shade200,
+              child: Center(
+                child: Text(
+                  'Image not available',
+                  style: GoogleFonts.nunitoSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+            );
+          },
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return SizedBox(
+              height: height ?? 150,
+              width: width ?? double.infinity,
+              child: Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          (loadingProgress.expectedTotalBytes ?? 1)
+                      : null,
+                ),
+              ),
+            );
+          },
+        );
 }

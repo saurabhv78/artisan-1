@@ -81,18 +81,20 @@ class ArtistData {
 
 @JsonSerializable()
 class ArtistInfo {
-  final String id;
-  final String fullName;
-  final String profilePicture;
-  final String createdAt;
-  final String updatedAt;
+  final String? id;
+  final String? fullName;
+  final String? profilePicture;
+  final String? bio;
+  final String? createdAt;
+  final String? updatedAt;
 
   ArtistInfo({
-    required this.id,
-    required this.fullName,
-    required this.profilePicture,
-    required this.createdAt,
-    required this.updatedAt,
+     this.id,
+     this.fullName,
+     this.profilePicture,
+     this.bio,
+     this.createdAt,
+     this.updatedAt,
   });
 
   factory ArtistInfo.fromJson(Map<String, dynamic> json) =>
@@ -103,22 +105,22 @@ class ArtistInfo {
 
 @JsonSerializable()
 class OtherMeta {
-  final int page;
-  final int limit;
-  final int skip;
-  final String sort;
-  final String sortDirection;
-  final int totalPages;
-  final int total;
+  final int? page;
+  final int? limit;
+  final int? skip;
+  final String? sort;
+  final String? sortDirection;
+  final int? totalPages;
+  final int? total;
 
   OtherMeta({
-    required this.page,
-    required this.limit,
-    required this.skip,
-    required this.sort,
-    required this.sortDirection,
-    required this.totalPages,
-    required this.total,
+     this.page,
+     this.limit,
+     this.skip,
+     this.sort,
+     this.sortDirection,
+     this.totalPages,
+     this.total,
   });
 
   factory OtherMeta.fromJson(Map<String, dynamic> json) =>

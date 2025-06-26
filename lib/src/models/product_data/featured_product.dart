@@ -6,21 +6,21 @@ part 'featured_product.g.dart';
 
 @JsonSerializable()
 class FeaturedProduct {
-  final String id;
-  final String name;
-  final String description;
-  final int price;
-  final int quantity;
-  final FeaturedArtistData artist;
+  final String? id;
+  final String? name;
+  final String? description;
+  final int? price;
+  final int? quantity;
+  final FeaturedArtistData? artist;
   final List<String> images;
   final List<String> reviews;
   final List<String> discount;
-  final int taxAmount;
-  final int discountAmount;
-  final int payableAmount;
-  final String createdBy;
-  final String createdAt;
-  final String updatedAt;
+  final int? taxAmount;
+  final int? discountAmount;
+  final int? payableAmount;
+  final String? createdBy;
+  final String? createdAt;
+  final String? updatedAt;
 
   FeaturedProduct({
     required this.id,
@@ -29,9 +29,9 @@ class FeaturedProduct {
     required this.price,
     required this.quantity,
     required this.artist,
-    required this.images,
-    required this.reviews,
-    required this.discount,
+     this.images = const [],
+     this.reviews = const [],
+     this.discount = const [],
     required this.taxAmount,
     required this.discountAmount,
     required this.payableAmount,

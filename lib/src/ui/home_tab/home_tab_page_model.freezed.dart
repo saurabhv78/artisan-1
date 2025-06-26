@@ -20,8 +20,7 @@ mixin _$HomeTabPageState {
   List<DiscountData>? get discountData => throw _privateConstructorUsedError;
   List<FeaturedProduct>? get featuredProducts =>
       throw _privateConstructorUsedError;
-  List<TrendingArtistsResponse>? get trendingArtists =>
-      throw _privateConstructorUsedError;
+  List<ArtistData>? get trendingArtists => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   HomePageStatus get status => throw _privateConstructorUsedError;
 
@@ -40,7 +39,7 @@ abstract class $HomeTabPageStateCopyWith<$Res> {
       {List<CategoryData>? categoryData,
       List<DiscountData>? discountData,
       List<FeaturedProduct>? featuredProducts,
-      List<TrendingArtistsResponse>? trendingArtists,
+      List<ArtistData>? trendingArtists,
       String errorMessage,
       HomePageStatus status});
 }
@@ -81,7 +80,7 @@ class _$HomeTabPageStateCopyWithImpl<$Res, $Val extends HomeTabPageState>
       trendingArtists: freezed == trendingArtists
           ? _value.trendingArtists
           : trendingArtists // ignore: cast_nullable_to_non_nullable
-              as List<TrendingArtistsResponse>?,
+              as List<ArtistData>?,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -106,7 +105,7 @@ abstract class _$$HomeTabPageStateImplCopyWith<$Res>
       {List<CategoryData>? categoryData,
       List<DiscountData>? discountData,
       List<FeaturedProduct>? featuredProducts,
-      List<TrendingArtistsResponse>? trendingArtists,
+      List<ArtistData>? trendingArtists,
       String errorMessage,
       HomePageStatus status});
 }
@@ -145,7 +144,7 @@ class __$$HomeTabPageStateImplCopyWithImpl<$Res>
       trendingArtists: freezed == trendingArtists
           ? _value._trendingArtists
           : trendingArtists // ignore: cast_nullable_to_non_nullable
-              as List<TrendingArtistsResponse>?,
+              as List<ArtistData>?,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -165,7 +164,7 @@ class _$HomeTabPageStateImpl implements _HomeTabPageState {
       {final List<CategoryData>? categoryData = null,
       final List<DiscountData>? discountData = null,
       final List<FeaturedProduct>? featuredProducts = null,
-      final List<TrendingArtistsResponse>? trendingArtists = null,
+      final List<ArtistData>? trendingArtists = null,
       this.errorMessage = '',
       this.status = HomePageStatus.initial})
       : _categoryData = categoryData,
@@ -207,10 +206,10 @@ class _$HomeTabPageStateImpl implements _HomeTabPageState {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<TrendingArtistsResponse>? _trendingArtists;
+  final List<ArtistData>? _trendingArtists;
   @override
   @JsonKey()
-  List<TrendingArtistsResponse>? get trendingArtists {
+  List<ArtistData>? get trendingArtists {
     final value = _trendingArtists;
     if (value == null) return null;
     if (_trendingArtists is EqualUnmodifiableListView) return _trendingArtists;
@@ -271,7 +270,7 @@ abstract class _HomeTabPageState implements HomeTabPageState {
       {final List<CategoryData>? categoryData,
       final List<DiscountData>? discountData,
       final List<FeaturedProduct>? featuredProducts,
-      final List<TrendingArtistsResponse>? trendingArtists,
+      final List<ArtistData>? trendingArtists,
       final String errorMessage,
       final HomePageStatus status}) = _$HomeTabPageStateImpl;
 
@@ -282,7 +281,7 @@ abstract class _HomeTabPageState implements HomeTabPageState {
   @override
   List<FeaturedProduct>? get featuredProducts;
   @override
-  List<TrendingArtistsResponse>? get trendingArtists;
+  List<ArtistData>? get trendingArtists;
   @override
   String get errorMessage;
   @override

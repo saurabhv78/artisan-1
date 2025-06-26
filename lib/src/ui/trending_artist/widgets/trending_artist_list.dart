@@ -41,7 +41,7 @@ class _TrendingArtistListSection
   Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtistData(
     int page,
   ) async =>
-      ref.read(apiServiceProvider).getAllArtists(
+      ref.read(apiServiceProvider).getTrendingArtists(
               getListDataRequest: GetListDataRequest(
             page: page,
             limit: 5,

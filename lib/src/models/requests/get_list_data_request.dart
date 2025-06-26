@@ -9,12 +9,12 @@ class GetListDataRequest {
   @JsonKey(name: "prod_id")
   final String? productId;
 
-  @JsonKey(name: "cat_id")
+  @JsonKey(name: "category")
   final String? categoryId;
 
-  @JsonKey(name: "artist_id")
+  @JsonKey(name: "seller")
   final String? artistId;
-  @JsonKey(name: "discount_id")
+  @JsonKey(name: "discount")
   final String? discountId;
   @JsonKey(name: "search_by")
   final String? searchBy;

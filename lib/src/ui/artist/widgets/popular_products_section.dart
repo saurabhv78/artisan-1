@@ -48,7 +48,7 @@ class _PopularProductsSectionState
                   return GestureDetector(
                     onTap: () {
                       context.pushRoute(ProductRoute(
-                        id: widget.data[index].id,
+                        id: widget.data[index].id??'',
                         key: ValueKey(widget.data[index].id),
                       ));
                     },

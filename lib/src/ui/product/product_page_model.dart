@@ -73,7 +73,7 @@ class ProductPageModel extends StateNotifier<ProductPageState> {
           productData: res.data!,
           // moreByArtist: res.data,
         );
-        await getMoreByArtist(res.data!.artistData.id);
+        await getMoreByArtist(res.data!.artistData?.id??'');
       }
       return;
     } catch (e) {

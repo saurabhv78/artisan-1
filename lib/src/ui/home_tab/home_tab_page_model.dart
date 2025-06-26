@@ -154,7 +154,7 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
       return;
     }
 
-    final res = await apiService.getAllArtists(
+    final res = await apiService.getTrendingArtists(
       getListDataRequest: const GetListDataRequest(page: 1, limit: 2),
     );
 
@@ -171,28 +171,28 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
       res.data!.values.first,
     );
 
-    List<TrendingArtistsResponse> trendingProducts = [];
+    // List<TrendingArtistsResponse> trendingProducts = [];
 
-    for (final artist in artists) {
-      final productRes = await apiService.getAllProduct(
-        getListDataRequest: GetListDataRequest(
-          artistId: artist.id,
-          page: 1,
-          limit: 1,
-        ),
-      );
+    // for (final artist in artists) {
+    //   final productRes = await apiService.getAllProduct(
+    //     getListDataRequest: GetListDataRequest(
+    //       artistId: artist.id,
+    //       page: 1,
+    //       limit: 1,
+    //     ),
+    //   );
 
-      if (productRes.status == ApiStatus.success &&
-          productRes.data != null &&
-          productRes.data!.values.first.isNotEmpty) {
-        // trendingProducts.add(productRes.data!.values.first.first);
-      }
-    }
+    //   if (productRes.status == ApiStatus.success &&
+    //       productRes.data != null &&
+    //       productRes.data!.values.first.isNotEmpty) {
+    //     // trendingProducts.add(productRes.data!.values.first.first);
+    //   }
+    // }
 
     if (mounted) {
       state = state.copyWith(
         status: HomePageStatus.loaded,
-        trendingArtists: trendingProducts,
+        trendingArtists: artists,
         errorMessage: "",
       );
     }
@@ -254,7 +254,7 @@ class HomeTabPageState with _$HomeTabPageState {
     @Default(null) List<CategoryData>? categoryData,
     @Default(null) List<DiscountData>? discountData,
     @Default(null) List<FeaturedProduct>? featuredProducts,
-    @Default(null) List<TrendingArtistsResponse>? trendingArtists,
+    @Default(null) List<ArtistData>? trendingArtists,
     @Default('') String errorMessage,
     @Default(HomePageStatus.initial) HomePageStatus status,
   }) = _HomeTabPageState;

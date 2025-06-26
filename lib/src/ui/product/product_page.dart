@@ -72,9 +72,11 @@ class _ProductPageState extends ConsumerState<ProductPage> {
                             productData: productData,
                           ),
                           const SizedBox(height: 20),
-                          ArtistDetailSection(
-                            artistData: productData.artistData,
-                          ),
+
+                          /// TODO: model accepts artist data not info
+                          // ArtistDetailSection(
+                          //   artistData: productData.artistData,
+                          // ),
                           const SizedBox(
                             height: 20,
                           ),

@@ -66,6 +66,9 @@ abstract class ApiService {
   Future<ApiResponse<Map<int, List<CategoryData>>>> getAllCategory({
     required GetListDataRequest getListDataRequest,
   });
+  Future<ApiResponse<Map<int, List<CategoryData>>>> getProductsByCategory({
+    required GetListDataRequest getListDataRequest,
+  });
   Future<ApiResponse<Map<int, List<ProductData>>>> getAllProduct({
     required GetListDataRequest getListDataRequest,
   });
@@ -78,7 +81,7 @@ abstract class ApiService {
   Future<ApiResponse<Map<int, List<DiscountData>>>> getAllDiscount({
     required GetListDataRequest getListDataRequest,
   });
-  Future<ApiResponse<Map<int, List<ArtistData>>>> getAllArtists({
+  Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtists({
     required GetListDataRequest getListDataRequest,
   });
 
