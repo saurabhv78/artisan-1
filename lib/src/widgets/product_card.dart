@@ -65,7 +65,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.data.prodName,
+                        widget.data.artistData.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.nunitoSans(

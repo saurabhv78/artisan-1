@@ -127,8 +127,9 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
           errorMessage: "",
           featuredProducts: res.data ?? [],
         );
+
         /// TODO : do it later
-        // await getTrendingArtist();
+        await getTrendingArtist();
       }
       return;
     } catch (e) {
@@ -144,80 +145,57 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
   }
 
   getTrendingArtist() async {
-    // try {print
-
     if (!await hasInternetAccess()) {
       state = state.copyWith(
         status: HomePageStatus.error,
-        discountData: null,
-        categoryData: null,
         trendingArtists: null,
-        featuredProducts: null,
         errorMessage: "No Internet Connection!!!",
       );
       return;
     }
-    final res = await apiService.getAllArtists(
-        getListDataRequest: const GetListDataRequest(
-      page: 1,
-      limit: 2,
-    ));
 
-    if (res.status != ApiStatus.success) {
+    final res = await apiService.getAllArtists(
+      getListDataRequest: const GetListDataRequest(page: 1, limit: 2),
+    );
+
+    if (res.status != ApiStatus.success || res.data == null) {
       state = state.copyWith(
         status: HomePageStatus.error,
-        discountData: null,
-        categoryData: null,
         trendingArtists: null,
-        featuredProducts: null,
         errorMessage: res.errorMessage ?? "Something Went Wrong!!!",
       );
       return;
     }
 
-    List<ProductData> trendArtist = [];
+    final List<ArtistData> artists = List<ArtistData>.from(
+      res.data!.values.first,
+    );
 
-    for (ArtistData data in res.data!.values.first) {
-      final response = await apiService.getAllProduct(
-          getListDataRequest: GetListDataRequest(
-        artistId: data.id,
-        page: 1,
-        limit: 1,
-      ));
-      if (response.status != ApiStatus.success) {
-        state = state.copyWith(
-          status: HomePageStatus.error,
-          discountData: null,
-          categoryData: null,
-          trendingArtists: null,
-          featuredProducts: null,
-          errorMessage: res.errorMessage ?? "Something Went Wrong!!!",
-        );
-        return;
-      }
-      if (mounted) {
-        trendArtist.add(response.data!.values.first.first);
+    List<TrendingArtistsResponse> trendingProducts = [];
+
+    for (final artist in artists) {
+      final productRes = await apiService.getAllProduct(
+        getListDataRequest: GetListDataRequest(
+          artistId: artist.id,
+          page: 1,
+          limit: 1,
+        ),
+      );
+
+      if (productRes.status == ApiStatus.success &&
+          productRes.data != null &&
+          productRes.data!.values.first.isNotEmpty) {
+        // trendingProducts.add(productRes.data!.values.first.first);
       }
     }
+
     if (mounted) {
       state = state.copyWith(
         status: HomePageStatus.loaded,
+        trendingArtists: trendingProducts,
         errorMessage: "",
-        trendingArtists: trendArtist,
       );
-      await getDiscount();
     }
-    return;
-    // } catch (e) {
-    //   state = state.copyWith(
-    //     status: HomePageStatus.error,
-    //     discountData: null,
-    //     categoryData: null,
-    //     trendingArtists: null,
-    //     featuredProducts: null,
-    //     errorMessage: e.toString(),
-    //   );
-    // }
   }
 
   getDiscount() async {
@@ -276,7 +254,7 @@ class HomeTabPageState with _$HomeTabPageState {
     @Default(null) List<CategoryData>? categoryData,
     @Default(null) List<DiscountData>? discountData,
     @Default(null) List<FeaturedProduct>? featuredProducts,
-    @Default(null) List<ProductData>? trendingArtists,
+    @Default(null) List<TrendingArtistsResponse>? trendingArtists,
     @Default('') String errorMessage,
     @Default(HomePageStatus.initial) HomePageStatus status,
   }) = _HomeTabPageState;

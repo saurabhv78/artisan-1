@@ -1,3 +1,5 @@
+import 'package:Artisan/src/models/artist_data/artist_data.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +8,7 @@ import '../constants/colors.dart';
 import '../models/product_data/product_data.dart';
 
 class TrendingArtistsCard extends ConsumerWidget {
-  final ProductData data;
+  final ArtistData data;
   final int index;
   const TrendingArtistsCard({
     super.key,
@@ -43,11 +45,16 @@ class TrendingArtistsCard extends ConsumerWidget {
                     Stack(
                       alignment: Alignment.bottomCenter,
                       children: [
-                        Image.asset(
-                          'assets/images/category${index + 1}.png',
+                        NetworkImageWidget(
                           fit: BoxFit.cover,
                           width: MediaQuery.sizeOf(context).width,
                           height: 212,
+                          image: data.images.toString(),
+                          // Image.asset(
+                          //   'assets/images/category${index + 1}.png',
+                          //   fit: BoxFit.cover,
+                          //   width: MediaQuery.sizeOf(context).width,
+                          //   height: 212,
                         ),
                         Container(
                           height: 200,
@@ -68,7 +75,7 @@ class TrendingArtistsCard extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Center(
                               child: Text(
-                                data.prodName,
+                                data.name.toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.nunitoSans(

@@ -71,7 +71,7 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                 const SizedBox(height: 20),
                 ProfileContainer(
                   onTap: () {
-                    context.pushRoute(const WishlistRoute());
+                    // context.pushRoute(const WishlistRoute());
                   },
                   subtitle: 'View your favorite paintings in one place',
                   title: 'My Wishlist',

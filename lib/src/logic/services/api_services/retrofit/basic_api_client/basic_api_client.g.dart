@@ -183,7 +183,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/artists/get_all_artists_app',
+          '/products/products/trending/artist',
           queryParameters: queryParameters,
           data: _data,
         )

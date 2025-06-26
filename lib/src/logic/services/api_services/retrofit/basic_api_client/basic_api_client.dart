@@ -33,7 +33,7 @@ abstract class BasicApiClient {
   Future getAllDiscounts({
     @Body() required GetListDataRequest getListDataRequest,
   });
-  @POST('/artists/get_all_artists_app')
+  @POST('/products/products/trending/artist')
   Future getAllArtists({
     @Body() required GetListDataRequest getListDataRequest,
   });

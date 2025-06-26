@@ -63,17 +63,17 @@ class _ArtistDetailSectionState extends ConsumerState<ArtistDetailSection> {
                           letterSpacing: .1,
                         ),
                       ),
-                      Text(
-                        widget.artistData.location,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.nunitoSans(
-                          fontWeight: FontWeight.w400,
-                          color: grayTextColor,
-                          fontSize: 12,
-                          letterSpacing: .1,
-                        ),
-                      ),
+                      // Text(
+                      //   widget.artistData.location,
+                      //   maxLines: 1,
+                      //   overflow: TextOverflow.ellipsis,
+                      //   style: GoogleFonts.nunitoSans(
+                      //     fontWeight: FontWeight.w400,
+                      //     color: grayTextColor,
+                      //     fontSize: 12,
+                      //     letterSpacing: .1,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -87,7 +87,7 @@ class _ArtistDetailSectionState extends ConsumerState<ArtistDetailSection> {
           ),
           const SizedBox(height: 10),
           Text(
-            widget.artistData.desc,
+            widget.artistData.name,
             style: GoogleFonts.nunitoSans(
               fontWeight: FontWeight.w400,
               color: grayTextColor,

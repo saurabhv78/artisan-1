@@ -113,7 +113,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             height: 5,
                           ),
                           Text(
-                            widget.artistData.desc,
+                            widget.artistData.name,
                             // maxLines: 2,
                             style: GoogleFonts.nunitoSans(
                               fontSize: 14,

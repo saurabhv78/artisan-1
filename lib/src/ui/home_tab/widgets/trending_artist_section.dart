@@ -13,9 +13,11 @@ class TrendingArtistSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final trendingArtists = ref.watch(homeTabPageModelProvider
-            .select((value) => value.trendingArtists)) ??
+    final trendingArtists = ref.watch(
+          homeTabPageModelProvider.select((value) => value.trendingArtists),
+        ) ??
         [];
+
     return trendingArtists.length < 2
         ? const SizedBox()
         : Padding(
@@ -55,11 +57,11 @@ class TrendingArtistSection extends ConsumerWidget {
                       child: GestureDetector(
                         onTap: () {
                           context.navigateTo(ArtistRoute(
-                            artistData: trendingArtists[0].artistData,
+                            artistData: trendingArtists[0].data[0],
                           ));
                         },
                         child: TrendingArtistsCard(
-                          data: trendingArtists[0],
+                          data: trendingArtists[0].data[0],
                           index: 0,
                         ),
                       ),
@@ -71,11 +73,11 @@ class TrendingArtistSection extends ConsumerWidget {
                       child: GestureDetector(
                         onTap: () {
                           context.navigateTo(ArtistRoute(
-                            artistData: trendingArtists[1].artistData,
+                            artistData: trendingArtists[1].data[1],
                           ));
                         },
                         child: TrendingArtistsCard(
-                          data: trendingArtists[1],
+                          data: trendingArtists[1].data[1],
                           index: 1,
                         ),
                       ),
