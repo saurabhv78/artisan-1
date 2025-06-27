@@ -42,83 +42,72 @@ class _ProductPageState extends ConsumerState<ProductPage> {
         .watch(productPageModelProvider.select((value) => value.productData));
     final status =
         ref.watch(productPageModelProvider.select((value) => value.status));
-    return WillPopScope(
-      onWillPop: () async {
-        if (ref.exists(productPageModelProvider)) {
-          await ref.read(productPageModelProvider.notifier).removeId(widget.id);
-        }
-        return true;
-      },
-      child: CustomScaffold(
-        child: status == ProductPageStatus.loaded &&
-                productData != null &&
-                moreByArtist != null
-            ? Stack(
-                children: [
-                  RefreshIndicator(
-                    edgeOffset: 60,
-                    onRefresh: () async {
-                      return await ref
-                          .read(productPageModelProvider.notifier)
-                          .getProductData(widget.id);
-                    },
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ImageSection(data: productData),
-                          const SizedBox(height: 10),
-                          NamePriceSection(
-                            productData: productData,
-                          ),
-                          const SizedBox(height: 20),
+    return CustomScaffold(
+      child: status == ProductPageStatus.loaded &&
+              productData != null &&
+              moreByArtist != null
+          ? Stack(
+              children: [
+                RefreshIndicator(
+                  edgeOffset: 60,
+                  onRefresh: () async {
+                    return await ref
+                        .read(productPageModelProvider.notifier)
+                        .getProductData(widget.id);
+                  },
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ImageSection(data: productData),
+                        const SizedBox(height: 10),
+                        NamePriceSection(productData: productData),
+                        const SizedBox(height: 20),
 
-                          /// TODO: model accepts artist data not info
-                          // ArtistDetailSection(
-                          //   artistData: productData.artistData,
-                          // ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          MoreByArtistSection(
-                            products: moreByArtist,
-                            data: productData,
-                          ),
-                          const SizedBox(height: 75),
-                        ],
-                      ),
+                        /// TODO: model accepts artist data not info
+                        // ArtistDetailSection(
+                        //   artistData: productData.artistData,
+                        // ),
+                        const SizedBox(height: 20),
+                        MoreByArtistSection(
+                          products: moreByArtist,
+                          data: productData,
+                        ),
+                        const SizedBox(height: 75),
+                      ],
                     ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      color: Colors.white,
-                      height: 66,
-                      width: MediaQuery.sizeOf(context).width,
-                      child: BottomButtons(
-                        data: productData,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : TryAgainWidget(
-                onTap: () {
-                  ref
-                      .read(productPageModelProvider.notifier)
-                      .getProductData(widget.id);
-                },
-                isProcessing: status == ProductPageStatus.initial ||
-                    status == ProductPageStatus.loading,
-                errMessage: ref.watch(
-                  productPageModelProvider.select(
-                    (value) => value.errMessage.trim().isEmpty
-                        ? "Something Went Wrong!!!"
-                        : value.errMessage.trim(),
                   ),
                 ),
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    color: Colors.white,
+                    height: 66,
+                    width: MediaQuery.sizeOf(context).width,
+                    child: BottomButtons(
+                      data: productData,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : TryAgainWidget(
+              onTap: () {
+                ref
+                    .read(productPageModelProvider.notifier)
+                    .getProductData(widget.id);
+              },
+              isProcessing: status == ProductPageStatus.initial ||
+                  status == ProductPageStatus.loading,
+              errMessage: ref.watch(
+                productPageModelProvider.select(
+                  (value) => value.errMessage.trim().isEmpty
+                      ? "Something Went Wrong!!!"
+                      : value.errMessage.trim(),
+                ),
               ),
-      ),
+            ),
     );
   }
 }

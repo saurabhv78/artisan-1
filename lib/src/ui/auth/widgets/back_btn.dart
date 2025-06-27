@@ -13,26 +13,31 @@ class BackBtn extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 38,
-        width: 38,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white.withOpacity(0.3),
-          border: Border.all(
-            width: 0.5,
-            color: subHead,
+    return InkWell(
+      child: GestureDetector(
+        onTap: () {
+          onTap();
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          height: 38,
+          width: 38,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.red.withOpacity(0.3),
+            border: Border.all(
+              width: 0.5,
+              color: subHead,
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 5),
-          child: Center(
-            child: Icon(
-              Icons.arrow_back_ios,
-              size: 20,
-              color: iconColor ?? Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Center(
+              child: Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: iconColor ?? Colors.white,
+              ),
             ),
           ),
         ),

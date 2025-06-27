@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../constants/colors.dart';
 import '../../../models/product_data/product_data.dart';
+import '../../../widgets/components/images.dart';
 
 class MoreByArtistSection extends ConsumerWidget {
   final List<ProductData> products;
@@ -60,8 +61,9 @@ class MoreByArtistSection extends ConsumerWidget {
                         },
                         child: _ArtistArtCard(
                           data: products[index],
-                          imageUrl:
-                              'assets/images/ic_product${(index + 1) % 4 + 1}.png',
+                          imageUrl: products[index].images.isNotEmpty
+                              ? products[index].images[0]
+                              : '',
                           // price: "₹2999.00",
                         ),
                       )
@@ -87,38 +89,40 @@ class _ArtistArtCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 110,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              imageUrl,
-              height: 110,
-              width: 110,
-              fit: BoxFit.cover,
+      child: LayoutBuilder(builder: (context, b) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: NetworkImageWidget(
+                imageUrl,
+                height: b.maxHeight / 2,
+                width: b.maxWidth,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Text(
-            data.prodName,
-            style: GoogleFonts.nunitoSans(
-              fontWeight: FontWeight.w400,
-              color: blackPrimaryColor,
-              fontSize: 14,
-              // letterSpacing: .2,
+            Text(
+              data.prodName,
+              style: GoogleFonts.nunitoSans(
+                fontWeight: FontWeight.w400,
+                color: blackPrimaryColor,
+                fontSize: 14,
+                // letterSpacing: .2,
+              ),
             ),
-          ),
-          Text(
-            "₹${data.prodPrice.toStringAsFixed(2)}",
-            style: GoogleFonts.nunitoSans(
-              fontWeight: FontWeight.w700,
-              color: blackPrimaryColor,
-              fontSize: 12,
-              // letterSpacing: .2,
+            Text(
+              "₹${data.prodPrice.toStringAsFixed(2)}",
+              style: GoogleFonts.nunitoSans(
+                fontWeight: FontWeight.w700,
+                color: blackPrimaryColor,
+                fontSize: 12,
+                // letterSpacing: .2,
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 }

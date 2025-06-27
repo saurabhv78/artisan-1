@@ -1,67 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-/* 
-class NetworkImageWidget extends StatelessWidget {
-  const NetworkImageWidget({
-    super.key,
-    required this.image,
-    this.height,
-    this.width,
-    this.fit = BoxFit.cover,
-  });
 
-  final String image;
-  final double? height;
-  final double? width;
-  final BoxFit fit;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.network(
-      image,
-      height: height ?? 150,
-      width: width ?? MediaQuery.sizeOf(context).width,
-      fit: fit,
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          height: height ?? 150,
-          width: width ?? MediaQuery.sizeOf(context).width,
-          color: Colors.grey.shade200,
-          child: Center(
-            child: Text(
-              'Image not available',
-              style: GoogleFonts.nunitoSans(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey.shade600,
-              ),
-            ),
-          ),
-        );
-      },
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return SizedBox(
-          height: height ?? 150,
-          width: width ?? MediaQuery.sizeOf(context).width,
-          child: Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      (loadingProgress.expectedTotalBytes ?? 1)
-                  : null,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
- */
-
-
-class NetworkImageWidget extends Image {
+/* class NetworkImageWidget extends Image {
   NetworkImageWidget({
     Key? key,
     required String image,
@@ -74,23 +14,7 @@ class NetworkImageWidget extends Image {
           height: height ?? 150,
           width: width ?? double.infinity,
           fit: fit,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              height: height ?? 150,
-              width: width ?? double.infinity,
-              color: Colors.grey.shade200,
-              child: Center(
-                child: Text(
-                  'Image not available',
-                  style: GoogleFonts.nunitoSans(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ),
-            );
-          },
+          errorBuilder: _errorBuilder,
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) return child;
             return SizedBox(
@@ -107,4 +31,83 @@ class NetworkImageWidget extends Image {
             );
           },
         );
+
+  static Widget _errorBuilder(
+      BuildContext context, Object error, StackTrace? stackTrace) {
+    return Container(
+      height: this.height ?? 150,
+      width: width ?? double.infinity,
+      color: Colors.grey.shade200,
+      child: Center(
+        child: Text(
+          'Image not available',
+          style: GoogleFonts.nunitoSans(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey.shade600,
+          ),
+        ),
+      ),
+    );
+  }
+}
+ */
+class NetworkImageWidget extends Image {
+  NetworkImageWidget(
+     String image,
+    
+    {
+    super.key,
+    double? height,
+    double? width,
+    BoxFit super.fit = BoxFit.cover,
+  }) : super(
+          image: _resolveProvider(image),
+          height: height ?? 150,
+          width: width ?? double.infinity,
+          errorBuilder: (context, error, stackTrace) =>
+              _errorPlaceholder(height ?? 150, width ?? double.infinity),
+          loadingBuilder: (context, child, loadingProgress) {
+            if (image.startsWith('assets/')) {
+              return child;
+            }
+            if (loadingProgress == null) return child;
+            return SizedBox(
+              height: height ?? 150,
+              width: width ?? double.infinity,
+              child: Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          (loadingProgress.expectedTotalBytes ?? 1)
+                      : null,
+                ),
+              ),
+            );
+          },
+        );
+
+  static ImageProvider<Object> _resolveProvider(String image) { 
+    return image.startsWith('assets/')
+        ? AssetImage(image)
+        : NetworkImage(image) as ImageProvider<Object>;
+  }
+
+  static Widget _errorPlaceholder(double height, double width) {
+    return Container(
+      height: height,
+      width: width,
+      color: Colors.grey.shade200,
+      child: Center(
+        child: Text(
+          'Image not available',
+          style: GoogleFonts.nunitoSans(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey.shade600,
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -9,48 +9,51 @@ part 'product_data.g.dart';
 
 @JsonSerializable()
 class ProductData {
+  @JsonKey(name: 'id')
+  final String id;
   @JsonKey(name: 'name')
   final String prodName;
-  @JsonKey(name: 'prod_desc')
+  @JsonKey(name: 'description')
   final String prodDesc;
+  @JsonKey(name: 'category')
+  final String category;
   @JsonKey(name: 'prod_count')
-  final int prodCount;
+  final int? prodCount;
   final int totalRating;
-  final int status;
+  final int? status;
   @JsonKey(name: 'created_on')
-  final int createdOn;
+  final int? createdOn;
   @JsonKey(name: 'updated_on')
-  final int updatedOn;
-  @JsonKey(name: '_id')
-  final String id;
+  final int? updatedOn;
   @JsonKey(name: 'cat_id')
   final CategoryData? categoryData;
   @JsonKey(name: 'artist_id')
-  final ArtistData artistData;
+  final ArtistData? artistData;
   @JsonKey(name: 'price')
   final int prodPrice;
   @JsonKey(name: 'prod_similar')
   List<dynamic>? prodSimilar;
-  @JsonKey(name: 'prod_media')
-  List<MediaData>? prodMedia;
+  @JsonKey(name: 'images')
+  List<String> images;
   List<dynamic>? review;
   @JsonKey(name: "discount_id")
   final DiscountData? discountData;
 
   ProductData({
-    required this.prodName,
-    required this.prodDesc,
-    required this.prodCount,
-    required this.totalRating,
-    required this.status,
-    required this.createdOn,
-    required this.updatedOn,
-    required this.id,
-    required this.categoryData,
-    required this.artistData,
+    this.prodName = '',
+    this.prodDesc = '',
+    this.prodCount,
+    this.totalRating = 0,
+    this.status,
+    this.createdOn,
+    this.updatedOn,
+    this.id = '',
+    this.category = '',
+    this.categoryData,
+    this.artistData,
     this.prodPrice = 0,
     this.prodSimilar,
-    this.prodMedia,
+    this.images = const [],
     this.discountData,
     this.review,
   });

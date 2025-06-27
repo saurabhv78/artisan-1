@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:ffi';
+
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
 import 'package:Artisan/src/models/discount_data/discount_data.dart';
@@ -35,10 +37,10 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
     });
   }
 
-  init() async {
+  init({bool loading = true}) async {
     state = state.copyWith(
       errorMessage: '',
-      status: HomePageStatus.loading,
+      status: loading ? HomePageStatus.loading : state.status,
     );
 
     try {
@@ -52,31 +54,46 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         );
         return;
       }
-      final res = await apiService.getAllCategory(
-          getListDataRequest: const GetListDataRequest(
-        page: 1,
-        limit: 5,
-      ));
-      if (res.status != ApiStatus.success) {
+      final catRes = await apiService.getAllCategory(
+          getListDataRequest: const GetListDataRequest(page: 1, limit: 5));
+      final discountRes = await apiService.getAllDiscount(
+          getListDataRequest: const GetListDataRequest(page: 1, limit: 5));
+      final featuredRes = await apiService.getAllFeatured(
+          getListDataRequest: const GetListDataRequest(page: 1, limit: 3));
+      final trendingArtistRes = await apiService.getTrendingArtists(
+        getListDataRequest: const GetListDataRequest(page: 1, limit: 2),
+      );
+      final trendingArtStyleRes = await apiService.getTrendingArtstyle(
+        getListDataRequest: const GetListDataRequest(page: 1, limit: 2),
+      );
+      if ([
+        catRes.status,
+        discountRes.status,
+        featuredRes.status,
+        trendingArtistRes.status,
+        trendingArtStyleRes.status,
+      ].any((e) => e != ApiStatus.success)) {
         state = state.copyWith(
           status: HomePageStatus.error,
           categoryData: null,
           discountData: null,
           featuredProducts: null,
-          errorMessage: res.errorMessage ?? "Something Went Wrong!!!",
+          trendingArtists: null,
+          trendingArtStyles: null,
+          errorMessage: "Something Went Wrong!!!",
         );
         return;
       }
-      if (mounted) {
-        state = state.copyWith(
-          errorMessage: "",
-          categoryData: res.data!.values.first,
-        );
 
-        await getFeaturedProduct();
-        await getDiscount();
-      }
-      return;
+      state = state.copyWith(
+        status: HomePageStatus.loaded,
+        categoryData: catRes.data?.values.first,
+        trendingArtists: trendingArtistRes.data?.values.first,
+        // trendingArtStyles: trendingArtStyleRes.data?.values.first,
+        featuredProducts: featuredRes.data ?? [],
+        discountData: discountRes.data?.values.first,
+        errorMessage: catRes.errorMessage ?? "Something Went Wrong!!!",
+      );
     } catch (e) {
       state = state.copyWith(
         status: HomePageStatus.error,
@@ -85,14 +102,10 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         featuredProducts: null,
         errorMessage: e.toString(),
       );
-    } finally {
-      if (mounted) {
-        state = state.copyWith(
-          status: HomePageStatus.loaded,
-        );
-      }
     }
   }
+/* 
+  Future<void> getAllCategory() async {}
 
   getFeaturedProduct() async {
     try {
@@ -272,7 +285,8 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
       return;
     }
 
-    final List<ArtStyle> artstyle = List<ArtStyle>.from(
+    /// TODO : do it later
+    /* final List<ArtStyle> artstyle = List<ArtStyle>.from(
       res.data!.values.first,
     );
 
@@ -282,8 +296,9 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         trendingArtStyles: artstyle,
         errorMessage: "",
       );
-    }
+    } */
   }
+ */
 }
 
 @freezed

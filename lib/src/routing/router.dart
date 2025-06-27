@@ -28,9 +28,7 @@ import '../ui/wishlist/wishlist_page.dart';
 
 part 'router.gr.dart';
 
-@AutoRouterConfig(
-  replaceInRouteName: 'Page,Route',
-)
+@AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends _$AppRouter {
   @override
   RouteType get defaultRouteType => const RouteType.cupertino();
@@ -133,4 +131,5 @@ class AppRouter extends _$AppRouter {
       page: TrendingArtStylesRoute.page,
     ),
   ];
+
 }

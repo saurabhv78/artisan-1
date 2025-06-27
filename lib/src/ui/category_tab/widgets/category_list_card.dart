@@ -45,7 +45,7 @@ class _CategoryListCardState extends ConsumerState<CategoryListCard> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               NetworkImageWidget(
-                image: widget.data.catImage ?? "",
+                widget.data.catImage,
                 height: (((widget.index + 1) % 4 == 1) ||
                         ((widget.index + 1) % 4 == 0))
                     ? 165
@@ -58,7 +58,7 @@ class _CategoryListCardState extends ConsumerState<CategoryListCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Center(
                       child: Text(
-                        widget.data.catName ?? "",
+                        widget.data.catName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.nunitoSans(

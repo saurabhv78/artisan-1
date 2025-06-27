@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -42,7 +43,29 @@ class _AppState extends State<MyApp> {
         primarySwatch: ColorUtils.generateMaterialColor(primaryColor),
         scaffoldBackgroundColor: Colors.white,
       ),
-      routerConfig: _appRouter.config(),
+      routerConfig: _appRouter.config(
+        navigatorObservers: () => [
+          MyAutoRouteObserver(),
+        ],
+      ),
     );
   }
+}
+
+class MyAutoRouteObserver extends AutoRouterObserver {
+
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    super.didPush(route, previousRoute);
+    print('$runtimeType Pushed route: ${route.settings.name}');
+    // You can add custom logic here if needed
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    super.didPop(route, previousRoute);
+    print('$runtimeType Popped route: ${route.settings.name}');
+    // You can add custom logic here if needed
+  }
+  
 }

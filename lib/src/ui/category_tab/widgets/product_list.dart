@@ -109,7 +109,7 @@ class _ProductListSection extends ConsumerState<ProductListSection> {
       return GestureDetector(
         onTap: () {
           context.pushRoute(ProductRoute(
-            id: data.id??'',
+            id: data.id,
           ));
         },
         child: ProductListCard(

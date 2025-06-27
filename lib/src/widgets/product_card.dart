@@ -1,5 +1,6 @@
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/utils/toast_utils.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,8 +50,10 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.grey.shade300.withOpacity(0.5),
                     ),
-                    child: Image.asset(
-                      'assets/images/category${(widget.index) % 3 + 1}.png',
+                    child: NetworkImageWidget(
+                      widget.data.images.isNotEmpty
+                          ? widget.data.images[0]
+                          : '',
                       height: 170,
                       width: MediaQuery.sizeOf(context).width,
                       fit: BoxFit.fill,
@@ -65,7 +68,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.data.artistData.name,
+                        widget.data.prodName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.nunitoSans(

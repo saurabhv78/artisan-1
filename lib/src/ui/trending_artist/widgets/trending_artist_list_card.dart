@@ -45,10 +45,10 @@ class TrendingArtistListCard extends ConsumerWidget {
                       alignment: Alignment.bottomCenter,
                       children: [
                         NetworkImageWidget(
+                           data.images.isNotEmpty ? data.images[0] : '',
                           fit: BoxFit.cover,
                           width: MediaQuery.sizeOf(context).width,
                           height: 200,
-                          image: data.images.isNotEmpty ? data.images[0] : '',
                         ),
                         // Image.asset(
                         //   'assets/images/category${index + 1}.png',
@@ -99,17 +99,15 @@ class TrendingArtistListCard extends ConsumerWidget {
             child: CircleAvatar(
               radius: 28,
               backgroundColor: primaryColor,
-              backgroundImage: data.artist.profilePicture != null &&
-                      data.artist.profilePicture!.isNotEmpty
+              backgroundImage: (data.artist?.profilePicture ??'').isNotEmpty
                   ? NetworkImageWidget(
+                       data.artist!.profilePicture ?? '',
                       fit: BoxFit.cover,
                       width: MediaQuery.sizeOf(context).width,
                       height: 212,
-                      image: data.artist.profilePicture ?? '',
                     ).image
                   : null,
-              child: (data.artist.profilePicture == null ||
-                      data.artist.profilePicture!.isEmpty)
+              child: (data.artist?.profilePicture ?? '').isNotEmpty
                   ? const Icon(Icons.person, size: 35, color: Colors.white)
                   : null,
               // fit: BoxFit.cover,

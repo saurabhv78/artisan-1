@@ -53,7 +53,7 @@ class _ArtistDetailSectionState extends ConsumerState<ArtistDetailSection> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.artistData.name,
+                        widget.artistData.name??'',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.nunitoSans(
@@ -87,7 +87,7 @@ class _ArtistDetailSectionState extends ConsumerState<ArtistDetailSection> {
           ),
           const SizedBox(height: 10),
           Text(
-            widget.artistData.name,
+            widget.artistData.name??'',
             style: GoogleFonts.nunitoSans(
               fontWeight: FontWeight.w400,
               color: grayTextColor,

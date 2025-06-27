@@ -102,7 +102,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            widget.artistData.name,
+                            widget.artistData.name??'',
                             maxLines: 2,
                             style: GoogleFonts.nunitoSans(
                               fontSize: 20,
@@ -113,7 +113,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             height: 5,
                           ),
                           Text(
-                            widget.artistData.name,
+                            widget.artistData.name??'',
                             // maxLines: 2,
                             style: GoogleFonts.nunitoSans(
                               fontSize: 14,

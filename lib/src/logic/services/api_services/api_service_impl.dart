@@ -338,25 +338,12 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<ProductData>> getProductDetail({
     required GetListDataRequest getListDataRequest,
   }) async {
-    try {
-      final response = await _basicApiClient.getProductDetail(
-          getListDataRequest: getListDataRequest) as Map<String, dynamic>;
-      if (response['success'] == false) {
-        return ApiResponse.error(
-            response['message'] ?? "Something Went Wrong!");
-      } else if (response['success'] == true) {
-        return ApiResponse.success(ProductData.fromJson(response['data']));
-      } else {
-        return ApiResponse.error('Something Went Wrong');
-      }
-    } on DioException catch (e) {
-      final hasInternet = await hasInternetAccess();
-      if (!hasInternet) {
-        return ApiResponse.noInternet();
-      }
-      return ApiResponse.error(
-          e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
-    }
+    return await safeApiCall<ProductData>(
+      () async => await _basicApiClient.getProductDetail(
+          getListDataRequest: getListDataRequest),
+      (response) => ApiResponse.success(
+          ProductData.fromJson(response['data']?['product'] ?? {})),
+    );
   }
 
   @override
@@ -421,29 +408,15 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtstyle({
     required GetListDataRequest getListDataRequest,
   }) async {
-    try {
-      final response = await _basicApiClient.getTrendingArtStyle(
-          getListDataRequest: getListDataRequest) as Map<String, dynamic>;
-      if (response['success'] == false) {
-        return ApiResponse.error(
-            response['message'] ?? "Something Went Wrong!");
-      } else if (response['success'] == true) {
-        return ApiResponse.success({
-          response['other']['total'] as int: ((response['data'] as List?) ?? [])
-              .map((e) => ArtistData.fromJson(e))
-              .toList()
-        });
-      } else {
-        return ApiResponse.error('Something Went Wrong');
-      }
-    } on DioException catch (e) {
-      final hasInternet = await hasInternetAccess();
-      if (!hasInternet) {
-        return ApiResponse.noInternet();
-      }
-      return ApiResponse.error(
-          e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
-    }
+    return await safeApiCall<Map<int, List<ArtistData>>>(
+      () async => await _basicApiClient.getTrendingArtStyle(
+          getListDataRequest: getListDataRequest),
+      (response) => ApiResponse.success({
+        response['other']['total'] as int: ((response['data'] as List?) ?? [])
+            .map((e) => ArtistData.fromJson(e))
+            .toList()
+      }),
+    );
   }
 
   @override

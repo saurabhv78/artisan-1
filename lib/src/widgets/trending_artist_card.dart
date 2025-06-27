@@ -46,10 +46,10 @@ class TrendingArtistsCard extends ConsumerWidget {
                       alignment: Alignment.bottomCenter,
                       children: [
                         NetworkImageWidget(
+                          data.images.isNotEmpty ? data.images[0] : '',
                           fit: BoxFit.cover,
                           width: MediaQuery.sizeOf(context).width,
                           height: 212,
-                          image: data.images.isNotEmpty ? data.images[0] : '',
                           // Image.asset(
                           //   'assets/images/category${index + 1}.png',
                           //   fit: BoxFit.cover,
@@ -100,10 +100,10 @@ class TrendingArtistsCard extends ConsumerWidget {
               radius: 28,
               backgroundColor: primaryColor,
               backgroundImage: NetworkImageWidget(
+                data.artist?.profilePicture ?? '',
                 fit: BoxFit.cover,
                 width: MediaQuery.sizeOf(context).width,
                 height: 212,
-                image: data.artist.profilePicture ?? '',
               ).image,
             ),
           )

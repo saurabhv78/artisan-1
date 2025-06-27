@@ -43,7 +43,7 @@ class _ProductListCardState extends ConsumerState<ProductListCard> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Image.asset(
-                widget.data.prodMedia!.first.fileName.toString(),
+                widget.data.images.first.toString(),
                 // 'assets/images/category${(widget.index) % 3 + 1}.png',
                 height: (((widget.index + 1) % 4 == 1) ||
                         ((widget.index + 1) % 4 == 0))

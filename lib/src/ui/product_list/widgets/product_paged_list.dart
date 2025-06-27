@@ -38,18 +38,14 @@ class _ProductListSection extends ConsumerState<ProductPagedListSection> {
     });
   }
 
-  Future<ApiResponse<Map<int, List<ProductData>>>> getProductData(
-    int page,
-  ) async =>
-      ref.read(apiServiceProvider).getAllProduct(
-              getListDataRequest: GetListDataRequest(
-            page: page,
-            limit: 5,
-            categoryId: widget.categoryId,
-            discountId: widget.discountId,
-          ));
   Future<void> _fetchPage(int pageKey) async {
-    final response = await getProductData(pageKey);
+    final response = await ref.read(apiServiceProvider).getAllProduct(
+            getListDataRequest: GetListDataRequest(
+          page: pageKey,
+          limit: 5,
+          categoryId: widget.categoryId,
+          discountId: widget.discountId,
+        ));
     if (response.status != ApiStatus.success) {
       _pagingController.error =
           response.errorMessage ?? 'Something went wrong!';
@@ -119,9 +115,7 @@ class _ProductListSection extends ConsumerState<ProductPagedListSection> {
         itemBuilder: (context, data, index) {
       return GestureDetector(
         onTap: () {
-          context.pushRoute(ProductRoute(
-            id: data.id,
-          ));
+          context.pushRoute(ProductRoute(id: data.id));
         },
         child: ProductCard(
           data: data,

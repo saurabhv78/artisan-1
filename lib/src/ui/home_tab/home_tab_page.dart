@@ -79,7 +79,9 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
             displacement: 60,
             edgeOffset: 120,
             onRefresh: () async {
-              await ref.read(homeTabPageModelProvider.notifier).init();
+              await ref
+                  .read(homeTabPageModelProvider.notifier)
+                  .init(loading: false);
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),

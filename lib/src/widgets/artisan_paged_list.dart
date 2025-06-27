@@ -19,7 +19,7 @@ class ArtisanPagedList<ItemType> extends PagedMasonryGridView<int, ItemType> {
     PagingController<int, ItemType> pagingController, {
     required this.itemBuilder,
     this.emptyItemWidget,
-    super.padding,
+    super.padding = const EdgeInsets.symmetric(vertical: 20),
     super.key,
   }) : super(
           pagingController: pagingController,

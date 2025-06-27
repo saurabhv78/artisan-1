@@ -97,7 +97,6 @@ class _FeaturedCard extends ConsumerWidget {
           alignment: Alignment.bottomCenter,
           children: [
             NetworkImageWidget(
-              image:
                   productData.images.isNotEmpty ? productData.images.first : '',
               fit: BoxFit.cover,
               height: 190,

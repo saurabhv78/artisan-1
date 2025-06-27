@@ -25,7 +25,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: 80,
+            // height: 80,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(24),

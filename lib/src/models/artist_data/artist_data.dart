@@ -63,14 +63,14 @@ class TrendingArtistsResponse {
 class ArtistData {
   final String id;
   final String name;
-  final ArtistInfo artist;
+  final ArtistInfo? artist;
   final List<String> images;
 
   ArtistData({
-    required this.id,
-    required this.name,
-    required this.artist,
-    required this.images,
+    this.id = '',
+     this.name = '',
+     this.artist,
+    this.images = const [],
   });
 
   factory ArtistData.fromJson(Map<String, dynamic> json) =>
@@ -89,12 +89,12 @@ class ArtistInfo {
   final String? updatedAt;
 
   ArtistInfo({
-     this.id,
-     this.fullName,
-     this.profilePicture,
-     this.bio,
-     this.createdAt,
-     this.updatedAt,
+    this.id,
+    this.fullName,
+    this.profilePicture,
+    this.bio,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory ArtistInfo.fromJson(Map<String, dynamic> json) =>
@@ -114,13 +114,13 @@ class OtherMeta {
   final int? total;
 
   OtherMeta({
-     this.page,
-     this.limit,
-     this.skip,
-     this.sort,
-     this.sortDirection,
-     this.totalPages,
-     this.total,
+    this.page,
+    this.limit,
+    this.skip,
+    this.sort,
+    this.sortDirection,
+    this.totalPages,
+    this.total,
   });
 
   factory OtherMeta.fromJson(Map<String, dynamic> json) =>

@@ -29,11 +29,15 @@ Map<String, dynamic> _$TrendingArtistsResponseToJson(
     };
 
 ArtistData _$ArtistDataFromJson(Map<String, dynamic> json) => ArtistData(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      artist: ArtistInfo.fromJson(json['artist'] as Map<String, dynamic>),
-      images:
-          (json['images'] as List<dynamic>).map((e) => e as String).toList(),
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      artist: json['artist'] == null
+          ? null
+          : ArtistInfo.fromJson(json['artist'] as Map<String, dynamic>),
+      images: (json['images'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$ArtistDataToJson(ArtistData instance) =>

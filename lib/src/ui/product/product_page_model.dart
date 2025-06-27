@@ -40,12 +40,7 @@ class ProductPageModel extends StateNotifier<ProductPageState> {
       await Future.delayed(const Duration(milliseconds: 600));
       if (!await hasInternetAccess()) {
         if (mounted) {
-          state = state.copyWith(
-            productData: null,
-            moreByArtist: null,
-            status: ProductPageStatus.error,
-            errMessage: "No Internet Connection!",
-          );
+          state = errorState('No Internet Connection!');
         }
         return;
       }
@@ -55,14 +50,7 @@ class ProductPageModel extends StateNotifier<ProductPageState> {
       ));
 
       if (res.status != ApiStatus.success) {
-        if (mounted) {
-          state = state.copyWith(
-            status: ProductPageStatus.error,
-            productData: null,
-            moreByArtist: null,
-            errMessage: res.errorMessage ?? 'Something Went Wrong!',
-          );
-        }
+        if (mounted) state = errorState();
         return;
       }
 
@@ -73,7 +61,7 @@ class ProductPageModel extends StateNotifier<ProductPageState> {
           productData: res.data!,
           // moreByArtist: res.data,
         );
-        await getMoreByArtist(res.data!.artistData?.id??'');
+        await getMoreByArtist(res.data!.artistData?.id ?? '');
       }
       return;
     } catch (e) {
@@ -86,6 +74,15 @@ class ProductPageModel extends StateNotifier<ProductPageState> {
         );
       }
     }
+  }
+
+  ProductPageState errorState([String? s]) {
+    return state.copyWith(
+      productData: null,
+      moreByArtist: null,
+      status: ProductPageStatus.error,
+      errMessage: s ?? "Something Went Wrong!",
+    );
   }
 
   addToCart(String prodId, int discountVal, bool isAdded) async {

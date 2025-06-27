@@ -24,18 +24,19 @@ class HomeCategorySection extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         itemBuilder: (BuildContext context, int index) {
+          var item = data[index];
           return GestureDetector(
             onTap: () {
               context.navigateTo(
                 ProductListRoute(
-                  categoryId: data[index].id,
-                  categoryName: data[index].catName,
+                  categoryId: item.id,
+                  categoryName: item.catName,
                 ),
               );
             },
             child: _CategoryCard(
               index: index,
-              data: data[index],
+              data: item,
             ),
           );
         },
@@ -73,19 +74,19 @@ class _CategoryCard extends ConsumerWidget {
           child: Column(
             children: [
               NetworkImageWidget(
-                image: data.catImage ?? "",
+                 data.catImage,
                 height: 121,
                 width: 131,
                 fit: BoxFit.cover,
               ),
               const SizedBox(
-                height: 5,
+                height: 5
               ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text(
-                    data.catName ?? "",
+                    data.catName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.nunitoSans(
