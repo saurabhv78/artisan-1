@@ -49,13 +49,6 @@ class _ProductListSection extends ConsumerState<ProductPagedListSection> {
             discountId: widget.discountId,
           ));
   Future<void> _fetchPage(int pageKey) async {
-    ref.read(apiServiceProvider).getProductsByCategory(
-            getListDataRequest: GetListDataRequest(
-          page: 1,
-          limit: 5,
-          categoryId: widget.categoryId,
-          discountId: widget.discountId,
-        ));
     final response = await getProductData(pageKey);
     if (response.status != ApiStatus.success) {
       _pagingController.error =

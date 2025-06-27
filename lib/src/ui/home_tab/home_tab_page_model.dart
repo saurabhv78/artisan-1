@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:Artisan/src/models/api_response.dart';
+import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
 import 'package:Artisan/src/models/discount_data/discount_data.dart';
-import 'package:Artisan/src/models/product_data/product_data.dart';
 import 'package:Artisan/src/models/requests/get_list_data_request.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -74,6 +74,7 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         );
 
         await getFeaturedProduct();
+        await getDiscount();
       }
       return;
     } catch (e) {
@@ -130,6 +131,7 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
 
         /// TODO : do it later
         await getTrendingArtist();
+        await getTrendingArtStyle();
       }
       return;
     } catch (e) {
@@ -246,6 +248,42 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
       );
     }
   }
+
+  getTrendingArtStyle() async {
+    if (!await hasInternetAccess()) {
+      state = state.copyWith(
+        status: HomePageStatus.error,
+        trendingArtists: null,
+        errorMessage: "No Internet Connection!!!",
+      );
+      return;
+    }
+
+    final res = await apiService.getTrendingArtstyle(
+      getListDataRequest: const GetListDataRequest(page: 1, limit: 2),
+    );
+
+    if (res.status != ApiStatus.success || res.data == null) {
+      state = state.copyWith(
+        status: HomePageStatus.error,
+        trendingArtStyles: null,
+        errorMessage: res.errorMessage ?? "Something Went Wrong!!!",
+      );
+      return;
+    }
+
+    final List<ArtStyle> artstyle = List<ArtStyle>.from(
+      res.data!.values.first,
+    );
+
+    if (mounted) {
+      state = state.copyWith(
+        status: HomePageStatus.loaded,
+        trendingArtStyles: artstyle,
+        errorMessage: "",
+      );
+    }
+  }
 }
 
 @freezed
@@ -255,6 +293,7 @@ class HomeTabPageState with _$HomeTabPageState {
     @Default(null) List<DiscountData>? discountData,
     @Default(null) List<FeaturedProduct>? featuredProducts,
     @Default(null) List<ArtistData>? trendingArtists,
+    @Default(null) List<ArtStyle>? trendingArtStyles,
     @Default('') String errorMessage,
     @Default(HomePageStatus.initial) HomePageStatus status,
   }) = _HomeTabPageState;

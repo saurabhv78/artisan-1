@@ -24,7 +24,7 @@ class ProductData {
   @JsonKey(name: '_id')
   final String id;
   @JsonKey(name: 'cat_id')
-  final CategoryData categoryData;
+  final CategoryData? categoryData;
   @JsonKey(name: 'artist_id')
   final ArtistData artistData;
   @JsonKey(name: 'price')

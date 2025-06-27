@@ -73,12 +73,11 @@ class _CategoryCard extends ConsumerWidget {
           child: Column(
             children: [
               NetworkImageWidget(
-                image: data.catImage,
+                image: data.catImage ?? "",
                 height: 121,
                 width: 131,
                 fit: BoxFit.cover,
               ),
-              
               const SizedBox(
                 height: 5,
               ),
@@ -86,7 +85,7 @@ class _CategoryCard extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text(
-                    data.catName,
+                    data.catName ?? "",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.nunitoSans(

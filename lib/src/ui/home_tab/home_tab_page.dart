@@ -49,8 +49,8 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
     });
     final categoryData = ref
         .watch(homeTabPageModelProvider.select((value) => value.categoryData));
-    // final discountData = ref
-    //     .watch(homeTabPageModelProvider.select((value) => value.discountData));
+    final discountData = ref
+        .watch(homeTabPageModelProvider.select((value) => value.discountData));
     final featuredProducts = ref.watch(
         homeTabPageModelProvider.select((value) => value.featuredProducts));
     final status =
@@ -118,15 +118,13 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                           const SizedBox(height: 20),
                           HomeCategorySection(data: categoryData),
                           const SizedBox(height: 20),
-                          // HomeDiscountSection(
-                          //   data: discountData ?? []
-                          // ),
+                          HomeDiscountSection(data: discountData ?? []),
                           const SizedBox(height: 25),
                           FeaturedSection(data: featuredProducts ?? []),
                           const SizedBox(height: 20),
                           const TrendingArtistSection(),
                           const SizedBox(height: 20),
-                          TrendingArtStylesSection(categoryData: categoryData),
+                          const TrendingArtStylesSection(),
                           const SizedBox(height: 40),
                         ],
                       ),

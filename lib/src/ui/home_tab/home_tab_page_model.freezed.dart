@@ -21,6 +21,7 @@ mixin _$HomeTabPageState {
   List<FeaturedProduct>? get featuredProducts =>
       throw _privateConstructorUsedError;
   List<ArtistData>? get trendingArtists => throw _privateConstructorUsedError;
+  List<ArtStyle>? get trendingArtStyles => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   HomePageStatus get status => throw _privateConstructorUsedError;
 
@@ -40,6 +41,7 @@ abstract class $HomeTabPageStateCopyWith<$Res> {
       List<DiscountData>? discountData,
       List<FeaturedProduct>? featuredProducts,
       List<ArtistData>? trendingArtists,
+      List<ArtStyle>? trendingArtStyles,
       String errorMessage,
       HomePageStatus status});
 }
@@ -61,6 +63,7 @@ class _$HomeTabPageStateCopyWithImpl<$Res, $Val extends HomeTabPageState>
     Object? discountData = freezed,
     Object? featuredProducts = freezed,
     Object? trendingArtists = freezed,
+    Object? trendingArtStyles = freezed,
     Object? errorMessage = null,
     Object? status = null,
   }) {
@@ -81,6 +84,10 @@ class _$HomeTabPageStateCopyWithImpl<$Res, $Val extends HomeTabPageState>
           ? _value.trendingArtists
           : trendingArtists // ignore: cast_nullable_to_non_nullable
               as List<ArtistData>?,
+      trendingArtStyles: freezed == trendingArtStyles
+          ? _value.trendingArtStyles
+          : trendingArtStyles // ignore: cast_nullable_to_non_nullable
+              as List<ArtStyle>?,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -106,6 +113,7 @@ abstract class _$$HomeTabPageStateImplCopyWith<$Res>
       List<DiscountData>? discountData,
       List<FeaturedProduct>? featuredProducts,
       List<ArtistData>? trendingArtists,
+      List<ArtStyle>? trendingArtStyles,
       String errorMessage,
       HomePageStatus status});
 }
@@ -125,6 +133,7 @@ class __$$HomeTabPageStateImplCopyWithImpl<$Res>
     Object? discountData = freezed,
     Object? featuredProducts = freezed,
     Object? trendingArtists = freezed,
+    Object? trendingArtStyles = freezed,
     Object? errorMessage = null,
     Object? status = null,
   }) {
@@ -145,6 +154,10 @@ class __$$HomeTabPageStateImplCopyWithImpl<$Res>
           ? _value._trendingArtists
           : trendingArtists // ignore: cast_nullable_to_non_nullable
               as List<ArtistData>?,
+      trendingArtStyles: freezed == trendingArtStyles
+          ? _value._trendingArtStyles
+          : trendingArtStyles // ignore: cast_nullable_to_non_nullable
+              as List<ArtStyle>?,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -165,12 +178,14 @@ class _$HomeTabPageStateImpl implements _HomeTabPageState {
       final List<DiscountData>? discountData = null,
       final List<FeaturedProduct>? featuredProducts = null,
       final List<ArtistData>? trendingArtists = null,
+      final List<ArtStyle>? trendingArtStyles = null,
       this.errorMessage = '',
       this.status = HomePageStatus.initial})
       : _categoryData = categoryData,
         _discountData = discountData,
         _featuredProducts = featuredProducts,
-        _trendingArtists = trendingArtists;
+        _trendingArtists = trendingArtists,
+        _trendingArtStyles = trendingArtStyles;
 
   final List<CategoryData>? _categoryData;
   @override
@@ -217,6 +232,18 @@ class _$HomeTabPageStateImpl implements _HomeTabPageState {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<ArtStyle>? _trendingArtStyles;
+  @override
+  @JsonKey()
+  List<ArtStyle>? get trendingArtStyles {
+    final value = _trendingArtStyles;
+    if (value == null) return null;
+    if (_trendingArtStyles is EqualUnmodifiableListView)
+      return _trendingArtStyles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey()
   final String errorMessage;
@@ -226,7 +253,7 @@ class _$HomeTabPageStateImpl implements _HomeTabPageState {
 
   @override
   String toString() {
-    return 'HomeTabPageState(categoryData: $categoryData, discountData: $discountData, featuredProducts: $featuredProducts, trendingArtists: $trendingArtists, errorMessage: $errorMessage, status: $status)';
+    return 'HomeTabPageState(categoryData: $categoryData, discountData: $discountData, featuredProducts: $featuredProducts, trendingArtists: $trendingArtists, trendingArtStyles: $trendingArtStyles, errorMessage: $errorMessage, status: $status)';
   }
 
   @override
@@ -242,6 +269,8 @@ class _$HomeTabPageStateImpl implements _HomeTabPageState {
                 .equals(other._featuredProducts, _featuredProducts) &&
             const DeepCollectionEquality()
                 .equals(other._trendingArtists, _trendingArtists) &&
+            const DeepCollectionEquality()
+                .equals(other._trendingArtStyles, _trendingArtStyles) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.status, status) || other.status == status));
@@ -254,6 +283,7 @@ class _$HomeTabPageStateImpl implements _HomeTabPageState {
       const DeepCollectionEquality().hash(_discountData),
       const DeepCollectionEquality().hash(_featuredProducts),
       const DeepCollectionEquality().hash(_trendingArtists),
+      const DeepCollectionEquality().hash(_trendingArtStyles),
       errorMessage,
       status);
 
@@ -271,6 +301,7 @@ abstract class _HomeTabPageState implements HomeTabPageState {
       final List<DiscountData>? discountData,
       final List<FeaturedProduct>? featuredProducts,
       final List<ArtistData>? trendingArtists,
+      final List<ArtStyle>? trendingArtStyles,
       final String errorMessage,
       final HomePageStatus status}) = _$HomeTabPageStateImpl;
 
@@ -282,6 +313,8 @@ abstract class _HomeTabPageState implements HomeTabPageState {
   List<FeaturedProduct>? get featuredProducts;
   @override
   List<ArtistData>? get trendingArtists;
+  @override
+  List<ArtStyle>? get trendingArtStyles;
   @override
   String get errorMessage;
   @override

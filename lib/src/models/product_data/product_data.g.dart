@@ -15,8 +15,9 @@ ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(
       createdOn: (json['created_on'] as num).toInt(),
       updatedOn: (json['updated_on'] as num).toInt(),
       id: json['_id'] as String,
-      categoryData:
-          CategoryData.fromJson(json['cat_id'] as Map<String, dynamic>),
+      categoryData: json['cat_id'] == null
+          ? null
+          : CategoryData.fromJson(json['cat_id'] as Map<String, dynamic>),
       artistData:
           ArtistData.fromJson(json['artist_id'] as Map<String, dynamic>),
       prodPrice: (json['price'] as num?)?.toInt() ?? 0,

@@ -27,20 +27,26 @@ abstract class BasicApiClient {
   Future getAllFeatured({
     @Body() required GetListDataRequest getListDataRequest,
   });
-  @GET('/products/products')
+  @POST('/products/app/products')
   Future getAllProducts({
     @Body() required GetListDataRequest getListDataRequest,
   });
-  @POST('/products/get_product_detail')
+  @POST('/products/products/details')
   Future getProductDetail({
     @Body() required GetListDataRequest getListDataRequest,
   });
-  @POST('/discount/get_all_app')
+  @POST('/products/discount/list')
   Future getAllDiscounts({
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/products/products/trending/artist')
   Future getTrendingArtists({
+    @Body() required GetListDataRequest getListDataRequest,
+  });
+
+  /// new point
+  @POST('/products/artstyle/list')
+  Future getTrendingArtStyle({
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/fav/add_remove_fav')

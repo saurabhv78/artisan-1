@@ -29,9 +29,9 @@ class FeaturedProduct {
     required this.price,
     required this.quantity,
     required this.artist,
-     this.images = const [],
-     this.reviews = const [],
-     this.discount = const [],
+    this.images = const [],
+    this.reviews = const [],
+    this.discount = const [],
     required this.taxAmount,
     required this.discountAmount,
     required this.payableAmount,
@@ -40,6 +40,7 @@ class FeaturedProduct {
     required this.updatedAt,
   });
 
-  factory FeaturedProduct.fromJson(Map<String, dynamic> json) => _$FeaturedProductFromJson(json);
+  factory FeaturedProduct.fromJson(Map<String, dynamic> json) =>
+      _$FeaturedProductFromJson(json);
   Map<String, dynamic> toJson() => _$FeaturedProductToJson(this);
 }

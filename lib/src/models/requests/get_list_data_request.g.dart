@@ -12,7 +12,7 @@ GetListDataRequest _$GetListDataRequestFromJson(Map<String, dynamic> json) =>
       limit: (json['limit'] as num?)?.toInt(),
       artistId: json['seller'] as String?,
       categoryId: json['category'] as String?,
-      productId: json['prod_id'] as String?,
+      productId: json['id'] as String?,
       discountId: json['discount'] as String?,
       searchBy: json['search_by'] as String?,
       updateFavProdId: json['product_id'] as String?,
@@ -29,7 +29,7 @@ Map<String, dynamic> _$GetListDataRequestToJson(GetListDataRequest instance) {
 
   writeNotNull('page', instance.page);
   writeNotNull('limit', instance.limit);
-  writeNotNull('prod_id', instance.productId);
+  writeNotNull('id', instance.productId);
   writeNotNull('category', instance.categoryId);
   writeNotNull('seller', instance.artistId);
   writeNotNull('discount', instance.discountId);

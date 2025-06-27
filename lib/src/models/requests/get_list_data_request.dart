@@ -6,7 +6,7 @@ part 'get_list_data_request.g.dart';
 class GetListDataRequest {
   final int? page;
   final int? limit;
-  @JsonKey(name: "prod_id")
+  @JsonKey(name: "id")
   final String? productId;
 
   @JsonKey(name: "category")

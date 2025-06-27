@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../constants/colors.dart';
+import '../constants/colors.dart';
+import '../models/product_data/product_data.dart';
 
-class TrendingArtistListCard extends ConsumerWidget {
+class TrendingArtStyleCard extends ConsumerWidget {
   final ArtistData data;
   final int index;
-  const TrendingArtistListCard({
+  const TrendingArtStyleCard({
     super.key,
     required this.data,
     required this.index,
@@ -18,12 +19,12 @@ class TrendingArtistListCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      height: 226,
+      height: 243,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           SizedBox(
-            height: 200,
+            height: 212,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Container(
@@ -47,15 +48,14 @@ class TrendingArtistListCard extends ConsumerWidget {
                         NetworkImageWidget(
                           fit: BoxFit.cover,
                           width: MediaQuery.sizeOf(context).width,
-                          height: 200,
+                          height: 212,
                           image: data.images.isNotEmpty ? data.images[0] : '',
+                          // Image.asset(
+                          //   'assets/images/category${index + 1}.png',
+                          //   fit: BoxFit.cover,
+                          //   width: MediaQuery.sizeOf(context).width,
+                          //   height: 212,
                         ),
-                        // Image.asset(
-                        //   'assets/images/category${index + 1}.png',
-                        //   fit: BoxFit.cover,
-                        //   height: 200,
-                        //   width: MediaQuery.sizeOf(context).width,
-                        // ),
                         Container(
                           height: 200,
                           decoration: const BoxDecoration(
@@ -75,7 +75,7 @@ class TrendingArtistListCard extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Center(
                               child: Text(
-                                data.name,
+                                data.name.toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.nunitoSans(
@@ -94,28 +94,19 @@ class TrendingArtistListCard extends ConsumerWidget {
               ),
             ),
           ),
-          Positioned(
-            top: 0,
-            child: CircleAvatar(
-              radius: 28,
-              backgroundColor: primaryColor,
-              backgroundImage: data.artist.profilePicture != null &&
-                      data.artist.profilePicture!.isNotEmpty
-                  ? NetworkImageWidget(
-                      fit: BoxFit.cover,
-                      width: MediaQuery.sizeOf(context).width,
-                      height: 212,
-                      image: data.artist.profilePicture ?? '',
-                    ).image
-                  : null,
-              child: (data.artist.profilePicture == null ||
-                      data.artist.profilePicture!.isEmpty)
-                  ? const Icon(Icons.person, size: 35, color: Colors.white)
-                  : null,
-              // fit: BoxFit.cover,
-              // image: 'https://picsum.photos/200/300?random=$index',
-            ),
-          ),
+          // Positioned(
+          //   top: 0,
+          //   child: CircleAvatar(
+          //     radius: 28,
+          //     backgroundColor: primaryColor,
+          //     backgroundImage: NetworkImageWidget(
+          //       fit: BoxFit.cover,
+          //       width: MediaQuery.sizeOf(context).width,
+          //       height: 212,
+          //       image: data.artist.profilePicture ?? '',
+          //     ).image,
+          //   ),
+          // )
         ],
       ),
     );

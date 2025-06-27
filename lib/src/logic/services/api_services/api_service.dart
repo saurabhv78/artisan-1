@@ -84,7 +84,9 @@ abstract class ApiService {
   Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtists({
     required GetListDataRequest getListDataRequest,
   });
-
+  Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtstyle({
+    required GetListDataRequest getListDataRequest,
+  });
   Future<ApiResponse<String>> updateFav({
     required String token,
     required GetListDataRequest getListDataRequest,

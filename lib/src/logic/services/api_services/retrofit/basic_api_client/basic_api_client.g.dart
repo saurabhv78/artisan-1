@@ -117,13 +117,13 @@ class _BasicApiClient implements BasicApiClient {
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/products/products',
+          '/products/app/products',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -152,7 +152,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/products/get_product_detail',
+          '/products/products/details',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -181,7 +181,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/discount/get_all_app',
+          '/products/discount/list',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -211,6 +211,35 @@ class _BasicApiClient implements BasicApiClient {
         .compose(
           _dio.options,
           '/products/products/trending/artist',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    return _value;
+  }
+
+  @override
+  Future<dynamic> getTrendingArtStyle(
+      {required GetListDataRequest getListDataRequest}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(getListDataRequest.toJson());
+    final _options = _setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/products/artstyle/list',
           queryParameters: queryParameters,
           data: _data,
         )

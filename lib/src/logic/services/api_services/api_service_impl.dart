@@ -6,6 +6,7 @@ import 'dart:developer';
 
 import 'package:Artisan/src/logic/services/api_services/retrofit/basic_api_client/basic_api_client.dart';
 import 'package:Artisan/src/models/artist_data/artist_data.dart';
+import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
 import 'package:Artisan/src/models/cart_data/cart_data.dart';
 import 'package:Artisan/src/models/category_data/category_data.dart';
 import 'package:Artisan/src/models/discount_data/discount_data.dart';
@@ -275,14 +276,33 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<Map<int, List<CategoryData>>>> getProductsByCategory({
     required GetListDataRequest getListDataRequest,
   }) async {
+    // return await safeApiCall<Map<int, List<CategoryData>>>(
+    //   () async => await _basicApiClient.getProductsByCategory(
+    //       catId: getListDataRequest.categoryId ?? ''),
+    //   (response) => ApiResponse.success({
+    //     response['other']['total'] as int: ((response['data'] as List?) ?? [])
+    //         .map((e) => CategoryData.fromJson(e))
+    //         .toList()
+    //   }),
+    // );
     return await safeApiCall<Map<int, List<CategoryData>>>(
       () async => await _basicApiClient.getProductsByCategory(
-          catId: getListDataRequest.categoryId ?? ''),
-      (response) => ApiResponse.success({
-        response['other']['total'] as int: ((response['data'] as List?) ?? [])
-            .map((e) => CategoryData.fromJson(e))
-            .toList()
-      }),
+        catId: getListDataRequest.categoryId ?? '',
+      ),
+      (response) {
+        final other = response['other'];
+        final total =
+            other != null && other['total'] != null ? other['total'] as int : 0;
+
+        final List dataList = response['data'] as List? ?? [];
+
+        final List<CategoryData> categories =
+            dataList.map((e) => CategoryData.fromJson(e)).toList();
+
+        return ApiResponse.success({
+          total: categories,
+        });
+      },
     );
   }
 
@@ -374,6 +394,35 @@ class ApiServiceImpl extends ApiService {
   }) async {
     try {
       final response = await _basicApiClient.getTrendingArtists(
+          getListDataRequest: getListDataRequest) as Map<String, dynamic>;
+      if (response['success'] == false) {
+        return ApiResponse.error(
+            response['message'] ?? "Something Went Wrong!");
+      } else if (response['success'] == true) {
+        return ApiResponse.success({
+          response['other']['total'] as int: ((response['data'] as List?) ?? [])
+              .map((e) => ArtistData.fromJson(e))
+              .toList()
+        });
+      } else {
+        return ApiResponse.error('Something Went Wrong');
+      }
+    } on DioException catch (e) {
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet) {
+        return ApiResponse.noInternet();
+      }
+      return ApiResponse.error(
+          e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
+    }
+  }
+
+  @override
+  Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtstyle({
+    required GetListDataRequest getListDataRequest,
+  }) async {
+    try {
+      final response = await _basicApiClient.getTrendingArtStyle(
           getListDataRequest: getListDataRequest) as Map<String, dynamic>;
       if (response['success'] == false) {
         return ApiResponse.error(
