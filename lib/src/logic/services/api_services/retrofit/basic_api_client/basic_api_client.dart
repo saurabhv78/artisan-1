@@ -53,7 +53,7 @@ abstract class BasicApiClient {
   Future updateFavStatus({
     @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
-  }); // commit
+  });
   @POST('/products/products/favourits')
   Future getAllFav({
     @Header('Authorization') required String token,
