@@ -89,7 +89,7 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         status: HomePageStatus.loaded,
         categoryData: catRes.data?.values.first,
         trendingArtists: trendingArtistRes.data?.values.first,
-        // trendingArtStyles: trendingArtStyleRes.data?.values.first,
+        trendingArtStyles: trendingArtStyleRes.data?.values.first,
         featuredProducts: featuredRes.data ?? [],
         discountData: discountRes.data?.values.first,
         errorMessage: catRes.errorMessage ?? "Something Went Wrong!!!",

@@ -27,13 +27,13 @@ class ArtStyleResponse {
 @JsonSerializable()
 class ArtStyle {
   final String id;
-  final String name;
-  final String file;
+  final String? name;
+  final String? file;
 
   ArtStyle({
-    required this.id,
-    required this.name,
-    required this.file,
+     this.id = '',
+     this.name,
+     this.file,
   });
 
   factory ArtStyle.fromJson(Map<String, dynamic> json) =>

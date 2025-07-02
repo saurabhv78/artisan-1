@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/api_response.dart';
 import '../../../models/artist_data/artist_data.dart';
+import '../../../models/artstyle_data/art_style_data.dart';
 import '../../../models/cart_data/cart_data.dart';
 import '../../../models/product_data/featured_product.dart';
 import '../../../models/product_data/product_data.dart';
@@ -84,7 +85,7 @@ abstract class ApiService {
   Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtists({
     required GetListDataRequest getListDataRequest,
   });
-  Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtstyle({
+  Future<ApiResponse<Map<int, List<ArtStyle>>>> getTrendingArtstyle({
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<String>> updateFav({

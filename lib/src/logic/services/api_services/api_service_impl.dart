@@ -405,15 +405,15 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtstyle({
+  Future<ApiResponse<Map<int, List<ArtStyle>>>> getTrendingArtstyle({
     required GetListDataRequest getListDataRequest,
   }) async {
-    return await safeApiCall<Map<int, List<ArtistData>>>(
+    return await safeApiCall<Map<int, List<ArtStyle>>>(
       () async => await _basicApiClient.getTrendingArtStyle(
           getListDataRequest: getListDataRequest),
       (response) => ApiResponse.success({
         response['other']['total'] as int: ((response['data'] as List?) ?? [])
-            .map((e) => ArtistData.fromJson(e))
+            .map((e) => ArtStyle.fromJson(e))
             .toList()
       }),
     );

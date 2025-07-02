@@ -27,9 +27,9 @@ Map<String, dynamic> _$ArtStyleResponseToJson(ArtStyleResponse instance) =>
     };
 
 ArtStyle _$ArtStyleFromJson(Map<String, dynamic> json) => ArtStyle(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      file: json['file'] as String,
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String?,
+      file: json['file'] as String?,
     );
 
 Map<String, dynamic> _$ArtStyleToJson(ArtStyle instance) => <String, dynamic>{

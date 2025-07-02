@@ -53,6 +53,10 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
         .watch(homeTabPageModelProvider.select((value) => value.discountData));
     final featuredProducts = ref.watch(
         homeTabPageModelProvider.select((value) => value.featuredProducts));
+    final trendingArtists = ref.watch(
+          homeTabPageModelProvider.select((value) => value.trendingArtStyles),
+        ) ??
+        [];
     final status =
         ref.watch(homeTabPageModelProvider.select((value) => value.status));
 
@@ -126,7 +130,8 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                           const SizedBox(height: 20),
                           const TrendingArtistSection(),
                           const SizedBox(height: 20),
-                          const TrendingArtStylesSection(),
+                          TrendingArtStylesSection(
+                              trendingArtists: trendingArtists),
                           const SizedBox(height: 40),
                         ],
                       ),
