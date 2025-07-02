@@ -118,9 +118,11 @@ class _TrendingArtistListSection
         itemBuilder: (context, data, index) {
       return GestureDetector(
         onTap: () {
-          context.pushRoute(ArtistRoute(
-            artistData: data,
-          ));
+          context.pushRoute(ProductRoute(id: data.id ?? ''));
+
+          // context.pushRoute(ArtistRoute(1
+          //   artistData: data,
+          // ));
         },
         child: Padding(
           padding: EdgeInsets.only(top: 15, right: index % 2 == 0 ? 15 : 0),

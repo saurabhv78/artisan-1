@@ -24,23 +24,25 @@ class _CustomScaffoldState extends ConsumerState<CustomScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.bgColor,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 0), // TODO: was 28
-        child: Scaffold(
-            body: Stack(
-          children: [
-            Container(
-              height: MediaQuery.sizeOf(context).height,
-              width: MediaQuery.sizeOf(context).width,
-              decoration: const BoxDecoration(
-                gradient: backgroundGradient,
+    return SafeArea(
+      child: Container(
+        color: widget.bgColor,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 0), // TODO: was 28
+          child: Scaffold(
+              body: Stack(
+            children: [
+              Container(
+                height: MediaQuery.sizeOf(context).height,
+                width: MediaQuery.sizeOf(context).width,
+                decoration: const BoxDecoration(
+                  gradient: backgroundGradient,
+                ),
               ),
-            ),
-            widget.child,
-          ],
-        )),
+              widget.child,
+            ],
+          )),
+        ),
       ),
     );
   }

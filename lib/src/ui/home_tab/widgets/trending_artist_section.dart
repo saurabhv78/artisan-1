@@ -56,9 +56,11 @@ class TrendingArtistSection extends ConsumerWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          context.navigateTo(ArtistRoute(
-                            artistData: trendingArtists[0],
-                          ));
+                          context.pushRoute(
+                              ProductRoute(id: trendingArtists[0].id ?? ''));
+                          // context.navigateTo(ArtistRoute(
+                          //   artistData: trendingArtists[0],
+                          // ));
                         },
                         child: TrendingArtistsCard(
                           data: trendingArtists[0],
@@ -72,9 +74,11 @@ class TrendingArtistSection extends ConsumerWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          context.navigateTo(ArtistRoute(
-                            artistData: trendingArtists[1],
-                          ));
+                          context.pushRoute(
+                              ProductRoute(id: trendingArtists[1].id ?? ''));
+                          // context.navigateTo(ArtistRoute(
+                          //   artistData: trendingArtists[1],
+                          // ));
                         },
                         child: TrendingArtistsCard(
                           data: trendingArtists[1],

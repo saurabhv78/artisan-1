@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/colors.dart';
-import '../models/product_data/product_data.dart';
 
 class TrendingArtistsCard extends ConsumerWidget {
   final ArtistData data;
