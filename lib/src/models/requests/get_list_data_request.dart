@@ -18,7 +18,8 @@ class GetListDataRequest {
   final String? discountId;
   @JsonKey(name: "search_by")
   final String? searchBy;
-  @JsonKey(name: "product_id")
+  final String? artStyleId;
+  @JsonKey(name: "productId")
   final String? updateFavProdId;
 
   const GetListDataRequest({
@@ -29,6 +30,7 @@ class GetListDataRequest {
     this.productId,
     this.discountId,
     this.searchBy,
+    this.artStyleId,
     this.updateFavProdId,
   });
 

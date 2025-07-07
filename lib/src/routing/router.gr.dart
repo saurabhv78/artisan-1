@@ -83,6 +83,7 @@ abstract class _$AppRouter extends RootStackRouter {
           categoryName: args.categoryName,
           categoryId: args.categoryId,
           discountId: args.discountId,
+          artStyleId: args.artStyleId,
         ),
       );
     },
@@ -330,6 +331,7 @@ class ProductListRoute extends PageRouteInfo<ProductListRouteArgs> {
     String? categoryName,
     String? categoryId,
     String? discountId,
+    String? artStyleId,
     List<PageRouteInfo>? children,
   }) : super(
           ProductListRoute.name,
@@ -338,6 +340,7 @@ class ProductListRoute extends PageRouteInfo<ProductListRouteArgs> {
             categoryName: categoryName,
             categoryId: categoryId,
             discountId: discountId,
+            artStyleId: artStyleId,
           ),
           initialChildren: children,
         );
@@ -354,6 +357,7 @@ class ProductListRouteArgs {
     this.categoryName,
     this.categoryId,
     this.discountId,
+    this.artStyleId,
   });
 
   final Key? key;
@@ -364,9 +368,11 @@ class ProductListRouteArgs {
 
   final String? discountId;
 
+  final String? artStyleId;
+
   @override
   String toString() {
-    return 'ProductListRouteArgs{key: $key, categoryName: $categoryName, categoryId: $categoryId, discountId: $discountId}';
+    return 'ProductListRouteArgs{key: $key, categoryName: $categoryName, categoryId: $categoryId, discountId: $discountId, artStyleId: $artStyleId}';
   }
 }
 

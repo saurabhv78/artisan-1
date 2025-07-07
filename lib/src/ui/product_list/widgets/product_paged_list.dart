@@ -14,10 +14,12 @@ import '../../../widgets/product_card.dart';
 class ProductPagedListSection extends ConsumerStatefulWidget {
   final String? categoryId;
   final String? discountId;
+  final String? artStyleId;
   const ProductPagedListSection({
     super.key,
     required this.categoryId,
     required this.discountId,
+    required this.artStyleId,
   });
 
   @override
@@ -45,6 +47,7 @@ class _ProductListSection extends ConsumerState<ProductPagedListSection> {
           limit: 5,
           categoryId: widget.categoryId,
           discountId: widget.discountId,
+          artStyleId: widget.artStyleId,
         ));
     if (response.status != ApiStatus.success) {
       _pagingController.error =

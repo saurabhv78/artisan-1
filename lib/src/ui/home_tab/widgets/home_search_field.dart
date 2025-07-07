@@ -15,7 +15,7 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // context.pushRoute(const SearchRoute());
+        context.pushRoute(const SearchRoute());
       },
       child: Container(
         decoration: BoxDecoration(

@@ -32,13 +32,15 @@ class CartPageModel extends StateNotifier<CartPageState> {
   }
   removeProduct(String prodId) {
     final ind =
-        state.cartData.indexWhere((element) => element.prodId.id == prodId);
-    List<CartData> data = state.cartData.toList();
+        state.cartData.items.indexWhere((element) => element.id == prodId);
+    List<CartItem> data = state.cartData.items.toList();
 
     if (ind != -1) {
       data.removeAt(ind);
     }
-    state = state.copyWith(cartData: data);
+    state = state.copyWith(
+      cartData: state.cartData.copyWith(items: data),
+    );
   }
 
   getCartData() async {
@@ -50,7 +52,7 @@ class CartPageModel extends StateNotifier<CartPageState> {
       if (!await hasInternetAccess()) {
         if (mounted) {
           state = state.copyWith(
-            cartData: [],
+            cartData: CartData(),
             status: CartPageStatus.error,
             errorMessage: "No Internet Connection!",
           );
@@ -69,7 +71,7 @@ class CartPageModel extends StateNotifier<CartPageState> {
         if (mounted) {
           state = state.copyWith(
             status: CartPageStatus.error,
-            cartData: [],
+            cartData: CartData(),
             errorMessage: res.errorMessage ?? 'Something Went Wrong!',
           );
         }
@@ -83,13 +85,13 @@ class CartPageModel extends StateNotifier<CartPageState> {
         );
         ref
             .read(authRepositoryProvider.notifier)
-            .addCartData(res.data?.map((e) => e.prodId.id).toList() ?? []);
+            .addCartData(res.data?.items.map((e) => e.id).toList() ?? []);
       }
     } catch (e) {
       if (mounted) {
         state = state.copyWith(
           status: CartPageStatus.error,
-          cartData: [],
+          cartData: CartData(),
           errorMessage: e.toString(),
         );
       }
@@ -97,7 +99,7 @@ class CartPageModel extends StateNotifier<CartPageState> {
   }
 
   Future<Map<bool, String>> removeFromCart(
-      String prodId, int discountVal) async {
+      String prodId, num discountVal) async {
     if (!await hasInternetAccess()) {
       return {false: "No Internet Connection"};
     }
@@ -131,7 +133,7 @@ class CartPageModel extends StateNotifier<CartPageState> {
 @freezed
 class CartPageState with _$CartPageState {
   const factory CartPageState({
-    @Default([]) List<CartData> cartData,
+    @Default(CartData()) CartData cartData,
     @Default('') String errorMessage,
     @Default(CartPageStatus.initial) CartPageStatus status,
   }) = _CartPageState;

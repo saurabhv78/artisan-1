@@ -1,14 +1,10 @@
 import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
 import 'package:Artisan/src/routing/router.dart';
-import 'package:Artisan/src/ui/home_tab/home_tab_page_model.dart';
-import 'package:Artisan/src/widgets/trending_artstyle.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../models/category_data/category_data.dart';
 import '../../../widgets/components/images.dart';
 
 class TrendingArtStylesSection extends ConsumerStatefulWidget {
@@ -62,15 +58,21 @@ class _TrendingArtStylesSectionState
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          // context.navigateTo(ProductListRoute(
-                          //     categoryId: widget
-                          //         .trendingArtists[
-                          //             widget.trendingArtists.length - 1]
-                          //         .id,
-                          //     categoryName: widget
-                          //         .trendingArtists[
-                          //             widget.trendingArtists.length - 1]
-                          //         .catName));
+                          // context.pushRoute(ProductRoute(
+                          //     id: widget
+                          //             .trendingArtists[
+                          //                 widget.trendingArtists.length - 1]
+                          //             .id ??
+                          //         ""));
+                          context.navigateTo(ProductListRoute(
+                              artStyleId: widget
+                                  .trendingArtists[
+                                      widget.trendingArtists.length - 1]
+                                  .id,
+                              categoryName: widget
+                                  .trendingArtists[
+                                      widget.trendingArtists.length - 1]
+                                  .name));
                         },
                         child: _TrendingArtStyleCard(
                           imageUrl: widget.trendingArtists.last.file ?? "",
@@ -86,15 +88,21 @@ class _TrendingArtStylesSectionState
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          // context.navigateTo(ProductListRoute(
-                          //     categoryId: widget
-                          //         .trendingArtists[
-                          //             widget.trendingArtists.length - 2]
-                          //         .id,
-                          //     categoryName: widget
-                          //         .trendingArtists[
-                          //             widget.trendingArtists.length - 2]
-                          //         .catName));
+                          context.navigateTo(ProductListRoute(
+                              artStyleId: widget
+                                  .trendingArtists[
+                                      widget.trendingArtists.length - 2]
+                                  .id,
+                              categoryName: widget
+                                  .trendingArtists[
+                                      widget.trendingArtists.length - 2]
+                                  .name));
+                          // context.pushRoute(ProductRoute(
+                          //     id: widget
+                          //             .trendingArtists[
+                          //                 widget.trendingArtists.length - 2]
+                          //             .id ??
+                          //         ""));
                         },
                         child: _TrendingArtStyleCard(
                           imageUrl: widget

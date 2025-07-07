@@ -271,7 +271,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/fav/add_remove_fav',
+          '/products/favourits/add',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -331,7 +331,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/cart/add_new_cart',
+          '/products/app/cart/Add',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -359,7 +359,7 @@ class _BasicApiClient implements BasicApiClient {
     )
         .compose(
           _dio.options,
-          '/cart/get_all_carts_app',
+          '/products/app/cart/list',
           queryParameters: queryParameters,
           data: _data,
         )

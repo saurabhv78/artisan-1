@@ -1,5 +1,6 @@
 import 'package:Artisan/src/models/product_data/product_data.dart';
 import 'package:Artisan/src/widgets/components/images.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +45,10 @@ class _ProductListCardState extends ConsumerState<ProductListCard> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               NetworkImageWidget(
-                widget.data.images.first.toString(),
+                widget.data.images.isNotEmpty
+                    ? widget.data.images.first.toString()
+                    : 'https://via.placeholder.com/150',
+
                 // 'assets/images/category${(widget.index) % 3 + 1}.png',
                 height: (((widget.index + 1) % 4 == 1) ||
                         ((widget.index + 1) % 4 == 0))

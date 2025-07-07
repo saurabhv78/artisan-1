@@ -1,4 +1,5 @@
 import 'package:Artisan/src/constants/colors.dart';
+import 'package:Artisan/src/ui/cart/address/addressSelection_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,7 +14,7 @@ class ChangeAddressSection extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 22),
       child: Container(
-        height: 55,
+        height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: const Color(0xffFFE5E7),
@@ -46,12 +47,12 @@ class ChangeAddressSection extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      "Anusha Gupta,No.10............Chennai",
+                      "Rishi,No.10........ballia",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.nunitoSans(
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff818181),
+                        color: const Color(0xff818181),
                         fontSize: 12,
                         letterSpacing: -.1,
                       ),
@@ -62,23 +63,33 @@ class ChangeAddressSection extends ConsumerWidget {
               const SizedBox(
                 width: 7,
               ),
-              Container(
-                height: 24,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: primaryColor, width: 1),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Center(
-                      child: Text(
-                    "Change",
-                    style: GoogleFonts.nunitoSans(
-                      color: primaryColor,
-                      fontSize: 14,
-                      letterSpacing: -.1,
-                    ),
-                  )),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (_) => const AddressSelectionSheet(),
+                  );
+                },
+                child: Container(
+                  height: 24,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: primaryColor, width: 1),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Center(
+                        child: Text(
+                      "Change",
+                      style: GoogleFonts.nunitoSans(
+                        color: primaryColor,
+                        fontSize: 14,
+                        letterSpacing: -.1,
+                      ),
+                    )),
+                  ),
                 ),
               ),
             ],

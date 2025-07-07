@@ -41,10 +41,10 @@ class _CartPageState extends ConsumerState<CartPage> {
                               const ChangeAddressSection(),
                               const SizedBox(height: 10),
                               CartProductListSection(
-                                data: data,
+                                data: data.items,
                               ),
                               const SizedBox(height: 20),
-                              const MorePaintingSection(),
+                              // const MorePaintingSection(),
                               const SizedBox(height: 250),
                             ],
                           ),
@@ -61,7 +61,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                         errMessage: ref.watch(
                           cartPageModelProvider.select(
                             (value) => value.errorMessage.trim().isEmpty
-                                ? data.isEmpty
+                                ? data.items.isEmpty
                                     ? "No Favourite Found"
                                     : "Something Went Wrong!!!"
                                 : value.errorMessage.trim(),
@@ -70,7 +70,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                       ),
               ],
             ),
-            if (status == CartPageStatus.loaded && data.isNotEmpty)
+            if (status == CartPageStatus.loaded && data.items.isNotEmpty)
               Positioned(
                 bottom: 0,
                 child: Container(

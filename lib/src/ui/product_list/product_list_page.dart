@@ -19,11 +19,13 @@ class ProductListPage extends ConsumerStatefulWidget {
   final String? categoryId;
   final String? categoryName;
   final String? discountId;
+  final String? artStyleId;
   const ProductListPage({
     super.key,
     this.categoryName,
     this.categoryId,
     this.discountId,
+    this.artStyleId,
   });
 
   @override
@@ -63,6 +65,7 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
                       child: ProductPagedListSection(
                     categoryId: widget.categoryId,
                     discountId: widget.discountId,
+                    artStyleId: widget.artStyleId,
                     key: ValueKey(refreshCounter),
                   )),
                 ]),
@@ -83,9 +86,13 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
         ),
         Center(
           child: Text(
-            widget.categoryName != null ? "Categories" : "Discounted Products",
+            widget.artStyleId != null
+                ? "Trending Art Styles"
+                : widget.categoryName != null
+                    ? "Categories"
+                    : "Discounted Products",
             style: GoogleFonts.nunitoSans(
-              fontSize: widget.categoryName != null ? 24 : 23,
+              fontSize: widget.categoryName != null ? 20 : 23,
               fontWeight: FontWeight.w400,
               color: Colors.black,
             ),

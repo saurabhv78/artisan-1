@@ -49,7 +49,7 @@ abstract class BasicApiClient {
   Future getTrendingArtStyle({
     @Body() required GetListDataRequest getListDataRequest,
   });
-  @POST('/fav/add_remove_fav')
+  @POST('/products/favourits/add')
   Future updateFavStatus({
     @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
@@ -59,12 +59,12 @@ abstract class BasicApiClient {
     @Header('Authorization') required String token,
     // @Body() required SendEmailOtpRequest sendEmailOtpRequest,
   });
-  @POST('/cart/add_new_cart')
+  @POST('/products/app/cart/Add')
   Future addProductToCart({
     @Header('Authorization') required String token,
     @Body() required UpdateCartDataRequest updateCartDataRequest,
   });
-  @POST('/cart/get_all_carts_app')
+  @POST('/products/app/cart/list')
   Future getAllCart({
     @Header('Authorization') required String token,
     // @Body() required SendEmailOtpRequest sendEmailOtpRequest,

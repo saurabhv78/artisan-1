@@ -103,7 +103,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                       padding: EdgeInsets.symmetric(horizontal: 22),
                       child: Column(
                         children: [
-                          SizedBox(height: 15),
+                          // SizedBox(height: 15),
                           HomeAppBar(),
                           SizedBox(height: 15),
                           HomeSearchField(),

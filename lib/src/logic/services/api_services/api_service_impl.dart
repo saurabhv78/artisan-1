@@ -447,6 +447,33 @@ class ApiServiceImpl extends ApiService {
     }
   }
 
+  // @override
+  // Future<ApiResponse<List<WishlistProductData>>> getAllFav({
+  //   required String token,
+  // }) async {
+  //   try {
+  //     final response =
+  //         await _basicApiClient.getAllFav(token: token) as Map<String, dynamic>;
+  //     // print(response['data'].length);
+  //     if (response['success'] == false) {
+  //       return ApiResponse.error(
+  //           response['message'] ?? "Something Went Wrong!");
+  //     } else if (response['success'] == true) {
+  //       return ApiResponse.success(((response['data'] as List?) ?? [])
+  //           .map((e) => WishlistProductData.fromJson(e['product_id']))
+  //           .toList());
+  //     } else {
+  //       return ApiResponse.error('Something Went Wrong');
+  //     }
+  //   } on DioException catch (e) {
+  //     final hasInternet = await hasInternetAccess();
+  //     if (!hasInternet) {
+  //       return ApiResponse.noInternet();
+  //     }
+  //     return ApiResponse.error(
+  //         e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
+  //   }
+  // }
   @override
   Future<ApiResponse<List<WishlistProductData>>> getAllFav({
     required String token,
@@ -454,14 +481,17 @@ class ApiServiceImpl extends ApiService {
     try {
       final response =
           await _basicApiClient.getAllFav(token: token) as Map<String, dynamic>;
-      // print(response['data'].length);
+
       if (response['success'] == false) {
         return ApiResponse.error(
             response['message'] ?? "Something Went Wrong!");
       } else if (response['success'] == true) {
-        return ApiResponse.success(((response['data'] as List?) ?? [])
-            .map((e) => WishlistProductData.fromJson(e['product_id']))
-            .toList());
+        final dataList = (response['data'] as List?) ?? [];
+        final wishlistItems = dataList
+            .map((e) => WishlistProductData.fromJson(e as Map<String, dynamic>))
+            .toList();
+
+        return ApiResponse.success(wishlistItems);
       } else {
         return ApiResponse.error('Something Went Wrong');
       }
@@ -471,7 +501,7 @@ class ApiServiceImpl extends ApiService {
         return ApiResponse.noInternet();
       }
       return ApiResponse.error(
-          e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
+          e.response?.data['message'] ?? "Something Went Wrong!!!");
     }
   }
 
@@ -479,7 +509,7 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<String>> updateCartData({
     required String token,
     required String productId,
-    required int discount,
+    required num discount,
     required bool add,
   }) async {
     try {
@@ -512,7 +542,7 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<ApiResponse<List<CartData>>> getAllCart({
+  Future<ApiResponse<CartData>> getAllCart({
     required String token,
   }) async {
     try {
@@ -523,21 +553,25 @@ class ApiServiceImpl extends ApiService {
         return ApiResponse.error(
             response['message'] ?? "Something Went Wrong!");
       } else if (response['success'] == true) {
-        return ApiResponse.success(((response['data'] as List?) ?? []).isEmpty
-            ? []
-            : ((response['data'][0]['cart_data'] as List?) ?? [])
-                .map((e) => CartData.fromJson(e))
-                .toList());
+        return ApiResponse.success(CartData.fromJson(response['data']));
       } else {
         return ApiResponse.error('Something Went Wrong');
       }
-    } on DioException catch (e) {
+    } on DioException catch (e, st) {
       final hasInternet = await hasInternetAccess();
+      print('getcard data error _> ${e.toString()} ${st}');
       if (!hasInternet) {
         return ApiResponse.noInternet();
       }
       return ApiResponse.error(
           e.response?.data['message'] ?? "Sonmething Went Wrong!!!");
+    } catch (e, st) {
+      log('getcard data error _> ${e.toString()} ${st}');
+      final hasInternet = await hasInternetAccess();
+      if (!hasInternet) {
+        return ApiResponse.noInternet();
+      }
+      return ApiResponse.error("Something Went Wrong");
     }
   }
 }

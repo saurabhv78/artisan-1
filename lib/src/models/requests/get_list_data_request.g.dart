@@ -15,7 +15,8 @@ GetListDataRequest _$GetListDataRequestFromJson(Map<String, dynamic> json) =>
       productId: json['id'] as String?,
       discountId: json['discount'] as String?,
       searchBy: json['search_by'] as String?,
-      updateFavProdId: json['product_id'] as String?,
+      artStyleId: json['artStyleId'] as String?,
+      updateFavProdId: json['productId'] as String?,
     );
 
 Map<String, dynamic> _$GetListDataRequestToJson(GetListDataRequest instance) {
@@ -34,6 +35,7 @@ Map<String, dynamic> _$GetListDataRequestToJson(GetListDataRequest instance) {
   writeNotNull('seller', instance.artistId);
   writeNotNull('discount', instance.discountId);
   writeNotNull('search_by', instance.searchBy);
-  writeNotNull('product_id', instance.updateFavProdId);
+  writeNotNull('artStyleId', instance.artStyleId);
+  writeNotNull('productId', instance.updateFavProdId);
   return val;
 }

@@ -142,8 +142,7 @@ class AuthRepository extends StateNotifier<AuthState> {
       return;
     } else {
       if (mounted) {
-        state = state.copyWith(
-            cartData: res.data!.map((e) => e.prodId.id).toList());
+        state = state.copyWith(cartData: res.data!.items.map((e) => e.id).whereType<String>().toList());
       }
     }
   }

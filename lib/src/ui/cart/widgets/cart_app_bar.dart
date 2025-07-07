@@ -16,7 +16,8 @@ class CartAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final wishlist =
         ref.watch(authRepositoryProvider.select((value) => value.wishlist));
-    return Container(
+    return 
+    Container(
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(25, 15, 25, 10),
@@ -80,5 +81,6 @@ class CartAppBar extends ConsumerWidget {
         ),
       ),
     );
+  
   }
 }

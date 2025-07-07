@@ -1,5 +1,6 @@
 import 'package:Artisan/src/ui/cart/cart_page_model.dart';
 import 'package:Artisan/src/utils/toast_utils.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -16,7 +17,7 @@ import 'package:auto_route/auto_route.dart';
 import '../../../models/cart_data/cart_data.dart';
 
 class CartProductListSection extends ConsumerStatefulWidget {
-  final List<CartData> data;
+  final List<CartItem> data;
   const CartProductListSection({
     super.key,
     required this.data,
@@ -71,7 +72,7 @@ class _CartProductListSection extends ConsumerState<CartProductListSection> {
 }
 
 class _CartProductCard extends ConsumerStatefulWidget {
-  final CartData data;
+  final CartItem data;
   final int index;
   final VoidCallback onTap;
   const _CartProductCard({
@@ -91,14 +92,14 @@ class __CartProductCardState extends ConsumerState<_CartProductCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushRoute(ProductRoute(id: widget.data.prodId.id));
+        context.pushRoute(ProductRoute(id: widget.data.id));
       },
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(4.5),
-            child: Image.asset(
-              'assets/images/img_featured2.png',
+            child: NetworkImageWidget(
+              widget.data.image ?? '',
               height: 86,
               width: 86,
               fit: BoxFit.cover,
@@ -112,7 +113,7 @@ class __CartProductCardState extends ConsumerState<_CartProductCard> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  widget.data.prodId.prodName,
+                  widget.data.name ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.nunitoSans(
@@ -140,7 +141,7 @@ class __CartProductCardState extends ConsumerState<_CartProductCard> {
             width: 15,
           ),
           Text(
-            "₹${(widget.data.discountValue != 0 ? (widget.data.prodId.prodPrice - widget.data.prodId.prodPrice * widget.data.discountValue / 100) : widget.data.prodId.prodPrice).toStringAsFixed(2)}",
+            "₹${(widget.data.price ?? 0).toStringAsFixed(2)}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.nunitoSans(
@@ -164,7 +165,7 @@ class __CartProductCardState extends ConsumerState<_CartProductCard> {
                 final res = await ref
                     .read(cartPageModelProvider.notifier)
                     .removeFromCart(
-                        widget.data.prodId.id, widget.data.discountValue);
+                        widget.data.id, widget.data.discountAmt ?? 0);
                 if (res.keys.first != true) {
                   showErrorMessage(res.values.first);
                 } else {

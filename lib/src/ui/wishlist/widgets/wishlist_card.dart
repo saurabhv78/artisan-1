@@ -1,6 +1,7 @@
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/models/wishlist_product_data/wishlist_product_data.dart';
 import 'package:Artisan/src/utils/toast_utils.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,13 +48,13 @@ class _WishlistCardState extends ConsumerState<WishlistCard> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          height: 170,
+                          height: 160,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.grey.shade300.withOpacity(0.5),
                           ),
-                          child: Image.asset(
-                            'assets/images/category${(widget.index) % 3 + 1}.png',
+                          child: NetworkImageWidget(
+                            widget.data.prodMedia[0].toString() ?? '',
                             height: 170,
                             width: MediaQuery.sizeOf(context).width,
                             fit: BoxFit.fill,
@@ -86,14 +87,14 @@ class _WishlistCardState extends ConsumerState<WishlistCard> {
                           const SizedBox(
                             width: 3,
                           ),
-                          Text(
-                            widget.data.totalRating.toStringAsFixed(1),
-                            style: GoogleFonts.nunitoSans(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: subHead,
-                            ),
-                          ),
+                          // Text(
+                          //   widget.data.totalRating.toStringAsFixed(1),
+                          //   style: GoogleFonts.nunitoSans(
+                          //     fontSize: 12,
+                          //     fontWeight: FontWeight.w400,
+                          //     color: subHead,
+                          //   ),
+                          // ),
                         ],
                       ),
                       Text(
@@ -121,7 +122,8 @@ class _WishlistCardState extends ConsumerState<WishlistCard> {
                         }
                         final res = await ref
                             .read(authRepositoryProvider.notifier)
-                            .updateFav(widget.data.id);
+                            .updateFav(widget.data.prodId);
+
                         if (res.keys.first != true) {
                           showErrorMessage(res.values.first);
                         } else {

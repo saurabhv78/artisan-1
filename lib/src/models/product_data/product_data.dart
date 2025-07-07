@@ -1,3 +1,4 @@
+import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
 import 'package:Artisan/src/models/discount_data/discount_data.dart';
 import 'package:Artisan/src/models/media_data/media_data.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -63,4 +64,6 @@ class ProductData {
   }
 
   Map<String, dynamic> toJson() => _$ProductDataToJson(this);
+
+  static fromArtStyle(ArtStyle data) {}
 }

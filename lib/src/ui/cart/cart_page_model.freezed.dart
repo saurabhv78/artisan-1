@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CartPageState {
-  List<CartData> get cartData => throw _privateConstructorUsedError;
+  CartData get cartData => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   CartPageStatus get status => throw _privateConstructorUsedError;
 
@@ -31,8 +31,9 @@ abstract class $CartPageStateCopyWith<$Res> {
           CartPageState value, $Res Function(CartPageState) then) =
       _$CartPageStateCopyWithImpl<$Res, CartPageState>;
   @useResult
-  $Res call(
-      {List<CartData> cartData, String errorMessage, CartPageStatus status});
+  $Res call({CartData cartData, String errorMessage, CartPageStatus status});
+
+  $CartDataCopyWith<$Res> get cartData;
 }
 
 /// @nodoc
@@ -56,7 +57,7 @@ class _$CartPageStateCopyWithImpl<$Res, $Val extends CartPageState>
       cartData: null == cartData
           ? _value.cartData
           : cartData // ignore: cast_nullable_to_non_nullable
-              as List<CartData>,
+              as CartData,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -66,6 +67,14 @@ class _$CartPageStateCopyWithImpl<$Res, $Val extends CartPageState>
           : status // ignore: cast_nullable_to_non_nullable
               as CartPageStatus,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CartDataCopyWith<$Res> get cartData {
+    return $CartDataCopyWith<$Res>(_value.cartData, (value) {
+      return _then(_value.copyWith(cartData: value) as $Val);
+    });
   }
 }
 
@@ -77,8 +86,10 @@ abstract class _$$CartPageStateImplCopyWith<$Res>
       __$$CartPageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {List<CartData> cartData, String errorMessage, CartPageStatus status});
+  $Res call({CartData cartData, String errorMessage, CartPageStatus status});
+
+  @override
+  $CartDataCopyWith<$Res> get cartData;
 }
 
 /// @nodoc
@@ -98,9 +109,9 @@ class __$$CartPageStateImplCopyWithImpl<$Res>
   }) {
     return _then(_$CartPageStateImpl(
       cartData: null == cartData
-          ? _value._cartData
+          ? _value.cartData
           : cartData // ignore: cast_nullable_to_non_nullable
-              as List<CartData>,
+              as CartData,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -117,20 +128,13 @@ class __$$CartPageStateImplCopyWithImpl<$Res>
 
 class _$CartPageStateImpl implements _CartPageState {
   const _$CartPageStateImpl(
-      {final List<CartData> cartData = const [],
+      {this.cartData = const CartData(),
       this.errorMessage = '',
-      this.status = CartPageStatus.initial})
-      : _cartData = cartData;
+      this.status = CartPageStatus.initial});
 
-  final List<CartData> _cartData;
   @override
   @JsonKey()
-  List<CartData> get cartData {
-    if (_cartData is EqualUnmodifiableListView) return _cartData;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_cartData);
-  }
-
+  final CartData cartData;
   @override
   @JsonKey()
   final String errorMessage;
@@ -148,15 +152,15 @@ class _$CartPageStateImpl implements _CartPageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CartPageStateImpl &&
-            const DeepCollectionEquality().equals(other._cartData, _cartData) &&
+            (identical(other.cartData, cartData) ||
+                other.cartData == cartData) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_cartData), errorMessage, status);
+  int get hashCode => Object.hash(runtimeType, cartData, errorMessage, status);
 
   @JsonKey(ignore: true)
   @override
@@ -167,12 +171,12 @@ class _$CartPageStateImpl implements _CartPageState {
 
 abstract class _CartPageState implements CartPageState {
   const factory _CartPageState(
-      {final List<CartData> cartData,
+      {final CartData cartData,
       final String errorMessage,
       final CartPageStatus status}) = _$CartPageStateImpl;
 
   @override
-  List<CartData> get cartData;
+  CartData get cartData;
   @override
   String get errorMessage;
   @override

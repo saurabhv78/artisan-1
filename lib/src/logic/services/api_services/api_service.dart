@@ -98,10 +98,10 @@ abstract class ApiService {
   Future<ApiResponse<String>> updateCartData({
     required String token,
     required String productId,
-    required int discount,
+    required num discount,
     required bool add,
   });
-  Future<ApiResponse<List<CartData>>> getAllCart({
+  Future<ApiResponse<CartData>> getAllCart({
     required String token,
   });
 }

@@ -1,30 +1,46 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'prod_id.dart';
-
+part 'cart_data.freezed.dart';
 part 'cart_data.g.dart';
 
-@JsonSerializable()
-class CartData {
-  final int quantity;
-  @JsonKey(name: '_id')
-  final String id;
-  @JsonKey(name: 'prod_id')
-  final ProdId prodId;
-  @JsonKey(name: 'discount_value')
-  final int discountValue;
+@freezed
+class CartData with _$CartData {
+  const factory CartData({
+    @Default('') String id,
+    @Default([]) List<CartItem> items,
+    Pricing? pricing,
+    String? createdAt,
+  }) = _CartData;
 
-  CartData({
-    required this.quantity,
-    required this.id,
-    required this.prodId,
-    required this.discountValue,
-  });
+  factory CartData.fromJson(Map<String, dynamic> json) => _$CartDataFromJson(json);
+}
 
-  factory CartData.fromJson(Map<String, dynamic> json) {
-    return _$CartDataFromJson(json);
-  }
+@freezed
+class CartItem with _$CartItem {
+  const factory CartItem({
+    @Default('') String id,
+    String? name,
+    String? image,
+    num? price,
+    int? quantity,
+    num? discountAmt,
+    num? totalPrice,
+    String? createdAt,
+    String? updatedAt,
+  }) = _CartItem;
 
-  Map<String, dynamic> toJson() => _$CartDataToJson(this);
+  factory CartItem.fromJson(Map<String, dynamic> json) => _$CartItemFromJson(json);
+}
+
+@freezed
+class Pricing with _$Pricing {
+  const factory Pricing({
+    num? subtotal,
+    num? tax,
+    num? discount,
+    num? total,
+  }) = _Pricing;
+
+  factory Pricing.fromJson(Map<String, dynamic> json) => _$PricingFromJson(json);
 }
