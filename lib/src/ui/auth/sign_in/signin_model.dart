@@ -7,7 +7,6 @@ import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/requests/social_login_request.dart';
 import 'package:Artisan/src/models/requests/user_login_request.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -171,54 +170,55 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       return 'No internet connection!';
     }
     try {
-      final plugin = FacebookLogin(debug: true);
-      try {
-        await plugin.logOut();
-        // plugin.
-      } catch (e) {}
-      await plugin.logIn(permissions: [
-        FacebookPermission.publicProfile,
-        FacebookPermission.email,
-      ]);
-      final deviceId = await getId();
-      final profile = await plugin.getUserProfile();
-      final email = await plugin.getUserEmail();
-      final token = await plugin.accessToken;
-      if (email != null && email.isNotEmpty && profile != null) {
-        final res = await apiService.socialLogin(
-          socialLoginRequest: SocialLoginRequest(
-            email: email,
-            // fcmToken: '*',
-            // deviceId: deviceId,
-            // loction: 'Social Test Address',
-            // lat: "23.2",
-            // lon: '33.2',
-            // fbUid: profile.userId,
-            // authToken: token?.authenticationToken ?? "facebook",
-            // isEmailVerified: 1,
-            // loginSource: 'facebook',
-            name: profile.name ?? "Facebook User",
-            // os: Platform.isAndroid ? 'android' : 'ios',
-          ),
-        );
-        if (res.status != ApiStatus.success) {
-          return res.errorMessage ?? "Something Went Wrong";
-        }
-        if (mounted) {
-          ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-          ref
-              .read(authRepositoryProvider.notifier)
-              .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
-          ref
-              .read(authRepositoryProvider.notifier)
-              .changeState(AuthStatus.authenticated);
-          ref.read(authRepositoryProvider.notifier).getAllUserDetails();
-        }
+      //   final plugin = FacebookLogin(debug: true);
+      //   try {
+      //     await plugin.logOut();
+      //     // plugin.
+      //   } catch (e) {}
+      //   await plugin.logIn(permissions: [
+      //     FacebookPermission.publicProfile,
+      //     FacebookPermission.email,
+      //   ]);
+      //   final deviceId = await getId();
+      //   final profile = await plugin.getUserProfile();
+      //   final email = await plugin.getUserEmail();
+      //   final token = await plugin.accessToken;
+      //   if (email != null && email.isNotEmpty && profile != null) {
+      //     final res = await apiService.socialLogin(
+      //       socialLoginRequest: SocialLoginRequest(
+      //         email: email,
+      //         // fcmToken: '*',
+      //         // deviceId: deviceId,
+      //         // loction: 'Social Test Address',
+      //         // lat: "23.2",
+      //         // lon: '33.2',
+      //         // fbUid: profile.userId,
+      //         // authToken: token?.authenticationToken ?? "facebook",
+      //         // isEmailVerified: 1,
+      //         // loginSource: 'facebook',
+      //         name: profile.name ?? "Facebook User",
+      //         // os: Platform.isAndroid ? 'android' : 'ios',
+      //       ),
+      //     );
+      //     if (res.status != ApiStatus.success) {
+      //       return res.errorMessage ?? "Something Went Wrong";
+      //     }
+      //     if (mounted) {
+      //       ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+      //       ref
+      //           .read(authRepositoryProvider.notifier)
+      //           .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
+      //       ref
+      //           .read(authRepositoryProvider.notifier)
+      //           .changeState(AuthStatus.authenticated);
+      //       ref.read(authRepositoryProvider.notifier).getAllUserDetails();
+      //     }
 
-        return '';
-      } else {
-        return "Something Went Wrong!!!";
-      }
+      //     return '';
+      //   } else {
+      //     return "Something Went Wrong!!!";
+      //   }
+      return 'Failed to login with facebook';
     } catch (e) {
       return e.toString();
     }

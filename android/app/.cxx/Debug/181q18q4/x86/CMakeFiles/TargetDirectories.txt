@@ -1,0 +1,2 @@
+/Users/dikshasingh/Project/Artisian-app/android/app/.cxx/Debug/181q18q4/x86/CMakeFiles/edit_cache.dir
+/Users/dikshasingh/Project/Artisian-app/android/app/.cxx/Debug/181q18q4/x86/CMakeFiles/rebuild_cache.dir
