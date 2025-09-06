@@ -30,7 +30,8 @@ Map<String, dynamic> _$TrendingArtistsResponseToJson(
 
 ArtistData _$ArtistDataFromJson(Map<String, dynamic> json) => ArtistData(
       id: json['id'] as String? ?? '',
-      name: json['name'] as String? ?? '',
+      image: json['image'] as String?,
+      name: json['name'] as String?,
       artist: json['artist'] == null
           ? null
           : ArtistInfo.fromJson(json['artist'] as Map<String, dynamic>),
@@ -43,6 +44,7 @@ ArtistData _$ArtistDataFromJson(Map<String, dynamic> json) => ArtistData(
 Map<String, dynamic> _$ArtistDataToJson(ArtistData instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'image': instance.image,
       'name': instance.name,
       'artist': instance.artist,
       'images': instance.images,
@@ -50,11 +52,14 @@ Map<String, dynamic> _$ArtistDataToJson(ArtistData instance) =>
 
 ArtistInfo _$ArtistInfoFromJson(Map<String, dynamic> json) => ArtistInfo(
       id: json['id'] as String?,
-      fullName: json['fullName'] as String?,
+      fullName: ArtistInfo._parseFullName(json['fullName']),
       profilePicture: json['profilePicture'] as String?,
       bio: json['bio'] as String?,
       createdAt: json['createdAt'] as String?,
+      country: json['country'] as String?,
+      city: json['city'] as String?,
       updatedAt: json['updatedAt'] as String?,
+      coverImage: json['coverImage'] as String?,
     );
 
 Map<String, dynamic> _$ArtistInfoToJson(ArtistInfo instance) =>
@@ -64,7 +69,10 @@ Map<String, dynamic> _$ArtistInfoToJson(ArtistInfo instance) =>
       'profilePicture': instance.profilePicture,
       'bio': instance.bio,
       'createdAt': instance.createdAt,
+      'country': instance.country,
+      'city': instance.city,
       'updatedAt': instance.updatedAt,
+      'coverImage': instance.coverImage,
     };
 
 OtherMeta _$OtherMetaFromJson(Map<String, dynamic> json) => OtherMeta(

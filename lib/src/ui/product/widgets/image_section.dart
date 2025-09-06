@@ -1,4 +1,5 @@
 import 'package:Artisan/src/constants/colors.dart';
+import 'package:Artisan/src/ui/product/product_page_model.dart';
 import 'package:Artisan/src/ui/product/widgets/product_view.dart';
 import 'package:Artisan/src/utils/extensions.dart';
 import 'package:auto_route/auto_route.dart';
@@ -36,10 +37,6 @@ class _ImageSectionState extends ConsumerState<ImageSection> {
 
   @override
   Widget build(BuildContext context) {
-    final wishlist =
-        ref.watch(authRepositoryProvider.select((value) => value.wishlist));
-    final isWishlisted = wishlist.contains(widget.data.id);
-
     return SizedBox(
       height: 400,
       width: MediaQuery.sizeOf(context).width,
@@ -68,7 +65,7 @@ class _ImageSectionState extends ConsumerState<ImageSection> {
                 tag: 'product-${widget.data.id}',
                 child: NetworkImageWidget(
                   selectedImage,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain, // Or BoxFit.scaleDown
                   height: 400,
                   width: MediaQuery.sizeOf(context).width,
                 ),
@@ -80,7 +77,9 @@ class _ImageSectionState extends ConsumerState<ImageSection> {
               top: kToolbarHeight,
               left: 25,
               child: GestureDetector(
-                onTap: () => context.maybePop(),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
                 child: Image.asset(
                   'assets/images/ic_back.png',
                   height: 38,
@@ -89,6 +88,7 @@ class _ImageSectionState extends ConsumerState<ImageSection> {
               ),
             ),
 
+            // Wishlist Button
             // Wishlist Button
             Positioned(
               top: kToolbarHeight,
@@ -111,13 +111,20 @@ class _ImageSectionState extends ConsumerState<ImageSection> {
                   await ref.read(authRepositoryProvider.notifier).getWishlist();
 
                   if (mounted) setState(() => isProcessing = false);
+
+                  // Fire-and-forget: no loading
+                  ref
+                      .read(productPageModelProvider.notifier)
+                      .getProductData(widget.data.id);
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.white.withOpacity(0.7),
                   radius: 19,
                   child: Icon(
                     Icons.favorite,
-                    color: isWishlisted ? Colors.red : const Color(0xffC5C5C5),
+                    color: widget.data.isLiked == true
+                        ? Colors.red
+                        : const Color(0xffC5C5C5),
                     size: 26,
                   ),
                 ),

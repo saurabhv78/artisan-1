@@ -1,5 +1,7 @@
 import 'package:Artisan/src/models/artist_data/artist_data.dart';
+import 'package:Artisan/src/routing/router.dart';
 import 'package:Artisan/src/widgets/components/images.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +25,7 @@ class TrendingArtistsCard extends ConsumerWidget {
         alignment: Alignment.bottomCenter,
         children: [
           SizedBox(
-            height: 212,
+            height: 227,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Container(
@@ -48,7 +50,7 @@ class TrendingArtistsCard extends ConsumerWidget {
                           data.images.isNotEmpty ? data.images[0] : '',
                           fit: BoxFit.cover,
                           width: MediaQuery.sizeOf(context).width,
-                          height: 212,
+                          height: 200,
                           // Image.asset(
                           //   'assets/images/category${index + 1}.png',
                           //   fit: BoxFit.cover,
@@ -88,6 +90,21 @@ class TrendingArtistsCard extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 20,
+                      child: Center(
+                        child: Text(
+                          data.artist?.fullName?.toString() ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -95,15 +112,24 @@ class TrendingArtistsCard extends ConsumerWidget {
           ),
           Positioned(
             top: 0,
-            child: CircleAvatar(
-              radius: 28,
-              backgroundColor: primaryColor,
-              backgroundImage: NetworkImageWidget(
-                data.artist?.profilePicture ?? '',
-                fit: BoxFit.cover,
-                width: MediaQuery.sizeOf(context).width,
-                height: 212,
-              ).image,
+            child: GestureDetector(
+              onTap: () {
+                context.navigateTo(
+                    ArtistRoute(artistData: ArtistInfo(id: data.artist?.id)));
+
+                // context
+                //     .navigateTo(ArtistRoute(artistData: data.toArtistInfo()));
+              },
+              child: CircleAvatar(
+                radius: 35,
+                backgroundColor: primaryColor,
+                backgroundImage: NetworkImageWidget(
+                  data.artist?.profilePicture ?? '',
+                  fit: BoxFit.cover,
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 212,
+                ).image,
+              ),
             ),
           )
         ],

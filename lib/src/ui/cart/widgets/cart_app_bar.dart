@@ -16,71 +16,69 @@ class CartAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final wishlist =
         ref.watch(authRepositoryProvider.select((value) => value.wishlist));
-    return 
-    Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(25, 15, 25, 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            BackBtn(
-              iconColor: Colors.black,
-              onTap: () {
-                context.maybePop();
-              },
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(25, 15, 25, 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          BackBtn(
+            iconColor: Colors.black,
+            onTap: () {
+              context.maybePop();
+            },
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          Text(
+            "My Cart",
+            style: GoogleFonts.nunitoSans(
+              fontWeight: FontWeight.w400,
+              color: bgDark,
+              fontSize: 24,
             ),
-            Text(
-              "My Cart",
-              style: GoogleFonts.nunitoSans(
-                fontWeight: FontWeight.w400,
-                color: bgDark,
-                fontSize: 24,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                context.pushRoute(const WishlistRoute());
-              },
-              child: Stack(
-                children: [
-                  Image.asset(
-                    'assets/images/ic_heart.png',
-                    height: 26,
-                    width: 30,
-                  ),
-                  if (wishlist.isNotEmpty)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        height: 16,
-                        width: 16,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: primaryColor,
-                        ),
-                        child: Center(
-                          child: Text(
-                            wishlist.length > 99
-                                ? "99"
-                                : wishlist.length.toString(),
-                            style: GoogleFonts.nunitoSans(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     context.pushRoute(const WishlistRoute());
+          //   },
+          //   child: Stack(
+          //     children: [
+          //       Image.asset(
+          //         'assets/images/ic_heart.png',
+          //         height: 26,
+          //         width: 30,
+          //       ),
+          //       if (wishlist.isNotEmpty)
+          //         Positioned(
+          //           right: 0,
+          //           top: 0,
+          //           child: Container(
+          //             height: 16,
+          //             width: 16,
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(30),
+          //               color: primaryColor,
+          //             ),
+          //             child: Center(
+          //               child: Text(
+          //                 wishlist.length > 99
+          //                     ? "99"
+          //                     : wishlist.length.toString(),
+          //                 style: GoogleFonts.nunitoSans(
+          //                   color: Colors.white,
+          //                   fontSize: 11,
+          //                   fontWeight: FontWeight.w600,
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //     ],
+          //   ),
+          // ),
+        ],
       ),
     );
-  
   }
 }

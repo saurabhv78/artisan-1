@@ -26,7 +26,8 @@ class _CartPageState extends ConsumerState<CartPage> {
     final status =
         ref.watch(cartPageModelProvider.select((value) => value.status));
     return CustomScaffold(
-        bgColor: Colors.white,
+        topPadding: 35,
+        // bgColor: Colors.white,
         child: Stack(
           children: [
             Column(

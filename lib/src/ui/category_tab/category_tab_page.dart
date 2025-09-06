@@ -43,195 +43,197 @@ class _CategoryTabPageState extends ConsumerState<CategoryTabPage>
     //   setState(() {});
     // }
     return CustomScaffold(
+        topPadding: 35,
         child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 22),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 15,
-          ),
-          Stack(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              const SizedBox(
+                height: 15,
+              ),
+              Stack(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      context.pushRoute(const WishlistRoute());
-                    },
-                    child: Stack(
-                      children: [
-                        Image.asset(
-                          'assets/images/ic_heart.png',
-                          height: 26,
-                          width: 30,
-                        ),
-                        if (wishlist.isNotEmpty)
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              height: 16,
-                              width: 16,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: primaryColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  wishlist.length > 99
-                                      ? "99"
-                                      : wishlist.length.toString(),
-                                  style: GoogleFonts.nunitoSans(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          context.pushRoute(const WishlistRoute());
+                        },
+                        child: Stack(
+                          children: [
+                            Image.asset(
+                              'assets/images/ic_heart.png',
+                              height: 26,
+                              width: 30,
+                            ),
+                            if (wishlist.isNotEmpty)
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Container(
+                                  height: 16,
+                                  width: 16,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: primaryColor,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      wishlist.length > 99
+                                          ? "99"
+                                          : wishlist.length.toString(),
+                                      style: GoogleFonts.nunitoSans(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 13,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          context.pushRoute(const CartRoute());
+                        },
+                        child: Stack(
+                          children: [
+                            Image.asset(
+                              'assets/images/ic_cart.png',
+                              height: 26,
+                              width: 30,
                             ),
-                          ),
-                      ],
+                            if (cartData.isNotEmpty)
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Container(
+                                  height: 16,
+                                  width: 16,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: primaryColor,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      cartData.length > 99
+                                          ? "99"
+                                          : cartData.length.toString(),
+                                      style: GoogleFonts.nunitoSans(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: Text(
+                      "Explore",
+                      style: GoogleFonts.nunitoSans(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
                     ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  TabBar(
+                    controller: _tabController,
+                    indicatorColor: primaryColor,
+                    dividerColor: Colors.transparent,
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                      return states.contains(MaterialState.focused)
+                          ? null
+                          : Colors.transparent;
+                    }),
+                    tabs: [
+                      Tab(
+                        height: 40,
+                        child: Text(
+                          "CATEGORIES",
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        height: 40,
+                        child: Text(
+                          "PRODUCTS",
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
-                    width: 13,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.pushRoute(const CartRoute());
-                    },
-                    child: Stack(
-                      children: [
-                        Image.asset(
-                          'assets/images/ic_cart.png',
-                          height: 26,
-                          width: 30,
-                        ),
-                        if (cartData.isNotEmpty)
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              height: 16,
-                              width: 16,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: primaryColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  cartData.length > 99
-                                      ? "99"
-                                      : cartData.length.toString(),
-                                  style: GoogleFonts.nunitoSans(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
+                    height: 34,
+                    child: VerticalDivider(
+                      color: Colors.black,
+                      thickness: 1,
                     ),
-                  ),
-                ],
-              ),
-              Center(
-                child: Text(
-                  "Explore",
-                  style: GoogleFonts.nunitoSans(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              const SizedBox(
-                height: 40,
-              ),
-              TabBar(
-                controller: _tabController,
-                indicatorColor: primaryColor,
-                dividerColor: Colors.transparent,
-                overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                  return states.contains(MaterialState.focused)
-                      ? null
-                      : Colors.transparent;
-                }),
-                tabs: [
-                  Tab(
-                    height: 40,
-                    child: Text(
-                      "CATEGORIES",
-                      style: GoogleFonts.nunitoSans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    height: 40,
-                    child: Text(
-                      "PRODUCTS",
-                      style: GoogleFonts.nunitoSans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
               const SizedBox(
-                height: 34,
-                child: VerticalDivider(
-                  color: Colors.black,
-                  thickness: 1,
+                height: 5,
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    RefreshIndicator(
+                        onRefresh: () async {
+                          ref
+                              .read(categoryTabPageModelProvider.notifier)
+                              .refreshCount();
+                          await Future.delayed(
+                              const Duration(milliseconds: 300));
+                        },
+                        child: const CategoryListSection()),
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        ref
+                            .read(categoryTabPageModelProvider.notifier)
+                            .refreshCount();
+                        await Future.delayed(const Duration(milliseconds: 300));
+                      },
+                      child: const ProductListSection(),
+                    ),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
-          const SizedBox(
-            height: 5,
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                RefreshIndicator(
-                    onRefresh: () async {
-                      ref
-                          .read(categoryTabPageModelProvider.notifier)
-                          .refreshCount();
-                      await Future.delayed(const Duration(milliseconds: 300));
-                    },
-                    child: const CategoryListSection()),
-                RefreshIndicator(
-                  onRefresh: () async {
-                    ref
-                        .read(categoryTabPageModelProvider.notifier)
-                        .refreshCount();
-                    await Future.delayed(const Duration(milliseconds: 300));
-                  },
-                  child: const ProductListSection(),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 }

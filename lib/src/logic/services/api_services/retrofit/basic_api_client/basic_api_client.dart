@@ -15,6 +15,7 @@ abstract class BasicApiClient {
 
   @POST('/products/Categories')
   Future getAllCategory({
+    @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
   });
 
@@ -25,28 +26,39 @@ abstract class BasicApiClient {
 
   @GET('/products/featured/products')
   Future getAllFeatured({
+    @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/products/app/products')
   Future getAllProducts({
+    @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/products/products/details')
   Future getProductDetail({
+    @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
+  });
+  @POST('/products/app/seller/products')
+  Future getArtistData({
+    @Header('Authorization') required String token,
+    @Body() required dynamic sellerId,
   });
   @POST('/products/discount/list')
   Future getAllDiscounts({
+    @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/products/products/trending/artist')
   Future getTrendingArtists({
+    @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
   });
 
   /// new point
   @POST('/products/artstyle/list')
   Future getTrendingArtStyle({
+    @Header('Authorization') required String token,
     @Body() required GetListDataRequest getListDataRequest,
   });
   @POST('/products/favourits/add')

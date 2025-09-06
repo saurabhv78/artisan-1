@@ -13,7 +13,8 @@ class CartData with _$CartData {
     String? createdAt,
   }) = _CartData;
 
-  factory CartData.fromJson(Map<String, dynamic> json) => _$CartDataFromJson(json);
+  factory CartData.fromJson(Map<String, dynamic> json) =>
+      _$CartDataFromJson(json);
 }
 
 @freezed
@@ -30,17 +31,20 @@ class CartItem with _$CartItem {
     String? updatedAt,
   }) = _CartItem;
 
-  factory CartItem.fromJson(Map<String, dynamic> json) => _$CartItemFromJson(json);
+  factory CartItem.fromJson(Map<String, dynamic> json) =>
+      _$CartItemFromJson(json);
 }
 
 @freezed
 class Pricing with _$Pricing {
-  const factory Pricing({
-    num? subtotal,
-    num? tax,
-    num? discount,
-    num? total,
-  }) = _Pricing;
+  const factory Pricing(
+      {num? subtotal,
+      num? tax,
+      num? discount,
+      num? total,
+      num? ShippingAmount,
+      num? taxPercentage}) = _Pricing;
 
-  factory Pricing.fromJson(Map<String, dynamic> json) => _$PricingFromJson(json);
+  factory Pricing.fromJson(Map<String, dynamic> json) =>
+      _$PricingFromJson(json);
 }

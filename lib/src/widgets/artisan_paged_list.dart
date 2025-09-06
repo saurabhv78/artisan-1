@@ -244,7 +244,7 @@ class _NewPageErrorIndicatorState extends State<NewPageErrorIndicator> {
                             ? ''
                             : snapshot.data == false
                                 ? 'No internet connection.\nTap to try again.'
-                                : 'Something went wrong. Tap to try again.',
+                                : 'No more data ',
                         textAlign: TextAlign.center,
                       );
                     }),

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
@@ -44,10 +45,12 @@ class ProductPageModel extends StateNotifier<ProductPageState> {
         }
         return;
       }
+
       final res = await apiService.getProductDetail(
+          token: ref.read(authRepositoryProvider).authUser?.token ?? "",
           getListDataRequest: GetListDataRequest(
-        productId: prodId,
-      ));
+            productId: prodId,
+          ));
 
       if (res.status != ApiStatus.success) {
         if (mounted) state = errorState();
@@ -139,11 +142,12 @@ class ProductPageModel extends StateNotifier<ProductPageState> {
         return;
       }
       final res = await apiService.getAllProduct(
+          token: ref.read(authRepositoryProvider).authUser?.token ?? "",
           getListDataRequest: GetListDataRequest(
-        page: 1,
-        limit: 5,
-        artistId: artistId,
-      ));
+            page: 1,
+            limit: 5,
+            artistId: artistId,
+          ));
 
       // print()
       if (res.status != ApiStatus.success) {

@@ -1,4 +1,5 @@
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
+import 'package:Artisan/src/ui/product/product_page_model.dart';
 import 'package:Artisan/src/utils/toast_utils.dart';
 import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:flutter/material.dart';
@@ -108,49 +109,54 @@ class _ProductCardState extends ConsumerState<ProductCard> {
               ],
             ),
           ),
-          Positioned(
-            right: 10,
-            top: 10,
-            child: GestureDetector(
-              onTap: () async {
-                if (!isProcessing) {
-                  if (mounted) {
-                    setState(() {
-                      isProcessing = true;
-                    });
-                  }
-                  final res = await ref
-                      .read(authRepositoryProvider.notifier)
-                      .updateFav(widget.data.id);
-                  if (res.keys.first != true) {
-                    showErrorMessage(res.values.first);
-                  } else {
-                    showSuccessMessage(res.values.first);
-                    ref.read(authRepositoryProvider.notifier).getWishlist();
-                  }
-                  if (mounted) {
-                    setState(() {
-                      isProcessing = false;
-                    });
-                  }
-                }
-              },
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 13,
-                child: Icon(
-                  Icons.favorite,
-                  color: ref.watch(authRepositoryProvider.select((value) =>
-                              value.wishlist.indexWhere(
-                                  (element) => element == widget.data.id))) !=
-                          -1
-                      ? Colors.red
-                      : const Color(0xffC5C5C5),
-                  size: 20,
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   right: 10,
+          //   top: 10,
+          //   child: GestureDetector(
+          //     onTap: () async {
+          //       if (!isProcessing) {
+          //         if (mounted) {
+          //           setState(() {
+          //             isProcessing = true;
+          //           });
+          //         }
+          //         final res = await ref
+          //             .read(authRepositoryProvider.notifier)
+          //             .updateFav(widget.data.id);
+          //         if (res.keys.first != true) {
+          //           showErrorMessage(res.values.first);
+          //         } else {
+          //           showSuccessMessage(res.values.first);
+          //           ref.read(authRepositoryProvider.notifier).getWishlist();
+          //         }
+          //         if (mounted) {
+          //           setState(() {
+          //             isProcessing = false;
+          //           });
+          //         }
+          //       }
+          //       ref
+          //           .read(productPageModelProvider.notifier)
+          //           .getProductData(widget.data.id);
+          //     },
+          //     child: CircleAvatar(
+          //       backgroundColor: Colors.white,
+          //       radius: 13,
+          //       child: Icon(
+          //         Icons.favorite,
+          //         color: widget.data.isLiked == true
+
+          //             // ref.watch(authRepositoryProvider.select((value) =>
+          //             //             value.wishlist.indexWhere(
+          //             //                 (element) => element == widget.data.id))) !=
+          //             //         -1
+          //             ? Colors.red
+          //             : const Color(0xffC5C5C5),
+          //         size: 20,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

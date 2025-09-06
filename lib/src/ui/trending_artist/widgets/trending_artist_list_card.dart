@@ -1,5 +1,7 @@
 import 'package:Artisan/src/models/artist_data/artist_data.dart';
+import 'package:Artisan/src/routing/router.dart';
 import 'package:Artisan/src/widgets/components/images.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +25,7 @@ class TrendingArtistListCard extends ConsumerWidget {
         alignment: Alignment.bottomCenter,
         children: [
           SizedBox(
-            height: 200,
+            height: 210,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Container(
@@ -48,7 +50,7 @@ class TrendingArtistListCard extends ConsumerWidget {
                           data.images.isNotEmpty ? data.images[0] : '',
                           fit: BoxFit.cover,
                           width: MediaQuery.sizeOf(context).width,
-                          height: 200,
+                          height: 190,
                         ),
                         // Image.asset(
                         //   'assets/images/category${index + 1}.png',
@@ -57,7 +59,7 @@ class TrendingArtistListCard extends ConsumerWidget {
                         //   width: MediaQuery.sizeOf(context).width,
                         // ),
                         Container(
-                          height: 200,
+                          height: 180,
                           decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
@@ -75,7 +77,7 @@ class TrendingArtistListCard extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Center(
                               child: Text(
-                                data.name,
+                                data.name ?? "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.nunitoSans(
@@ -89,6 +91,21 @@ class TrendingArtistListCard extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 20,
+                      child: Center(
+                        child: Text(
+                          data.artist?.fullName?.toString() ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -96,22 +113,28 @@ class TrendingArtistListCard extends ConsumerWidget {
           ),
           Positioned(
             top: 0,
-            child: CircleAvatar(
-              radius: 28,
-              backgroundColor: primaryColor,
-              backgroundImage: (data.artist?.profilePicture ?? '').isNotEmpty
-                  ? NetworkImageWidget(
-                      data.artist!.profilePicture ?? '',
-                      fit: BoxFit.cover,
-                      width: MediaQuery.sizeOf(context).width,
-                      height: 212,
-                    ).image
-                  : null,
-              child: (data.artist?.profilePicture ?? '').isNotEmpty
-                  ? const Icon(Icons.person, size: 35, color: Colors.white)
-                  : null,
-              // fit: BoxFit.cover,
-              // image: 'https://picsum.photos/200/300?random=$index',
+            child: InkWell(
+              onTap: () {
+                context.navigateTo(
+                    ArtistRoute(artistData: ArtistInfo(id: data.artist?.id)));
+              },
+              child: CircleAvatar(
+                radius: 35,
+                backgroundColor: primaryColor,
+                backgroundImage: (data.artist?.profilePicture ?? '').isNotEmpty
+                    ? NetworkImageWidget(
+                        data.artist!.profilePicture ?? '',
+                        fit: BoxFit.cover,
+                        width: MediaQuery.sizeOf(context).width,
+                        height: 212,
+                      ).image
+                    : null,
+                child: (data.artist?.profilePicture ?? '').isEmpty
+                    ? const Icon(Icons.person, size: 20, color: Colors.white)
+                    : null,
+                // fit: BoxFit.cover,
+                // image: 'https://picsum.photos/200/300?random=$index',
+              ),
             ),
           ),
         ],

@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../logic/repositories/auth_repository.dart';
 import '../tnc/privacy_policy_page.dart';
@@ -30,6 +31,29 @@ class SignInPage extends ConsumerStatefulWidget {
 }
 
 class _SignInPageState extends ConsumerState<SignInPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadSavedCredentials();
+  }
+
+  Future<void> _loadSavedCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final remember = prefs.getBool('remember_me') ?? false;
+    final savedEmail = prefs.getString('saved_email') ?? '';
+    final savedPassword = prefs.getString('saved_password') ?? '';
+
+    if (remember) {
+      setState(() {
+        checkBox = true;
+      });
+      ref.read(signInPageModelProvider.notifier).setEmail(savedEmail);
+      ref.read(signInPageModelProvider.notifier).setPassword(savedPassword);
+    }
+  }
+
   bool checkBox = false;
   bool isProcessing = false;
   bool isFbProcessing = false;
@@ -157,43 +181,46 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                       ),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 18,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Checkbox(
-                                value: checkBox,
-                                splashRadius: 0,
-                                focusColor: primaryColor,
-                                checkColor: Colors.white,
-                                activeColor: primaryColor,
-                                side: const BorderSide(color: Colors.white),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                onChanged: (value) {
-                                  if (mounted) {
-                                    setState(() {
-                                      checkBox = !checkBox;
-                                    });
-                                    ref
-                                        .read(authRepositoryProvider.notifier)
-                                        .setCheckBox(checkBox);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "Remember me",
-                            style: GoogleFonts.nunitoSans(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                          // SizedBox(
+                          //   width: 18,
+                          //   child: ClipRRect(
+                          //     borderRadius: BorderRadius.circular(8),
+                          //     child: Checkbox(
+                          //       value: checkBox,
+                          //       splashRadius: 0,
+                          //       focusColor: primaryColor,
+                          //       checkColor: Colors.white,
+                          //       activeColor: primaryColor,
+                          //       side: const BorderSide(color: Colors.white),
+                          //       shape: RoundedRectangleBorder(
+                          //           borderRadius: BorderRadius.circular(10)),
+                          //       onChanged: (value) async {
+                          //         setState(() => checkBox = value ?? false);
+
+                          //         final prefs =
+                          //             await SharedPreferences.getInstance();
+                          //         await prefs.setBool('remember_me', checkBox);
+
+                          //         if (!checkBox) {
+                          //           // Clear stored credentials if unchecked
+                          //           await prefs.remove('saved_email');
+                          //           await prefs.remove('saved_password');
+                          //         }
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
+                          // const SizedBox(
+                          //   width: 5,
+                          // ),
+                          // Text(
+                          //   "Remember me",
+                          //   style: GoogleFonts.nunitoSans(
+                          //     color: Colors.white,
+                          //     fontSize: 16,
+                          //     fontWeight: FontWeight.w400,
+                          //   ),
+                          // ),
                           const Expanded(child: SizedBox()),
                           GestureDetector(
                             onTap: () {
@@ -210,6 +237,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                           ),
                         ],
                       ),
+
                       const SizedBox(
                         height: 20,
                       ),
@@ -226,7 +254,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                             }
                             final res = await ref
                                 .read(signInPageModelProvider.notifier)
-                                .loginUser(checkBox: checkBox);
+                                .loginUser(checkBox: true);
                             if (res != '') {
                               showErrorMessage(res);
                             }
@@ -330,7 +358,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             child: Divider(
                               color: Colors.white,
                               thickness: 1,

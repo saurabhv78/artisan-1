@@ -35,7 +35,7 @@ class _WishListSection extends ConsumerState<WishListSection> {
         return GestureDetector(
           onTap: () {
             context.pushRoute(ProductRoute(
-              id: widget.data[index].id ?? '',
+              id: widget.data[index].prodId ?? '',
               key: ValueKey(widget.data[index].id),
             ));
           },

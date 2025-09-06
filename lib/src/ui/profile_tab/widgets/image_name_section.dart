@@ -1,6 +1,7 @@
 import 'package:Artisan/src/constants/colors.dart';
 
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,9 +45,24 @@ class ProfileImageNameSection extends ConsumerWidget {
         const SizedBox(
           width: 10,
         ),
-        const CircleAvatar(
-          radius: 41,
-          backgroundColor: primaryColor,
+        Container(
+          width: 84,
+          height: 84,
+          decoration: BoxDecoration(
+            color: primaryColor,
+            shape: BoxShape.circle,
+            image: userData?.userData.profilePic != null &&
+                    userData!.userData.profilePic!.isNotEmpty
+                ? DecorationImage(
+                    image: NetworkImage(userData.userData.profilePic ?? ""),
+                    fit: BoxFit.cover,
+                  )
+                : null,
+          ),
+          child: (userData?.userData.profilePic == null ||
+                  userData!.userData.profilePic!.isEmpty)
+              ? Icon(Icons.person, color: Colors.white, size: 40)
+              : null,
         ),
       ],
     );

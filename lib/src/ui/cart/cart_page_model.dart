@@ -52,7 +52,7 @@ class CartPageModel extends StateNotifier<CartPageState> {
       if (!await hasInternetAccess()) {
         if (mounted) {
           state = state.copyWith(
-            cartData: CartData(),
+            cartData: const CartData(),
             status: CartPageStatus.error,
             errorMessage: "No Internet Connection!",
           );

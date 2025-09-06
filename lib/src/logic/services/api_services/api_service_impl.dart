@@ -259,15 +259,18 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<ApiResponse<Map<int, List<CategoryData>>>> getAllCategory({
+    required String token,
     required GetListDataRequest getListDataRequest,
   }) async {
     return await safeApiCall<Map<int, List<CategoryData>>>(
       () async => await _basicApiClient.getAllCategory(
-          getListDataRequest: getListDataRequest),
+        getListDataRequest: getListDataRequest,
+        token: token, // ✅ passing token here
+      ),
       (response) => ApiResponse.success({
         response['other']['total'] as int: ((response['data'] as List?) ?? [])
             .map((e) => CategoryData.fromJson(e))
-            .toList()
+            .toList(),
       }),
     );
   }
@@ -308,11 +311,12 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<ApiResponse<Map<int, List<ProductData>>>> getAllProduct({
+    required String token,
     required GetListDataRequest getListDataRequest,
   }) async {
     return await safeApiCall<Map<int, List<ProductData>>>(
       () async => await _basicApiClient.getAllProducts(
-          getListDataRequest: getListDataRequest),
+          token: token, getListDataRequest: getListDataRequest),
       (response) => ApiResponse.success({
         response['other']['total'] as int: ((response['data'] as List?) ?? [])
             .map((e) => ProductData.fromJson(e))
@@ -323,11 +327,12 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<ApiResponse<List<FeaturedProduct>>> getAllFeatured({
+    required String token,
     required GetListDataRequest getListDataRequest,
   }) async {
     return await safeApiCall<List<FeaturedProduct>>(
       () async => await _basicApiClient.getAllFeatured(
-          getListDataRequest: getListDataRequest),
+          token: token, getListDataRequest: getListDataRequest),
       (response) => ApiResponse.success(((response['data'] as List?) ?? [])
           .map((e) => FeaturedProduct.fromJson(e))
           .toList()),
@@ -336,22 +341,47 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<ApiResponse<ProductData>> getProductDetail({
+    required String token,
     required GetListDataRequest getListDataRequest,
   }) async {
     return await safeApiCall<ProductData>(
       () async => await _basicApiClient.getProductDetail(
-          getListDataRequest: getListDataRequest),
+          token: token, getListDataRequest: getListDataRequest),
       (response) => ApiResponse.success(
           ProductData.fromJson(response['data']?['product'] ?? {})),
     );
   }
 
   @override
+  Future<ApiResponse<(ArtistInfo?, List<ProductData>)>> getArtistData({
+    required String token,
+    required String sellerId,
+  }) async {
+    return await safeApiCall<(ArtistInfo?, List<ProductData>)>(
+      () async => await _basicApiClient
+          .getArtistData(token: token, sellerId: {'sellerId': sellerId}),
+      (response) {
+        ArtistInfo? artist = response['data']['seller'] != null
+            ? ArtistInfo.fromJson(response['data']['seller'])
+            : null;
+        List<ProductData>? products = response['data']['products'] != null
+            ? (response['data']['products'] as List)
+                .map((e) => ProductData.fromJson(e))
+                .toList()
+            : [];
+        return ApiResponse.success((artist, products));
+      },
+    );
+  }
+
+  @override
   Future<ApiResponse<Map<int, List<DiscountData>>>> getAllDiscount({
+    required String token,
     required GetListDataRequest getListDataRequest,
   }) async {
     try {
       final response = await _basicApiClient.getAllDiscounts(
+          token: token,
           getListDataRequest: getListDataRequest) as Map<String, dynamic>;
       if (response['success'] == false) {
         return ApiResponse.error(
@@ -377,10 +407,12 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtists({
+    required String token,
     required GetListDataRequest getListDataRequest,
   }) async {
     try {
       final response = await _basicApiClient.getTrendingArtists(
+          token: token,
           getListDataRequest: getListDataRequest) as Map<String, dynamic>;
       if (response['success'] == false) {
         return ApiResponse.error(
@@ -406,11 +438,12 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<ApiResponse<Map<int, List<ArtStyle>>>> getTrendingArtstyle({
+    required String token,
     required GetListDataRequest getListDataRequest,
   }) async {
     return await safeApiCall<Map<int, List<ArtStyle>>>(
       () async => await _basicApiClient.getTrendingArtStyle(
-          getListDataRequest: getListDataRequest),
+          token: token, getListDataRequest: getListDataRequest),
       (response) => ApiResponse.success({
         response['other']['total'] as int: ((response['data'] as List?) ?? [])
             .map((e) => ArtStyle.fromJson(e))

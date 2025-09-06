@@ -59,6 +59,8 @@ _$PricingImpl _$$PricingImplFromJson(Map<String, dynamic> json) =>
       tax: json['tax'] as num?,
       discount: json['discount'] as num?,
       total: json['total'] as num?,
+      ShippingAmount: json['ShippingAmount'] as num?,
+      taxPercentage: json['taxPercentage'] as num?,
     );
 
 Map<String, dynamic> _$$PricingImplToJson(_$PricingImpl instance) =>
@@ -67,4 +69,6 @@ Map<String, dynamic> _$$PricingImplToJson(_$PricingImpl instance) =>
       'tax': instance.tax,
       'discount': instance.discount,
       'total': instance.total,
+      'ShippingAmount': instance.ShippingAmount,
+      'taxPercentage': instance.taxPercentage,
     };

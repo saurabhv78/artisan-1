@@ -24,11 +24,14 @@ class _BasicApiClient implements BasicApiClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<dynamic> getAllCategory(
-      {required GetListDataRequest getListDataRequest}) async {
+  Future<dynamic> getAllCategory({
+    required String token,
+    required GetListDataRequest getListDataRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -80,11 +83,14 @@ class _BasicApiClient implements BasicApiClient {
   }
 
   @override
-  Future<dynamic> getAllFeatured(
-      {required GetListDataRequest getListDataRequest}) async {
+  Future<dynamic> getAllFeatured({
+    required String token,
+    required GetListDataRequest getListDataRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -109,11 +115,14 @@ class _BasicApiClient implements BasicApiClient {
   }
 
   @override
-  Future<dynamic> getAllProducts(
-      {required GetListDataRequest getListDataRequest}) async {
+  Future<dynamic> getAllProducts({
+    required String token,
+    required GetListDataRequest getListDataRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -138,11 +147,14 @@ class _BasicApiClient implements BasicApiClient {
   }
 
   @override
-  Future<dynamic> getProductDetail(
-      {required GetListDataRequest getListDataRequest}) async {
+  Future<dynamic> getProductDetail({
+    required String token,
+    required GetListDataRequest getListDataRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -167,11 +179,45 @@ class _BasicApiClient implements BasicApiClient {
   }
 
   @override
-  Future<dynamic> getAllDiscounts(
-      {required GetListDataRequest getListDataRequest}) async {
+  Future<dynamic> getArtistData({
+    required String token,
+    required dynamic sellerId,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = sellerId;
+    final _options = _setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/products/app/seller/products',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    return _value;
+  }
+
+  @override
+  Future<dynamic> getAllDiscounts({
+    required String token,
+    required GetListDataRequest getListDataRequest,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -196,11 +242,14 @@ class _BasicApiClient implements BasicApiClient {
   }
 
   @override
-  Future<dynamic> getTrendingArtists(
-      {required GetListDataRequest getListDataRequest}) async {
+  Future<dynamic> getTrendingArtists({
+    required String token,
+    required GetListDataRequest getListDataRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(
@@ -225,11 +274,14 @@ class _BasicApiClient implements BasicApiClient {
   }
 
   @override
-  Future<dynamic> getTrendingArtStyle(
-      {required GetListDataRequest getListDataRequest}) async {
+  Future<dynamic> getTrendingArtStyle({
+    required String token,
+    required GetListDataRequest getListDataRequest,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(getListDataRequest.toJson());
     final _options = _setStreamType<dynamic>(Options(

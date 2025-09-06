@@ -188,7 +188,7 @@ class _AuthApiClient implements AuthApiClient {
     )
         .compose(
           _dio.options,
-          '/auth/social_login',
+          '/auth/google',
           queryParameters: queryParameters,
           data: _data,
         )

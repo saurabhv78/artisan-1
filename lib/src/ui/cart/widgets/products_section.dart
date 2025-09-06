@@ -124,7 +124,7 @@ class __CartProductCardState extends ConsumerState<_CartProductCard> {
                   ),
                 ),
                 Text(
-                  "Jenny Doe",
+                  widget.data.name ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.nunitoSans(

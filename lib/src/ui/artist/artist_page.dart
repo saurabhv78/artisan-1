@@ -1,6 +1,7 @@
 import 'package:Artisan/src/ui/artist/artist_page_model.dart';
 import 'package:Artisan/src/ui/artist/widgets/popular_products_section.dart';
 import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import '../../widgets/try_again_widget.dart';
 
 @RoutePage()
 class ArtistPage extends ConsumerStatefulWidget {
-  final ArtistData artistData;
+  final ArtistInfo artistData;
   const ArtistPage({
     super.key,
     required this.artistData,
@@ -27,10 +28,14 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
-      await ref
-          .read(artistPageModelProvider.notifier)
-          .getPopularProducts(widget.artistData.id);
+      _refresh();
     });
+  }
+
+  Future<void> _refresh() async {
+    await ref
+        .read(artistPageModelProvider.notifier)
+        .getArtistData(widget.artistData.id ?? '');
   }
 
   @override
@@ -40,7 +45,10 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
         ref.watch(artistPageModelProvider.select((value) => value.status));
     final popularProducts = ref.watch(
         artistPageModelProvider.select((value) => value.popularProducts));
+    final artistData =
+        ref.watch(artistPageModelProvider.select((value) => value.artistInfo));
     return CustomScaffold(
+        topPadding: 35,
         child: status == ArtistPageStatus.loaded && popularProducts != null
             ? SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -53,8 +61,8 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
-                            child: Image.asset(
-                              'assets/images/ic_product1.png',
+                            child: NetworkImageWidget(
+                              artistData?.coverImage ?? "",
                               height: 200,
                               width: MediaQuery.sizeOf(context).width,
                               fit: BoxFit.cover,
@@ -83,12 +91,14 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                   context.maybePop();
                                 }),
                           ),
-                          const Positioned(
+                          Positioned(
                             left: 22,
                             bottom: 0,
                             child: CircleAvatar(
-                              radius: 37,
-                            ),
+                                radius: 37,
+                                backgroundImage: NetworkImageWidget(
+                                  artistData?.profilePicture ?? "",
+                                ).image),
                           ),
                         ],
                       ),
@@ -102,7 +112,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            widget.artistData.name??'',
+                            artistData?.fullName ?? '',
                             maxLines: 2,
                             style: GoogleFonts.nunitoSans(
                               fontSize: 20,
@@ -113,7 +123,15 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             height: 5,
                           ),
                           Text(
-                            widget.artistData.name??'',
+                            '${artistData?.city ?? ''} , ${artistData?.country ?? ''}',
+                            // maxLines: 2,
+                            style: GoogleFonts.nunitoSans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            artistData?.bio ?? '',
                             // maxLines: 2,
                             style: GoogleFonts.nunitoSans(
                               fontSize: 14,
@@ -121,7 +139,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           PopularProductsSection(data: popularProducts),
                         ],
@@ -131,11 +149,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                 ),
               )
             : TryAgainWidget(
-                onTap: () {
-                  ref
-                      .read(artistPageModelProvider.notifier)
-                      .getPopularProducts(widget.artistData.id);
-                },
+                onTap: _refresh,
                 isProcessing: status == ArtistPageStatus.initial ||
                     status == ArtistPageStatus.loading,
                 errMessage: ref.watch(

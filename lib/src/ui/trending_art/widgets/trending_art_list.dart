@@ -49,7 +49,9 @@ class _TrendingArtListSection
     int page,
   ) async =>
       ref.read(apiServiceProvider).getTrendingArtstyle(
-              getListDataRequest: GetListDataRequest(
+          token: ref.read(authRepositoryProvider).authUser?.token ??
+              "", // Ensure token is passed correctly
+          getListDataRequest: GetListDataRequest(
             page: page,
             limit: 5,
           ));

@@ -2,6 +2,7 @@
 
 import 'dart:ffi';
 
+import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
 import 'package:Artisan/src/models/discount_data/discount_data.dart';
@@ -54,16 +55,22 @@ class HomeTabPageModel extends StateNotifier<HomeTabPageState> {
         );
         return;
       }
+      final token = ref.read(authRepositoryProvider).authUser?.token ?? "";
       final catRes = await apiService.getAllCategory(
+          token: token,
           getListDataRequest: const GetListDataRequest(page: 1, limit: 5));
       final discountRes = await apiService.getAllDiscount(
+          token: token,
           getListDataRequest: const GetListDataRequest(page: 1, limit: 5));
       final featuredRes = await apiService.getAllFeatured(
+          token: token,
           getListDataRequest: const GetListDataRequest(page: 1, limit: 3));
       final trendingArtistRes = await apiService.getTrendingArtists(
+        token: token,
         getListDataRequest: const GetListDataRequest(page: 1, limit: 2),
       );
       final trendingArtStyleRes = await apiService.getTrendingArtstyle(
+        token: token,
         getListDataRequest: const GetListDataRequest(page: 1, limit: 2),
       );
       if ([

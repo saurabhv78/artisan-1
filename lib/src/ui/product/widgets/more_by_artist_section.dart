@@ -50,7 +50,7 @@ class MoreByArtistSection extends ConsumerWidget {
                 child: products[index].id != data.id
                     ? GestureDetector(
                         onTap: () {
-                          context.pushRoute(
+                          context.replaceRoute(
                             ProductRoute(
                               id: products[index].id,
                               key: ValueKey(
@@ -103,6 +103,7 @@ class _ArtistArtCard extends ConsumerWidget {
               ),
             ),
             Text(
+              maxLines: 2,
               data.prodName,
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w400,

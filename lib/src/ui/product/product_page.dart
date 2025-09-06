@@ -63,13 +63,13 @@ class _ProductPageState extends ConsumerState<ProductPage> {
                         ImageSection(data: productData),
                         const SizedBox(height: 10),
                         NamePriceSection(productData: productData),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
 
                         /// TODO: model accepts artist data not info
-                        // ArtistDetailSection(
-                        //   artistData: productData.artistData,
-                        // ),
-                        const SizedBox(height: 20),
+                        ArtistDetailSection(
+                            artistData: productData.artistData!),
+                        // const SizedBox(height: 10),
+
                         MoreByArtistSection(
                           products: moreByArtist,
                           data: productData,
@@ -81,8 +81,8 @@ class _ProductPageState extends ConsumerState<ProductPage> {
                 ),
                 Positioned(
                   bottom: 0,
-                  child: Container(
-                    color: Colors.white,
+                  child: SizedBox(
+                    // color: Colors.white,
                     height: 66,
                     width: MediaQuery.sizeOf(context).width,
                     child: BottomButtons(

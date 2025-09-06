@@ -1,15 +1,19 @@
 import 'package:Artisan/src/constants/colors.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomScaffold extends ConsumerStatefulWidget {
   final Widget child;
   final Color bgColor;
+  final Widget? floatingActionButton;
+  final double? topPadding; // 👈 optional top padding
+
   const CustomScaffold({
     super.key,
     required this.child,
     this.bgColor = const Color(0xffEFE4FF),
+    this.floatingActionButton,
+    this.topPadding, // 👈 default null = no padding
   });
 
   @override
@@ -18,19 +22,15 @@ class CustomScaffold extends ConsumerStatefulWidget {
 
 class _CustomScaffoldState extends ConsumerState<CustomScaffold> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: widget.bgColor,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 0), // TODO: was 28
-          child: Scaffold(
-              body: Stack(
+    return Container(
+      color: widget.bgColor,
+      child: Padding(
+        padding: EdgeInsets.only(
+            top: widget.topPadding ?? 0), // 👈 apply only if given
+        child: Scaffold(
+          floatingActionButton: widget.floatingActionButton,
+          body: Stack(
             children: [
               Container(
                 height: MediaQuery.sizeOf(context).height,
@@ -41,7 +41,7 @@ class _CustomScaffoldState extends ConsumerState<CustomScaffold> {
               ),
               widget.child,
             ],
-          )),
+          ),
         ),
       ),
     );

@@ -29,6 +29,7 @@ class _TrendingArtistPageState extends ConsumerState<TrendingArtistPage> {
     final cartData =
         ref.watch(authRepositoryProvider.select((value) => value.cartData));
     return CustomScaffold(
+        topPadding: 35,
         bgColor: const Color(0xffEFE4FF),
         child: RefreshIndicator(
           displacement: 60,

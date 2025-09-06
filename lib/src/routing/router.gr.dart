@@ -179,7 +179,7 @@ abstract class _$AppRouter extends RootStackRouter {
 class ArtistRoute extends PageRouteInfo<ArtistRouteArgs> {
   ArtistRoute({
     Key? key,
-    required ArtistData artistData,
+    required ArtistInfo artistData,
     List<PageRouteInfo>? children,
   }) : super(
           ArtistRoute.name,
@@ -203,7 +203,7 @@ class ArtistRouteArgs {
 
   final Key? key;
 
-  final ArtistData artistData;
+  final ArtistInfo artistData;
 
   @override
   String toString() {

@@ -551,6 +551,8 @@ mixin _$Pricing {
   num? get tax => throw _privateConstructorUsedError;
   num? get discount => throw _privateConstructorUsedError;
   num? get total => throw _privateConstructorUsedError;
+  num? get ShippingAmount => throw _privateConstructorUsedError;
+  num? get taxPercentage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -562,7 +564,13 @@ abstract class $PricingCopyWith<$Res> {
   factory $PricingCopyWith(Pricing value, $Res Function(Pricing) then) =
       _$PricingCopyWithImpl<$Res, Pricing>;
   @useResult
-  $Res call({num? subtotal, num? tax, num? discount, num? total});
+  $Res call(
+      {num? subtotal,
+      num? tax,
+      num? discount,
+      num? total,
+      num? ShippingAmount,
+      num? taxPercentage});
 }
 
 /// @nodoc
@@ -582,6 +590,8 @@ class _$PricingCopyWithImpl<$Res, $Val extends Pricing>
     Object? tax = freezed,
     Object? discount = freezed,
     Object? total = freezed,
+    Object? ShippingAmount = freezed,
+    Object? taxPercentage = freezed,
   }) {
     return _then(_value.copyWith(
       subtotal: freezed == subtotal
@@ -600,6 +610,14 @@ class _$PricingCopyWithImpl<$Res, $Val extends Pricing>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as num?,
+      ShippingAmount: freezed == ShippingAmount
+          ? _value.ShippingAmount
+          : ShippingAmount // ignore: cast_nullable_to_non_nullable
+              as num?,
+      taxPercentage: freezed == taxPercentage
+          ? _value.taxPercentage
+          : taxPercentage // ignore: cast_nullable_to_non_nullable
+              as num?,
     ) as $Val);
   }
 }
@@ -611,7 +629,13 @@ abstract class _$$PricingImplCopyWith<$Res> implements $PricingCopyWith<$Res> {
       __$$PricingImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({num? subtotal, num? tax, num? discount, num? total});
+  $Res call(
+      {num? subtotal,
+      num? tax,
+      num? discount,
+      num? total,
+      num? ShippingAmount,
+      num? taxPercentage});
 }
 
 /// @nodoc
@@ -629,6 +653,8 @@ class __$$PricingImplCopyWithImpl<$Res>
     Object? tax = freezed,
     Object? discount = freezed,
     Object? total = freezed,
+    Object? ShippingAmount = freezed,
+    Object? taxPercentage = freezed,
   }) {
     return _then(_$PricingImpl(
       subtotal: freezed == subtotal
@@ -647,6 +673,14 @@ class __$$PricingImplCopyWithImpl<$Res>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as num?,
+      ShippingAmount: freezed == ShippingAmount
+          ? _value.ShippingAmount
+          : ShippingAmount // ignore: cast_nullable_to_non_nullable
+              as num?,
+      taxPercentage: freezed == taxPercentage
+          ? _value.taxPercentage
+          : taxPercentage // ignore: cast_nullable_to_non_nullable
+              as num?,
     ));
   }
 }
@@ -654,7 +688,13 @@ class __$$PricingImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$PricingImpl implements _Pricing {
-  const _$PricingImpl({this.subtotal, this.tax, this.discount, this.total});
+  const _$PricingImpl(
+      {this.subtotal,
+      this.tax,
+      this.discount,
+      this.total,
+      this.ShippingAmount,
+      this.taxPercentage});
 
   factory _$PricingImpl.fromJson(Map<String, dynamic> json) =>
       _$$PricingImplFromJson(json);
@@ -667,10 +707,14 @@ class _$PricingImpl implements _Pricing {
   final num? discount;
   @override
   final num? total;
+  @override
+  final num? ShippingAmount;
+  @override
+  final num? taxPercentage;
 
   @override
   String toString() {
-    return 'Pricing(subtotal: $subtotal, tax: $tax, discount: $discount, total: $total)';
+    return 'Pricing(subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, ShippingAmount: $ShippingAmount, taxPercentage: $taxPercentage)';
   }
 
   @override
@@ -683,12 +727,17 @@ class _$PricingImpl implements _Pricing {
             (identical(other.tax, tax) || other.tax == tax) &&
             (identical(other.discount, discount) ||
                 other.discount == discount) &&
-            (identical(other.total, total) || other.total == total));
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.ShippingAmount, ShippingAmount) ||
+                other.ShippingAmount == ShippingAmount) &&
+            (identical(other.taxPercentage, taxPercentage) ||
+                other.taxPercentage == taxPercentage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, subtotal, tax, discount, total);
+  int get hashCode => Object.hash(runtimeType, subtotal, tax, discount, total,
+      ShippingAmount, taxPercentage);
 
   @JsonKey(ignore: true)
   @override
@@ -709,7 +758,9 @@ abstract class _Pricing implements Pricing {
       {final num? subtotal,
       final num? tax,
       final num? discount,
-      final num? total}) = _$PricingImpl;
+      final num? total,
+      final num? ShippingAmount,
+      final num? taxPercentage}) = _$PricingImpl;
 
   factory _Pricing.fromJson(Map<String, dynamic> json) = _$PricingImpl.fromJson;
 
@@ -721,6 +772,10 @@ abstract class _Pricing implements Pricing {
   num? get discount;
   @override
   num? get total;
+  @override
+  num? get ShippingAmount;
+  @override
+  num? get taxPercentage;
   @override
   @JsonKey(ignore: true)
   _$$PricingImplCopyWith<_$PricingImpl> get copyWith =>

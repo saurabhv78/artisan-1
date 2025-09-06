@@ -1,22 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, empty_catches
 
+import 'dart:developer';
 import 'dart:io';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
-
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/requests/social_login_request.dart';
 import 'package:Artisan/src/models/requests/user_login_request.dart';
-import 'package:Artisan/src/models/user_data.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import '../../../logic/services/api_services/api_service.dart';
-
 part 'signin_model.freezed.dart';
 
 final signInPageModelProvider =
@@ -102,12 +98,12 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       if (!await hasInternetAccess()) {
         return "No Internet Connection";
       }
-      try {
-        await GoogleSignIn().disconnect();
-      } catch (e) {}
+      GoogleSignIn googleSignIn = GoogleSignIn(
+          clientId:
+              "178888187457-j83mbdja3ji3sq7e6101gmvfmsdjop1c.apps.googleusercontent.com");
+      await googleSignIn.signOut();
       if (mounted) {
-        GoogleSignInAccount? googleSignInAccount =
-            await GoogleSignIn().signIn();
+        GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
         if (googleSignInAccount == null ||
             googleSignInAccount.email.trim().isEmpty) {
           return "Authentication Failed";
@@ -116,16 +112,16 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
         final res = await apiService.socialLogin(
           socialLoginRequest: SocialLoginRequest(
             email: googleSignInAccount.email,
-            fcmToken: '*',
-            deviceId: deviceId,
-            loction: 'Social Test Address',
-            lat: "23.2",
-            lon: '33.2',
+            // fcmToken: '*',
+            // deviceId: deviceId,
+            // loction: 'Social Test Address',
+            // lat: "23.2",
+            // lon: '33.2',
             googleId: googleSignInAccount.id,
-            isEmailVerified: 1,
-            loginSource: 'google',
+            // isEmailVerified: 1,
+            // loginSource: 'google',
             name: googleSignInAccount.displayName ?? "",
-            os: Platform.isAndroid ? 'android' : 'ios',
+            // os: Platform.isAndroid ? 'android' : 'ios',
           ),
         );
         if (res.status != ApiStatus.success) {
@@ -145,6 +141,7 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       }
       return '';
     } catch (e) {
+      log(e.toString());
       return e.toString();
     }
   }
@@ -191,17 +188,17 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
         final res = await apiService.socialLogin(
           socialLoginRequest: SocialLoginRequest(
             email: email,
-            fcmToken: '*',
-            deviceId: deviceId,
-            loction: 'Social Test Address',
-            lat: "23.2",
-            lon: '33.2',
-            fbUid: profile.userId,
-            authToken: token?.authenticationToken ?? "facebook",
-            isEmailVerified: 1,
-            loginSource: 'facebook',
+            // fcmToken: '*',
+            // deviceId: deviceId,
+            // loction: 'Social Test Address',
+            // lat: "23.2",
+            // lon: '33.2',
+            // fbUid: profile.userId,
+            // authToken: token?.authenticationToken ?? "facebook",
+            // isEmailVerified: 1,
+            // loginSource: 'facebook',
             name: profile.name ?? "Facebook User",
-            os: Platform.isAndroid ? 'android' : 'ios',
+            // os: Platform.isAndroid ? 'android' : 'ios',
           ),
         );
         if (res.status != ApiStatus.success) {
@@ -262,8 +259,6 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       return e.toString();
     }
   }
-
-
 }
 
 @freezed

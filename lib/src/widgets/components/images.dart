@@ -54,9 +54,7 @@ import 'package:google_fonts/google_fonts.dart';
  */
 class NetworkImageWidget extends Image {
   NetworkImageWidget(
-     String image,
-    
-    {
+    String image, {
     super.key,
     double? height,
     double? width,
@@ -87,7 +85,7 @@ class NetworkImageWidget extends Image {
           },
         );
 
-  static ImageProvider<Object> _resolveProvider(String image) { 
+  static ImageProvider<Object> _resolveProvider(String image) {
     return image.startsWith('assets/')
         ? AssetImage(image)
         : NetworkImage(image) as ImageProvider<Object>;

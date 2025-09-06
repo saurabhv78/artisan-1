@@ -50,9 +50,13 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
       if (state.mobile.trim().length != 10) {
         return 'Invalid phone number';
       }
-      if (state.password.trim().length < 6) {
-        return 'Please length should be atlest 6';
+      final password = state.password.trim();
+      final regexp = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$');
+
+      if (!regexp.hasMatch(password)) {
+        return 'Password must be at least 8 characters long and include letters, numbers, and a special character.';
       }
+
       if (state.password.trim() != state.confirmPassword.trim()) {
         return 'Password does not match';
       }

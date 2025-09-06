@@ -1,3 +1,4 @@
+import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/logic/services/api_services/api_service.dart';
 import 'package:Artisan/src/models/product_data/product_data.dart';
 import 'package:Artisan/src/routing/router.dart';
@@ -42,7 +43,8 @@ class _ProductListSection extends ConsumerState<ProductPagedListSection> {
 
   Future<void> _fetchPage(int pageKey) async {
     final response = await ref.read(apiServiceProvider).getAllProduct(
-            getListDataRequest: GetListDataRequest(
+        token: ref.read(authRepositoryProvider).authUser?.token ?? "",
+        getListDataRequest: GetListDataRequest(
           page: pageKey,
           limit: 5,
           categoryId: widget.categoryId,

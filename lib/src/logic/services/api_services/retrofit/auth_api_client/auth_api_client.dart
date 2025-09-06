@@ -39,7 +39,7 @@ abstract class AuthApiClient {
   Future fetchUserDetails({
     @Header('Authorization') required String token,
   });
-  @POST('/auth/social_login')
+  @POST('/auth/google')
   Future soicalLogin({
     @Body() required SocialLoginRequest socialLoginRequest,
   });

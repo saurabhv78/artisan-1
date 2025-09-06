@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../logic/services/api_services/api_service.dart';
 import '../../models/api_response.dart';
+import '../../models/artist_data/artist_data.dart';
 import '../../models/product_data/product_data.dart';
 import '../../models/requests/get_list_data_request.dart';
 import '../../utils/network_utils.dart';
@@ -20,12 +22,64 @@ final artistPageModelProvider =
 
 class ArtistPageModel extends StateNotifier<ArtistPageState> {
   final ApiService apiService;
-  final StateNotifierProviderRef ref;
+  final Ref ref;
 
   ArtistPageModel({
     required this.apiService,
     required this.ref,
   }) : super(const ArtistPageState());
+  getArtistData(String artistId) async {
+    try {
+      state = state.copyWith(
+        status: ArtistPageStatus.loading,
+        artistInfo: null,
+        popularProducts: [],
+        errorMessage: "",
+      );
+      // await Future.delayed(const Duration(milliseconds: 600));
+      if (!await hasInternetAccess()) {
+        if (mounted) {
+          state = state.copyWith(
+            status: ArtistPageStatus.error,
+            errorMessage: "No Internet Connection!",
+          );
+        }
+        return;
+      }
+      final res = await apiService.getArtistData(
+        token: ref.read(authRepositoryProvider).authUser?.token ?? "",
+        sellerId: artistId,
+      );
+
+      // print()
+      if (res.status != ApiStatus.success) {
+        if (mounted) {
+          state = state.copyWith(
+            status: ArtistPageStatus.error,
+            errorMessage: res.errorMessage ?? 'Something Went Wrong!',
+          );
+        }
+        return;
+      }
+
+      if (mounted) {
+        state = state.copyWith(
+          status: ArtistPageStatus.loaded,
+          errorMessage: '',
+          artistInfo: res.data!.$1,
+          popularProducts: res.data!.$2,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        state = state.copyWith(
+          status: ArtistPageStatus.error,
+          errorMessage: e.toString(),
+        );
+      }
+    }
+  }
+
   getPopularProducts(String artistId) async {
     try {
       state = state.copyWith(
@@ -36,7 +90,7 @@ class ArtistPageModel extends StateNotifier<ArtistPageState> {
       if (!await hasInternetAccess()) {
         if (mounted) {
           state = state.copyWith(
-            popularProducts: null,
+            popularProducts: [],
             status: ArtistPageStatus.error,
             errorMessage: "No Internet Connection!",
           );
@@ -44,11 +98,12 @@ class ArtistPageModel extends StateNotifier<ArtistPageState> {
         return;
       }
       final res = await apiService.getAllProduct(
+          token: ref.read(authRepositoryProvider).authUser?.token ?? "",
           getListDataRequest: GetListDataRequest(
-        page: 1,
-        limit: 4,
-        artistId: artistId,
-      ));
+            page: 1,
+            limit: 4,
+            artistId: artistId,
+          ));
 
       // print()
       if (res.status != ApiStatus.success) {
@@ -72,7 +127,7 @@ class ArtistPageModel extends StateNotifier<ArtistPageState> {
       if (mounted) {
         state = state.copyWith(
           status: ArtistPageStatus.error,
-          popularProducts: null,
+          popularProducts: [],
           errorMessage: e.toString(),
         );
       }
@@ -83,7 +138,8 @@ class ArtistPageModel extends StateNotifier<ArtistPageState> {
 @freezed
 class ArtistPageState with _$ArtistPageState {
   const factory ArtistPageState({
-    @Default(null) List<ProductData>? popularProducts,
+    @Default(null) ArtistInfo? artistInfo,
+    @Default([]) List<ProductData> popularProducts,
     @Default('') String errorMessage,
     @Default(ArtistPageStatus.initial) ArtistPageStatus status,
   }) = _ArtistPageState;

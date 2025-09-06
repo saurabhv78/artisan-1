@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -30,7 +31,9 @@ class SearchPageModel extends StateNotifier<SearchPageState> {
     int page,
   ) async =>
       ref.read(apiServiceProvider).getAllProduct(
-              getListDataRequest: GetListDataRequest(
+          token: ref.read(authRepositoryProvider).authUser?.token ??
+              "", // Ensure token is passed correctly
+          getListDataRequest: GetListDataRequest(
             page: page,
             limit: 5,
             searchBy: state.searchText,

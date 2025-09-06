@@ -41,14 +41,14 @@ class _PopularProductsSectionState
                 padding: const EdgeInsets.only(top: 10, bottom: 40),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisExtent: 240,
+                  mainAxisExtent: 250,
                 ),
                 itemCount: widget.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
                       context.pushRoute(ProductRoute(
-                        id: widget.data[index].id??'',
+                        id: widget.data[index].id ?? '',
                         key: ValueKey(widget.data[index].id),
                       ));
                     },

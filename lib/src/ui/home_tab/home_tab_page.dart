@@ -78,6 +78,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
         return false;
       },
       child: CustomScaffold(
+          topPadding: 35,
           bgColor: Colors.white,
           child: RefreshIndicator(
             displacement: 60,

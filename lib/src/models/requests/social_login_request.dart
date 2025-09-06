@@ -6,41 +6,41 @@ part 'social_login_request.g.dart';
 class SocialLoginRequest {
   final String email;
   // final String password;
-  @JsonKey(name: "fcm_token")
-  final String fcmToken;
-  final String os;
-  @JsonKey(name: "device_id")
-  final String deviceId;
-  @JsonKey(name: "login_source")
-  final String loginSource;
-  @JsonKey(name: "auth_token")
-  final String? authToken;
-  final String? lat;
-  final String? lon;
-  final String? loction;
-  @JsonKey(name: "google_id")
+  // @JsonKey(name: "fcm_token")
+  // final String fcmToken;
+  // final String os;
+  // @JsonKey(name: "device_id")
+  // final String deviceId;
+  // @JsonKey(name: "login_source")
+  // final String loginSource;
+  // @JsonKey(name: "auth_token")
+  // final String? authToken;
+  // final String? lat;
+  // final String? lon;
+  // final String? loction;
+  @JsonKey(name: "googleId")
   final String? googleId;
-  @JsonKey(name: "fb_uid")
-  final String? fbUid;
-  @JsonKey(name: "isEmailVerified")
-  final int isEmailVerified;
-  @JsonKey(name: "full_name")
+  // @JsonKey(name: "fb_uid")
+  // final String? fbUid;
+  // @JsonKey(name: "isEmailVerified")
+  // final int isEmailVerified;
+  @JsonKey(name: "name")
   final String name;
 
   const SocialLoginRequest({
     required this.email,
-    required this.fcmToken,
-    this.lat,
-    this.lon,
-    this.loction,
-    this.authToken,
-    required this.deviceId,
+    // required this.fcmToken,
+    // this.lat,
+    // this.lon,
+    // this.loction,
+    // this.authToken,
+    // required this.deviceId,
     this.googleId,
-    this.fbUid,
-    required this.isEmailVerified,
-    required this.loginSource,
+    // this.fbUid,
+    // required this.isEmailVerified,
+    // required this.loginSource,
     required this.name,
-    required this.os,
+    // required this.os,
   });
 
   factory SocialLoginRequest.fromJson(Map<String, dynamic> json) {

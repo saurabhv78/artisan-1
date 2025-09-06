@@ -62,14 +62,16 @@ class TrendingArtistsResponse {
 @JsonSerializable()
 class ArtistData {
   final String id;
-  final String name;
+  final String? image;
+  final String? name;
   final ArtistInfo? artist;
   final List<String> images;
 
   ArtistData({
     this.id = '',
-     this.name = '',
-     this.artist,
+    this.image,
+    this.name,
+    this.artist,
     this.images = const [],
   });
 
@@ -82,11 +84,22 @@ class ArtistData {
 @JsonSerializable()
 class ArtistInfo {
   final String? id;
+  @JsonKey(fromJson: _parseFullName)
   final String? fullName;
   final String? profilePicture;
   final String? bio;
   final String? createdAt;
+  final String? country;
+  final String? city;
   final String? updatedAt;
+  final String? coverImage;
+
+  static String? _parseFullName(dynamic value) {
+    if (value is Map<String, dynamic>) {
+      return value['full_name'] ?? value['name'];
+    }
+    return value as String?;
+  }
 
   ArtistInfo({
     this.id,
@@ -94,7 +107,10 @@ class ArtistInfo {
     this.profilePicture,
     this.bio,
     this.createdAt,
+    this.country,
+    this.city,
     this.updatedAt,
+    this.coverImage,
   });
 
   factory ArtistInfo.fromJson(Map<String, dynamic> json) =>

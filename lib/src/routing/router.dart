@@ -1,3 +1,4 @@
+import 'package:Artisan/src/ui/profile_tab/edit_address_view.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
@@ -131,5 +132,4 @@ class AppRouter extends _$AppRouter {
       page: TrendingArtStylesRoute.page,
     ),
   ];
-
 }

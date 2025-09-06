@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ArtistPageState {
-  List<ProductData>? get popularProducts => throw _privateConstructorUsedError;
+  ArtistInfo? get artistInfo => throw _privateConstructorUsedError;
+  List<ProductData> get popularProducts => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   ArtistPageStatus get status => throw _privateConstructorUsedError;
 
@@ -32,7 +33,8 @@ abstract class $ArtistPageStateCopyWith<$Res> {
       _$ArtistPageStateCopyWithImpl<$Res, ArtistPageState>;
   @useResult
   $Res call(
-      {List<ProductData>? popularProducts,
+      {ArtistInfo? artistInfo,
+      List<ProductData> popularProducts,
       String errorMessage,
       ArtistPageStatus status});
 }
@@ -50,15 +52,20 @@ class _$ArtistPageStateCopyWithImpl<$Res, $Val extends ArtistPageState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? popularProducts = freezed,
+    Object? artistInfo = freezed,
+    Object? popularProducts = null,
     Object? errorMessage = null,
     Object? status = null,
   }) {
     return _then(_value.copyWith(
-      popularProducts: freezed == popularProducts
+      artistInfo: freezed == artistInfo
+          ? _value.artistInfo
+          : artistInfo // ignore: cast_nullable_to_non_nullable
+              as ArtistInfo?,
+      popularProducts: null == popularProducts
           ? _value.popularProducts
           : popularProducts // ignore: cast_nullable_to_non_nullable
-              as List<ProductData>?,
+              as List<ProductData>,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -80,7 +87,8 @@ abstract class _$$ArtistPageStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<ProductData>? popularProducts,
+      {ArtistInfo? artistInfo,
+      List<ProductData> popularProducts,
       String errorMessage,
       ArtistPageStatus status});
 }
@@ -96,15 +104,20 @@ class __$$ArtistPageStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? popularProducts = freezed,
+    Object? artistInfo = freezed,
+    Object? popularProducts = null,
     Object? errorMessage = null,
     Object? status = null,
   }) {
     return _then(_$ArtistPageStateImpl(
-      popularProducts: freezed == popularProducts
+      artistInfo: freezed == artistInfo
+          ? _value.artistInfo
+          : artistInfo // ignore: cast_nullable_to_non_nullable
+              as ArtistInfo?,
+      popularProducts: null == popularProducts
           ? _value._popularProducts
           : popularProducts // ignore: cast_nullable_to_non_nullable
-              as List<ProductData>?,
+              as List<ProductData>,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -121,20 +134,22 @@ class __$$ArtistPageStateImplCopyWithImpl<$Res>
 
 class _$ArtistPageStateImpl implements _ArtistPageState {
   const _$ArtistPageStateImpl(
-      {final List<ProductData>? popularProducts = null,
+      {this.artistInfo = null,
+      final List<ProductData> popularProducts = const [],
       this.errorMessage = '',
       this.status = ArtistPageStatus.initial})
       : _popularProducts = popularProducts;
 
-  final List<ProductData>? _popularProducts;
   @override
   @JsonKey()
-  List<ProductData>? get popularProducts {
-    final value = _popularProducts;
-    if (value == null) return null;
+  final ArtistInfo? artistInfo;
+  final List<ProductData> _popularProducts;
+  @override
+  @JsonKey()
+  List<ProductData> get popularProducts {
     if (_popularProducts is EqualUnmodifiableListView) return _popularProducts;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_popularProducts);
   }
 
   @override
@@ -146,7 +161,7 @@ class _$ArtistPageStateImpl implements _ArtistPageState {
 
   @override
   String toString() {
-    return 'ArtistPageState(popularProducts: $popularProducts, errorMessage: $errorMessage, status: $status)';
+    return 'ArtistPageState(artistInfo: $artistInfo, popularProducts: $popularProducts, errorMessage: $errorMessage, status: $status)';
   }
 
   @override
@@ -154,6 +169,8 @@ class _$ArtistPageStateImpl implements _ArtistPageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ArtistPageStateImpl &&
+            (identical(other.artistInfo, artistInfo) ||
+                other.artistInfo == artistInfo) &&
             const DeepCollectionEquality()
                 .equals(other._popularProducts, _popularProducts) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -164,6 +181,7 @@ class _$ArtistPageStateImpl implements _ArtistPageState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      artistInfo,
       const DeepCollectionEquality().hash(_popularProducts),
       errorMessage,
       status);
@@ -178,12 +196,15 @@ class _$ArtistPageStateImpl implements _ArtistPageState {
 
 abstract class _ArtistPageState implements ArtistPageState {
   const factory _ArtistPageState(
-      {final List<ProductData>? popularProducts,
+      {final ArtistInfo? artistInfo,
+      final List<ProductData> popularProducts,
       final String errorMessage,
       final ArtistPageStatus status}) = _$ArtistPageStateImpl;
 
   @override
-  List<ProductData>? get popularProducts;
+  ArtistInfo? get artistInfo;
+  @override
+  List<ProductData> get popularProducts;
   @override
   String get errorMessage;
   @override

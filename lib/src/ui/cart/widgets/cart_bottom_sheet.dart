@@ -1,4 +1,5 @@
 import 'package:Artisan/src/constants/colors.dart';
+import 'package:Artisan/src/ui/cart/checkout/checkout_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_dash/flutter_dash.dart';
@@ -53,7 +54,7 @@ class CartBottomSheet extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Tax",
+                      "Shipping & Handling Cost",
                       style: GoogleFonts.nunitoSans(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -62,7 +63,7 @@ class CartBottomSheet extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      "₹${pricing.tax?.toStringAsFixed(2) ?? '0.00'}",
+                      "₹${pricing.ShippingAmount?.toStringAsFixed(2) ?? '0.00'}",
                       style: GoogleFonts.nunitoSans(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -86,6 +87,29 @@ class CartBottomSheet extends ConsumerWidget {
                     ),
                     Text(
                       "-₹${pricing.discount?.toStringAsFixed(2) ?? '0.00'}",
+                      style: GoogleFonts.nunitoSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: .1,
+                        color: bgDark,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Tax (${pricing.taxPercentage ?? 0}%)",
+                      style: GoogleFonts.nunitoSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: .4,
+                        color: grayTextColor,
+                      ),
+                    ),
+                    Text(
+                      "₹${pricing.tax?.toStringAsFixed(2) ?? '0.00'}",
                       style: GoogleFonts.nunitoSans(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -146,7 +170,9 @@ class CartBottomSheet extends ConsumerWidget {
                 Expanded(
                   child: CustomButton(
                     text: 'Shop More',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    },
                     secondUI: true,
                     isProcessing: false,
                   ),
@@ -155,7 +181,12 @@ class CartBottomSheet extends ConsumerWidget {
                 Expanded(
                   child: CustomButton(
                     text: 'Checkout',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CheckoutPage()));
+                    },
                     isProcessing: false,
                   ),
                 ),

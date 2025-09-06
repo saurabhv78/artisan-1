@@ -31,6 +31,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
     final cartData =
         ref.watch(authRepositoryProvider.select((value) => value.cartData));
     return CustomScaffold(
+        topPadding: 35,
         bgColor: const Color(0xffEFE4FF),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -111,24 +112,28 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                 ),
               ),
             ] else
-              TryAgainWidget(
-                onTap: () {
-                  ref
-                      .read(wishlistPageModelProvider.notifier)
-                      .getWishlistData();
-                },
-                isProcessing: status == WishlistPageStatus.initial ||
-                    status == WishlistPageStatus.loading,
-                errMessage: ref.watch(
-                  wishlistPageModelProvider.select(
-                    (value) => value.errMessage.trim().isEmpty
-                        ? data.isEmpty
-                            ? "No Favourite Found"
-                            : "Something Went Wrong!!!"
-                        : value.errMessage.trim(),
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 300),
+                child: const Center(child: Text("No Favourite Found")),
               )
+            // TryAgainWidget(
+            //   onTap: () {
+            //     ref
+            //         .read(wishlistPageModelProvider.notifier)
+            //         .getWishlistData();
+            //   },
+            //   isProcessing: status == WishlistPageStatus.initial ||
+            //       status == WishlistPageStatus.loading,
+            //   errMessage: ref.watch(
+            //     wishlistPageModelProvider.select(
+            //       (value) => value.errMessage.trim().isEmpty
+            //           ? data.isEmpty
+            //               ? "No Favourite Found"
+            //               : "Something Went Wrong!!!"
+            //           : value.errMessage.trim(),
+            //     ),
+            //   ),
+            // )
           ]),
         ));
   }

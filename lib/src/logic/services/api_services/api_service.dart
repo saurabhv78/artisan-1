@@ -66,26 +66,37 @@ abstract class ApiService {
 
   Future<ApiResponse<Map<int, List<CategoryData>>>> getAllCategory({
     required GetListDataRequest getListDataRequest,
+    required String token,
   });
   Future<ApiResponse<Map<int, List<CategoryData>>>> getProductsByCategory({
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<Map<int, List<ProductData>>>> getAllProduct({
+    required String token,
     required GetListDataRequest getListDataRequest,
   });
+  Future<ApiResponse<(ArtistInfo?, List<ProductData>)>> getArtistData({
+    required String token,
+    required String sellerId,
+  });
   Future<ApiResponse<List<FeaturedProduct>>> getAllFeatured({
+    required String token,
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<ProductData>> getProductDetail({
+    required String token,
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<Map<int, List<DiscountData>>>> getAllDiscount({
+    required String token,
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<Map<int, List<ArtistData>>>> getTrendingArtists({
+    required String token,
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<Map<int, List<ArtStyle>>>> getTrendingArtstyle({
+    required String token,
     required GetListDataRequest getListDataRequest,
   });
   Future<ApiResponse<String>> updateFav({

@@ -5,7 +5,6 @@ import 'package:Artisan/src/ui/product_list/widgets/product_paged_list.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -92,7 +91,7 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
                     ? "Categories"
                     : "Discounted Products",
             style: GoogleFonts.nunitoSans(
-              fontSize: widget.categoryName != null ? 20 : 23,
+              fontSize: widget.categoryName != null ? 20 : 20,
               fontWeight: FontWeight.w400,
               color: Colors.black,
             ),

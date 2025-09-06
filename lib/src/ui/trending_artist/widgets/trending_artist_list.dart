@@ -1,3 +1,4 @@
+import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/logic/services/api_services/api_service.dart';
 
 import 'package:Artisan/src/widgets/artisan_paged_list.dart';
@@ -42,9 +43,10 @@ class _TrendingArtistListSection
     int page,
   ) async =>
       ref.read(apiServiceProvider).getTrendingArtists(
-              getListDataRequest: GetListDataRequest(
+          token: ref.read(authRepositoryProvider).authUser?.token ?? "",
+          getListDataRequest: GetListDataRequest(
             page: page,
-            limit: 5,
+            limit: 50,
           ));
   Future<void> _fetchPage(int pageKey) async {
     final response = await getTrendingArtistData(pageKey);

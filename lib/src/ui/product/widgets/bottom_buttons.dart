@@ -74,10 +74,43 @@ class _BottomButtonsState extends ConsumerState<BottomButtons> {
           Expanded(
             child: CustomButton(
               text: 'Buy Now',
-              onTap: () {
+              onTap: () async {
+                if (!cartData.contains(widget.data.id)) {
+                  if (mounted) {
+                    setState(() {
+                      isProcessing = true;
+                    });
+                  }
+
+                  final res = await ref
+                      .read(productPageModelProvider.notifier)
+                      .addToCart(
+                        widget.data.id,
+                        widget.data.discountData == null
+                            ? 0
+                            : widget.data.discountData!.discountVal,
+                        true,
+                      );
+
+                  if (res.keys.first != true) {
+                    showErrorMessage(res.values.first);
+                  } else {
+                    showSuccessMessage(res.values.first);
+                    await ref
+                        .read(authRepositoryProvider.notifier)
+                        .getCartData();
+                  }
+
+                  if (mounted) {
+                    setState(() {
+                      isProcessing = false;
+                    });
+                  }
+                }
+
                 context.navigateTo(const CartRoute());
               },
-              isProcessing: false,
+              isProcessing: isProcessing,
             ),
           ),
         ],

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/product_data/product_data.dart';
 import 'package:Artisan/src/models/requests/get_list_data_request.dart';
@@ -29,20 +30,28 @@ class CategoryTabPageModel extends StateNotifier<CategoryTabPageState> {
   }) : super(const CategoryTabPageState());
   Future<ApiResponse<Map<int, List<CategoryData>>>> getCategoryData(
     int page,
-  ) async =>
-      apiService.getAllCategory(
-          getListDataRequest: GetListDataRequest(
+  ) async {
+    final token = ref.read(authRepositoryProvider).authUser?.token ?? "";
+
+    return apiService.getAllCategory(
+      token: token,
+      getListDataRequest: GetListDataRequest(
         page: page,
         limit: 5,
-      ));
+      ),
+    );
+  }
+
   Future<ApiResponse<Map<int, List<ProductData>>>> getProductData(
     int page,
   ) async =>
       apiService.getAllProduct(
+          token: ref.read(authRepositoryProvider).authUser?.token ??
+              "", // Ensure token is passed correctly
           getListDataRequest: GetListDataRequest(
-        page: page,
-        limit: 5,
-      ));
+            page: page,
+            limit: 5,
+          ));
   isRefreshing(bool refresh) => state = state.copyWith(isRefreshing: refresh);
   refreshCount() =>
       state = state.copyWith(refreshCounter: state.refreshCounter + 1);
