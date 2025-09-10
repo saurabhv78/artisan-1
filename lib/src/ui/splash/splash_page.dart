@@ -51,16 +51,16 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           return Stack(
             alignment: Alignment.topLeft,
             children: [
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height,
-                width: MediaQuery.sizeOf(context).width,
-                child: Image.asset(
-                  'assets/images/img_splash.png',
-                  height: MediaQuery.sizeOf(context).height,
-                  width: MediaQuery.sizeOf(context).width,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              // SizedBox(
+              //   height: MediaQuery.sizeOf(context).height,
+              //   width: MediaQuery.sizeOf(context).width,
+              //   child: Image.asset(
+              //     'assets/images/img_splash.png',
+              //     height: MediaQuery.sizeOf(context).height,
+              //     width: MediaQuery.sizeOf(context).width,
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               AnimatedPositioned(
                 curve: Curves.easeOut,
                 top: isCentered ? size.height / 2 - 95 : -140,
@@ -76,9 +76,9 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                   ),
                   child: SvgPicture.asset(
                     'assets/images/A.svg',
-                    color: Colors.white,
-                    height: 175,
-                    width: 175,
+                    color: Colors.red,
+                    height: 200,
+                    width: 200,
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -13,7 +13,8 @@ class CustomScaffold extends ConsumerStatefulWidget {
     required this.child,
     this.bgColor = const Color(0xffEFE4FF),
     this.floatingActionButton,
-    this.topPadding, // 👈 default null = no padding
+    this.topPadding,
+    bool? resizeToAvoidBottomInset, // 👈 default null = no padding
   });
 
   @override

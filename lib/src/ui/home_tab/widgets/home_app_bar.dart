@@ -30,12 +30,12 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
         GestureDetector(
           onTap: () {},
           child: CircleAvatar(
-            backgroundColor: primaryColor,
+            backgroundColor: Colors.white,
             radius: 21,
             child: SvgPicture.asset(
-              'assets/images/A.svg',
+              'assets/images/white.svg',
               height: 30,
-              color: Colors.white,
+              color: Colors.red,
             ),
           ),
         ),

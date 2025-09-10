@@ -3,7 +3,7 @@ import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:photo_view/photo_view.dart';
+// import 'package:photo_view/photo_view.dart';
 
 class ImageViewerScreen extends StatefulWidget {
   final List<String> images;
@@ -35,14 +35,14 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            Center(
-              child: PhotoView(
-                imageProvider: NetworkImage(selectedImage),
-                backgroundDecoration: const BoxDecoration(color: Colors.black),
-                minScale: PhotoViewComputedScale.contained,
-                maxScale: PhotoViewComputedScale.covered * 2.0,
-              ),
-            ),
+            // Center(
+            //   child: PhotoView(
+            //     imageProvider: NetworkImage(selectedImage),
+            //     backgroundDecoration: const BoxDecoration(color: Colors.black),
+            //     minScale: PhotoViewComputedScale.contained,
+            //     maxScale: PhotoViewComputedScale.covered * 2.0,
+            //   ),
+            // ),
 
             // Back button
             Positioned(

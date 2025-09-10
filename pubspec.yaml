@@ -65,13 +65,15 @@ dependencies:
   flutter_login_facebook: ^2.0.1
   infinite_scroll_pagination: ^4.0.0
   device_info_plus: ^10.1.0
-  photo_view: ^0.15.0
+  # photo_view:
   razorpay_flutter: ^1.4.0
   lucide_icons:
   firebase_app_check: ^0.2.2+7
   flutter_pdfview: ^1.4.1+1
   http: ^1.2.2
   web_socket_channel: ^2.4.5
+  socket_io_client: ^3.0.2
+  grouped_list: ^6.0.0
 
 
 

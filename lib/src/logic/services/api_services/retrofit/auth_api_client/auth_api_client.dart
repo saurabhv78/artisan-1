@@ -9,8 +9,16 @@ import '../../../../../models/requests/social_login_request.dart';
 
 part 'auth_api_client.g.dart';
 
+// const baseUrl = "https://349c191e1349.ngrok-free.app/";
+// const baseUrl = "http://3.111.86.244:3000/";
+const baseUrl = "https://artisan-backend.handsandbrushes.com/";
+// const baseUrl = "https://artisan-backend.handsandbrushes.com/";
+//  'https://20e0675005bc.ngrok-free.app/';
+// 'http://3.111.86.244:3000';
+
 //base url
-@RestApi(baseUrl: 'http://3.111.86.244:3000/api/v1')
+// @RestApi(baseUrl: 'http://3.111.86.244:3000/api/v1')
+@RestApi(baseUrl: '$baseUrl/api/v1')
 abstract class AuthApiClient {
   factory AuthApiClient(
     Dio dio, {
