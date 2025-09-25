@@ -10,7 +10,7 @@ class ChatMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeString = DateFormat('hh:mm a').format(message.createdAt);
+    final timeString = DateFormat('hh:mm a').format(message.createdAt.toLocal());
 
     final bubbleColor = message.isMe ? primaryColor : Colors.grey[300];
     final textColor = message.isMe ? Colors.white : Colors.black87;

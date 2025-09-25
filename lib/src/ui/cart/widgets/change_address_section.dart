@@ -9,6 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
+
 class ChangeAddressSection extends ConsumerStatefulWidget {
   const ChangeAddressSection({super.key});
 
@@ -22,7 +24,7 @@ class _ChangeAddressSectionState extends ConsumerState<ChangeAddressSection> {
   String? _selectedAddressId;
   bool _isProcessing = false;
   List<Map<String, String>> _addressList = [];
-  final String _baseUrl = 'http://3.111.86.244:3000/api/v1';
+  final String _baseUrl = apiBaseUrl;
 
   @override
   void initState() {

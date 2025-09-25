@@ -19,9 +19,26 @@ class SplashPage extends ConsumerStatefulWidget {
 
 class _SplashPageState extends ConsumerState<SplashPage> {
   bool isCentered = false;
+  late ProviderSubscription _authSub;
   @override
   void initState() {
     super.initState();
+
+    // Listen manually in initState
+    _authSub = ref.listenManual<AuthState>(
+      authRepositoryProvider,
+      (previous, next) async {
+        await Future.delayed(const Duration(milliseconds: 2000));
+        if (!mounted) return;
+        if (next.status == AuthStatus.authenticated) {
+          context.replaceRoute(const MainRoute());
+        } else if (next.status == AuthStatus.authenticatedNotVerified) {
+          context.replaceRoute(const VerifyEmailOtpRoute());
+        } else if (next.status == AuthStatus.unauthenticated) {
+          context.replaceRoute(const WelcomeRoute());
+        }
+      },
+    );
     Future.delayed(const Duration(milliseconds: 1000), () {
       if (mounted) {
         setState(() {
@@ -32,18 +49,15 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   }
 
   @override
+  void dispose() {
+    // unsubscribe
+    _authSub.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    ref.listen(authRepositoryProvider, (previous, next) async {
-      await Future.delayed(const Duration(milliseconds: 2000));
-      if (next.status == AuthStatus.authenticated) {
-        context.replaceRoute(const MainRoute());
-      } else if (next.status == AuthStatus.authenticatedNotVerified) {
-        context.replaceRoute(const VerifyEmailOtpRoute());
-      } else if (next.status == AuthStatus.unauthenticated) {
-        context.replaceRoute(const WelcomeRoute());
-      }
-    });
     return CustomScaffold(
       bgColor: Colors.white,
       child: LayoutBuilder(

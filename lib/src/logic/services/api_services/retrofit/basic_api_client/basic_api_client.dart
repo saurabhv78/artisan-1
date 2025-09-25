@@ -1,3 +1,4 @@
+import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'package:Artisan/src/models/requests/cart_product_data/cart_product_data.dart';
 import 'package:Artisan/src/models/requests/get_list_data_request.dart';
 import 'package:dio/dio.dart';
@@ -6,7 +7,7 @@ import 'package:retrofit/retrofit.dart';
 part 'basic_api_client.g.dart';
 
 //base url
-@RestApi(baseUrl: 'http://3.111.86.244:3000/api/v1')
+@RestApi(baseUrl: '$baseUrl/api/v1')
 abstract class BasicApiClient {
   factory BasicApiClient(
     Dio dio, {

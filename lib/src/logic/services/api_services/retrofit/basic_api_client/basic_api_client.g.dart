@@ -14,7 +14,7 @@ class _BasicApiClient implements BasicApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://3.111.86.244:3000/api/v1';
+    baseUrl ??= 'https://artisan-backend.handsandbrushes.com/api/v1';
   }
 
   final Dio _dio;

@@ -10,8 +10,6 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'chat_message_tile.dart';
 
-// ✅ make sure you have ChatMessage model
-
 @RoutePage()
 class ChatTabPage extends ConsumerStatefulWidget {
   const ChatTabPage({super.key});
@@ -20,9 +18,7 @@ class ChatTabPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ChatTabPageState();
 }
 
-class _ChatTabPageState extends ConsumerState<ChatTabPage>
-// with WidgetsBindingObserver
-{
+class _ChatTabPageState extends ConsumerState<ChatTabPage> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
@@ -30,7 +26,6 @@ class _ChatTabPageState extends ConsumerState<ChatTabPage>
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addObserver(this);
 
     // Request chat history on load
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -51,7 +46,6 @@ class _ChatTabPageState extends ConsumerState<ChatTabPage>
 
   @override
   void dispose() {
-    // WidgetsBinding.instance.removeObserver(this);
     _controller.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
@@ -73,12 +67,10 @@ class _ChatTabPageState extends ConsumerState<ChatTabPage>
   }
 
   void _scrollToBottom() {
-    Future.delayed(const Duration(milliseconds: 100), () {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        _scrollController.animateTo(
+        _scrollController.jumpTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
         );
       }
     });
@@ -97,21 +89,16 @@ class _ChatTabPageState extends ConsumerState<ChatTabPage>
       return DateFormat.E().format(localDate);
     }
     // Older than a week → show full date
-    return DateFormat('dd MMM yyyy').format(localDate);
+    return DateFormat('dd MMM yyyy').format(localDate.toLocal());
   }
 
   @override
   Widget build(BuildContext context) {
     final messages = ref.watch(chatProvider);
 
-    // auto scroll when messages update
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToBottom();
-    });
-
     return CustomScaffold(
       topPadding: 35,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: true, // ✅ important
       child: Column(
         children: [
           Row(
@@ -128,43 +115,56 @@ class _ChatTabPageState extends ConsumerState<ChatTabPage>
               ),
             ],
           ),
+
+          /// Chat Messages List
           Expanded(
-            child: GroupedListView(
-              controller: _scrollController,
-              elements: messages,
-              groupBy: (msg) => DateTime(
-                msg.createdAt.year,
-                msg.createdAt.month,
-                msg.createdAt.day,
-              ),
-              groupSeparatorBuilder: (DateTime date) => Align(
-                alignment: Alignment.topCenter, // ✅ always top center
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Every time height changes (keyboard open/close), scroll to bottom
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _scrollToBottom();
+                });
+
+                return GroupedListView(
+                  controller: _scrollController,
+                  elements: messages,
+                  groupBy: (msg) => DateTime(
+                    msg.createdAt.year,
+                    msg.createdAt.month,
+                    msg.createdAt.day,
                   ),
-                  child: Text(
-                    _dayLabel(date),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500, // ✅ thin font
-                      fontSize: 12,
+                  groupSeparatorBuilder: (DateTime date) => Align(
+                    alignment: Alignment.topCenter, // ✅ always top center
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        _dayLabel(date.toLocal()),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              itemBuilder: (_, msg) => ChatMessageTile(message: msg),
-              useStickyGroupSeparators: true, // ✅ sticky on scroll
-              floatingHeader: true,
-              order: GroupedListOrder.ASC,
-              addAutomaticKeepAlives: false,
-              addRepaintBoundaries: false,
-              reverse: false,
+                  itemBuilder: (_, msg) => ChatMessageTile(message: msg),
+                  useStickyGroupSeparators: true, // ✅ sticky on scroll
+                  floatingHeader: true,
+                  order: GroupedListOrder.ASC,
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
+                  reverse: false,
+                );
+              },
             ),
           ),
+
+          /// Input Field
           Padding(
             padding: const EdgeInsets.all(8),
             child: Row(

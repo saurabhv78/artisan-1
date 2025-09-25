@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:Artisan/src/constants/colors.dart';
+import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
@@ -20,7 +21,7 @@ class OrderDetailsPage extends ConsumerStatefulWidget {
 class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   Map<String, dynamic>? orderData;
   bool isLoading = true;
-
+  final String _baseUrl = apiBaseUrl;
   @override
   void initState() {
     super.initState();
@@ -30,8 +31,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   Future<void> fetchOrderDetails() async {
     final token =
         ref.read(preferenceServiceProvider).getString("auth_token") ?? '';
-    final url =
-        Uri.parse('https://artisan-backend.hostree.in/api/v1/auth/orders/byId');
+    final url = Uri.parse(_baseUrl + '/auth/orders/byId');
 
     var request = http.MultipartRequest('POST', url)
       ..headers['Authorization'] = token

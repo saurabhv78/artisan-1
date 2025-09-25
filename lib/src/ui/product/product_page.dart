@@ -60,7 +60,10 @@ class _ProductPageState extends ConsumerState<ProductPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        ImageSection(data: productData),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 40),
+                          child: ImageSection(data: productData),
+                        ),
                         const SizedBox(height: 10),
                         NamePriceSection(productData: productData),
                         const SizedBox(height: 10),

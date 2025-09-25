@@ -12,6 +12,8 @@ import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/widgets/custom_button.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
 
+import '../../../logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
+
 class CheckoutPage extends ConsumerStatefulWidget {
   const CheckoutPage({super.key});
 
@@ -27,7 +29,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
   String? _paymentId;
 
   late Razorpay _razorpay;
-  final String _baseUrl = 'http://3.111.86.244:3000/api/v1';
+  final String _baseUrl = apiBaseUrl;
 
   List<Map<String, dynamic>> _addressList = [];
   List<dynamic> _cartItems = [];
@@ -78,6 +80,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final body = jsonDecode(response.body);
+        log(response.body);
         final data = body['data'];
         var paymentId = data['paymentId']?.toString();
         final razorpayOrderId = data['razorpayOrderId'];
@@ -85,7 +88,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
         final currency = data['currency'] ?? 'INR';
         final razorpayKey = data['razorpayKey']?.toString().isNotEmpty == true
             ? data['razorpayKey']
-            : 'rzp_test_50dfNGruvcDOEg'; // fallback
+            : 'rzp_test_RIZLixlOa7cEqX'; // fallback
         final prefill = data['razorpayPrefill'] ?? {};
 
         setState(() {
@@ -186,18 +189,23 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
         body: jsonEncode(payload),
       );
 
-      if (res.statusCode == 200) {
+      if (res.statusCode == 201) {
         final body = jsonDecode(res.body);
         final message = body['message'] ?? 'Payment verified successfully.';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("✅ $message"), backgroundColor: Colors.green),
         );
       } else {
+        final body = jsonDecode(res.body);
+        final message = body['message'] ?? 'Verification failed';
+        // ScaffoldMessenger.of(context).showSnackBar(
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("⚠️ Verification failed: ${res.statusCode}"),
-            backgroundColor: Colors.orange,
-          ),
+          SnackBar(content: Text("✅ $message"), backgroundColor: Colors.green),
+
+          // SnackBar(
+          //   content: Text("⚠️ Verification failed: ${res.statusCode}"),
+          //   backgroundColor: Colors.orange,
+          // ),
         );
       }
     } catch (e) {

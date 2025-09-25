@@ -6,6 +6,8 @@ import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/ui/cart/address/addNewAddress.dart';
 import 'package:Artisan/src/widgets/custom_button.dart';
 
+import '../../../logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
+
 class AddressSelectionSheet extends ConsumerStatefulWidget {
   const AddressSelectionSheet({super.key, required bool isFromProfile});
 
@@ -19,7 +21,7 @@ class _AddressSelectionSheetState extends ConsumerState<AddressSelectionSheet> {
   String? _selectedAddressId;
   bool _isProcessing = false;
   List<Map<String, String>> _addressList = [];
-  final String _baseUrl = 'http://3.111.86.244:3000/api/v1';
+  final String _baseUrl = apiBaseUrl;
 
   @override
   void initState() {

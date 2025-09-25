@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:Artisan/src/constants/colors.dart';
+import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
 import 'package:Artisan/src/ui/cart/widgets/widgets.dart';
@@ -32,7 +33,7 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
   final _mobileController = TextEditingController();
 
   bool _isSaving = false;
-  final String _baseUrl = 'http://3.111.86.244:3000/api/v1';
+  final String _baseUrl = apiBaseUrl;
 
   @override
   void initState() {

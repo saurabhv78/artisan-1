@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
+import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   File? _selectedImage;
   bool _isLoading = false;
 
+  final String _baseUrl = apiBaseUrl;
   @override
   void initState() {
     super.initState();
@@ -48,8 +50,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     final phone = _phoneController.text.trim();
     final token = ref.read(authRepositoryProvider).authUser?.token ?? "";
 
-    final url = Uri.parse(
-        'https://artisan-backend.hostree.in/api/v1/auth/update/profile');
+    // final url = Uri.parse('$_baseUrlauth+/update/profile');
+    final url = Uri.parse('/auth/update/profile');
 
     setState(() => _isLoading = true);
 

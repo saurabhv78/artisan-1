@@ -124,9 +124,11 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                         children: [
                           const SizedBox(height: 20),
                           HomeCategorySection(data: categoryData),
-                          const SizedBox(height: 20),
-                          HomeDiscountSection(data: discountData ?? []),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 10),
+                          if ((discountData ?? []).isNotEmpty) ...[
+                            HomeDiscountSection(data: discountData ?? []),
+                            const SizedBox(height: 25),
+                          ],
                           FeaturedSection(data: featuredProducts ?? []),
                           const SizedBox(height: 20),
                           const TrendingArtistSection(),

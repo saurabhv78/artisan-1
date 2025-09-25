@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:Artisan/orders/order_details.dart';
 import 'package:Artisan/src/constants/colors.dart';
+import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
@@ -25,7 +27,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
 
   final ScrollController _scrollController = ScrollController();
   final int _limit = 10;
-
+  final String _baseUrl = apiBaseUrl;
   @override
   void initState() {
     super.initState();
@@ -48,8 +50,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
     final token =
         ref.read(preferenceServiceProvider).getString("auth_token") ?? '';
 
-    final url =
-        Uri.parse('https://artisan-backend.hostree.in/api/v1/auth/orders/list');
+    final url = Uri.parse(_baseUrl + '/auth/orders/list');
 
     var request = http.MultipartRequest('POST', url)
       ..headers['Authorization'] = token
@@ -90,6 +91,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
 
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    log(msg);
   }
 
   @override
@@ -151,14 +153,6 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Text(
-                            //   order['orderId'] ?? '',
-                            //   style: GoogleFonts.nunitoSans(
-                            //     color: Colors.grey[600],
-                            //     fontSize: 10,
-                            //     fontWeight: FontWeight.w600,
-                            //   ),
-                            // ),
                             Text(
                               order['date'] ?? '',
                               style: GoogleFonts.nunitoSans(

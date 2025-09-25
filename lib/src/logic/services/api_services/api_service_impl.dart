@@ -268,9 +268,10 @@ class ApiServiceImpl extends ApiService {
         token: token, // ✅ passing token here
       ),
       (response) => ApiResponse.success({
-        response['other']['total'] as int: ((response['data'] as List?) ?? [])
-            .map((e) => CategoryData.fromJson(e))
-            .toList(),
+        (response['other']?['total'] ?? 0) as int:
+            ((response['data'] as List?) ?? [])
+                .map((e) => CategoryData.fromJson(e))
+                .toList(),
       }),
     );
   }
@@ -279,15 +280,6 @@ class ApiServiceImpl extends ApiService {
   Future<ApiResponse<Map<int, List<CategoryData>>>> getProductsByCategory({
     required GetListDataRequest getListDataRequest,
   }) async {
-    // return await safeApiCall<Map<int, List<CategoryData>>>(
-    //   () async => await _basicApiClient.getProductsByCategory(
-    //       catId: getListDataRequest.categoryId ?? ''),
-    //   (response) => ApiResponse.success({
-    //     response['other']['total'] as int: ((response['data'] as List?) ?? [])
-    //         .map((e) => CategoryData.fromJson(e))
-    //         .toList()
-    //   }),
-    // );
     return await safeApiCall<Map<int, List<CategoryData>>>(
       () async => await _basicApiClient.getProductsByCategory(
         catId: getListDataRequest.categoryId ?? '',
@@ -318,9 +310,10 @@ class ApiServiceImpl extends ApiService {
       () async => await _basicApiClient.getAllProducts(
           token: token, getListDataRequest: getListDataRequest),
       (response) => ApiResponse.success({
-        response['other']['total'] as int: ((response['data'] as List?) ?? [])
-            .map((e) => ProductData.fromJson(e))
-            .toList()
+        (response['other']?['total'] ?? 0) as int:
+            ((response['data'] as List?) ?? [])
+                .map((e) => ProductData.fromJson(e))
+                .toList()
       }),
     );
   }
@@ -388,9 +381,10 @@ class ApiServiceImpl extends ApiService {
             response['message'] ?? "Something Went Wrong!");
       } else if (response['success'] == true) {
         return ApiResponse.success({
-          response['other']['total'] as int: ((response['data'] as List?) ?? [])
-              .map((e) => DiscountData.fromJson(e))
-              .toList()
+          (response['other']?['total'] ?? 0) as int:
+              ((response['data'] as List?) ?? [])
+                  .map((e) => DiscountData.fromJson(e))
+                  .toList()
         });
       } else {
         return ApiResponse.error('Something Went Wrong');
@@ -419,9 +413,10 @@ class ApiServiceImpl extends ApiService {
             response['message'] ?? "Something Went Wrong!");
       } else if (response['success'] == true) {
         return ApiResponse.success({
-          response['other']['total'] as int: ((response['data'] as List?) ?? [])
-              .map((e) => ArtistData.fromJson(e))
-              .toList()
+          (response['other']?['total'] ?? 0) as int:
+              ((response['data'] as List?) ?? [])
+                  .map((e) => ArtistData.fromJson(e))
+                  .toList()
         });
       } else {
         return ApiResponse.error('Something Went Wrong');
@@ -445,9 +440,10 @@ class ApiServiceImpl extends ApiService {
       () async => await _basicApiClient.getTrendingArtStyle(
           token: token, getListDataRequest: getListDataRequest),
       (response) => ApiResponse.success({
-        response['other']['total'] as int: ((response['data'] as List?) ?? [])
-            .map((e) => ArtStyle.fromJson(e))
-            .toList()
+        (response['other']?['total'] ?? 0) as int:
+            ((response['data'] as List?) ?? [])
+                .map((e) => ArtStyle.fromJson(e))
+                .toList()
       }),
     );
   }
@@ -649,8 +645,8 @@ Future<ApiResponse<T>> safeApiCall<T>(
 
     return onSuccess(response);
   } catch (e, stackTrace) {
-    log('[API Error] ${e.toString()}');
-    log('[StackTrace] $stackTrace');
+    print('[API Error] ${e.toString()}');
+    print('[StackTrace] $stackTrace');
 
     final hasInternet = await hasInternetAccess();
     if (!hasInternet) return ApiResponse.noInternet();
