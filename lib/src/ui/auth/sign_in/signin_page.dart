@@ -13,6 +13,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -374,7 +375,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              GoogleSignIn().disconnect();
+                              GoogleSignIn.instance.disconnect();
                               showSuccessMessage("Coming Soon!");
                             },
                             child: Image.asset(

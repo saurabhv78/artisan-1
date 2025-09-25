@@ -2,6 +2,7 @@ import 'package:Artisan/src/models/category_data/category_data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../widgets/components/images.dart';

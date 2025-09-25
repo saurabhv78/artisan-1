@@ -2,6 +2,7 @@ import 'package:Artisan/src/routing/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/category_data/category_data.dart';
@@ -74,14 +75,12 @@ class _CategoryCard extends ConsumerWidget {
           child: Column(
             children: [
               NetworkImageWidget(
-                 data.catImage,
+                data.catImage,
                 height: 121,
                 width: 131,
                 fit: BoxFit.cover,
               ),
-              const SizedBox(
-                height: 5
-              ),
+              const SizedBox(height: 5),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),

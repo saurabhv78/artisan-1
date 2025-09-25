@@ -7,6 +7,7 @@ import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/user_register_data.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../logic/services/api_services/api_service.dart';
 

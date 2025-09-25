@@ -3,6 +3,7 @@ import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;

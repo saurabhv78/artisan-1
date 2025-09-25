@@ -7,6 +7,7 @@ import 'package:Artisan/src/ui/auth/verify_otp/widgets/otp_text_field.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../logic/repositories/auth_repository.dart';

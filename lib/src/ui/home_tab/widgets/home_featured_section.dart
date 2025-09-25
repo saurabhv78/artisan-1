@@ -2,6 +2,7 @@ import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/product_data/featured_product.dart';
@@ -97,7 +98,7 @@ class _FeaturedCard extends ConsumerWidget {
           alignment: Alignment.bottomCenter,
           children: [
             NetworkImageWidget(
-                  productData.images.isNotEmpty ? productData.images.first : '',
+              productData.images.isNotEmpty ? productData.images.first : '',
               fit: BoxFit.cover,
               height: 190,
               width: MediaQuery.sizeOf(context).width,

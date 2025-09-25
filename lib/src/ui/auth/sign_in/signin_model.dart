@@ -9,6 +9,7 @@ import 'package:Artisan/src/models/requests/user_login_request.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
 // import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
@@ -98,14 +99,14 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       if (!await hasInternetAccess()) {
         return "No Internet Connection";
       }
-      GoogleSignIn googleSignIn = GoogleSignIn(
+      await GoogleSignIn.instance.initialize(
           clientId:
               "178888187457-j83mbdja3ji3sq7e6101gmvfmsdjop1c.apps.googleusercontent.com");
-      await googleSignIn.signOut();
+      await GoogleSignIn.instance.signOut();
       if (mounted) {
-        GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-        if (googleSignInAccount == null ||
-            googleSignInAccount.email.trim().isEmpty) {
+        GoogleSignInAccount? googleSignInAccount =
+            await GoogleSignIn.instance.authenticate();
+        if (googleSignInAccount.email.trim().isEmpty) {
           return "Authentication Failed";
         }
         final deviceId = await getId();

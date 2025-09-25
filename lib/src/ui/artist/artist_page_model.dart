@@ -2,6 +2,7 @@
 
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../logic/services/api_services/api_service.dart';

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/ui/chat_tab/chat_message.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'websocket_service.dart';
 
@@ -147,7 +148,6 @@ final chatProvider =
     StateNotifierProvider<ChatNotifier, List<ChatMessage>>((ref) {
   return ChatNotifier(ref);
 });
-
 
 // final webSocketProvider = Provider<WebSocketService>((ref) {
 //   return WebSocketService(baseUrl);

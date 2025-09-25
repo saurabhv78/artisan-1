@@ -6,6 +6,7 @@ import 'package:Artisan/src/models/product_data/product_data.dart';
 import 'package:Artisan/src/models/requests/get_list_data_request.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../logic/services/api_services/api_service.dart';

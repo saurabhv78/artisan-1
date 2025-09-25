@@ -6,6 +6,7 @@ import 'package:Artisan/src/models/requests/user_logout_request.dart';
 import 'package:Artisan/src/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -142,7 +143,9 @@ class AuthRepository extends StateNotifier<AuthState> {
       return;
     } else {
       if (mounted) {
-        state = state.copyWith(cartData: res.data!.items.map((e) => e.id).whereType<String>().toList());
+        state = state.copyWith(
+            cartData:
+                res.data!.items.map((e) => e.id).whereType<String>().toList());
       }
     }
   }
@@ -268,7 +271,7 @@ class AuthRepository extends StateNotifier<AuthState> {
     } catch (e) {
       setIdToken("", "");
       try {
-        GoogleSignIn().disconnect();
+        GoogleSignIn.instance.disconnect();
       } catch (e) {
         // return e.toString()
       }
