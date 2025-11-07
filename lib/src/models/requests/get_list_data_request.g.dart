@@ -19,23 +19,15 @@ GetListDataRequest _$GetListDataRequestFromJson(Map<String, dynamic> json) =>
       updateFavProdId: json['productId'] as String?,
     );
 
-Map<String, dynamic> _$GetListDataRequestToJson(GetListDataRequest instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('page', instance.page);
-  writeNotNull('limit', instance.limit);
-  writeNotNull('id', instance.productId);
-  writeNotNull('category', instance.categoryId);
-  writeNotNull('seller', instance.artistId);
-  writeNotNull('discount', instance.discountId);
-  writeNotNull('search_by', instance.searchBy);
-  writeNotNull('artStyleId', instance.artStyleId);
-  writeNotNull('productId', instance.updateFavProdId);
-  return val;
-}
+Map<String, dynamic> _$GetListDataRequestToJson(GetListDataRequest instance) =>
+    <String, dynamic>{
+      if (instance.page case final value?) 'page': value,
+      if (instance.limit case final value?) 'limit': value,
+      if (instance.productId case final value?) 'id': value,
+      if (instance.categoryId case final value?) 'category': value,
+      if (instance.artistId case final value?) 'seller': value,
+      if (instance.discountId case final value?) 'discount': value,
+      if (instance.searchBy case final value?) 'search_by': value,
+      if (instance.artStyleId case final value?) 'artStyleId': value,
+      if (instance.updateFavProdId case final value?) 'productId': value,
+    };

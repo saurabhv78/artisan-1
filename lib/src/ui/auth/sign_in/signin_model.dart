@@ -1,13 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, empty_catches
-
-import 'dart:developer';
 import 'dart:io';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/requests/social_login_request.dart';
 import 'package:Artisan/src/models/requests/user_login_request.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
-// import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:firebase_messaging/firebase_messaging.dart'
+    show FirebaseMessaging;
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -48,12 +47,13 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       if (!regex.hasMatch(state.email)) {
         return "Please enter valid email";
       }
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
       final deviceId = await getId();
       final res = await apiService.loginUser(
           userLoginRequest: UserLoginRequest(
               email: email ?? state.email,
               password: password ?? state.password,
-              fcmToken: '*',
+              fcmToken: fcmToken.toString(),
               deviceId: deviceId,
               os: Platform.isAndroid ? 'android' : "ios"));
       ref.read(authRepositoryProvider.notifier).setEmail(state.email);
@@ -96,53 +96,70 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
 
   Future<String> signinWithGoogle() async {
     try {
+      print("Starting Google Sign-in process");
+
       if (!await hasInternetAccess()) {
+        print("No internet connection");
         return "No Internet Connection";
       }
-      await GoogleSignIn.instance.initialize(
-          clientId:
-              "178888187457-j83mbdja3ji3sq7e6101gmvfmsdjop1c.apps.googleusercontent.com");
-      await GoogleSignIn.instance.signOut();
-      if (mounted) {
-        GoogleSignInAccount? googleSignInAccount =
-            await GoogleSignIn.instance.authenticate();
-        if (googleSignInAccount.email.trim().isEmpty) {
-          return "Authentication Failed";
-        }
-        final deviceId = await getId();
-        final res = await apiService.socialLogin(
-          socialLoginRequest: SocialLoginRequest(
-            email: googleSignInAccount.email,
-            // fcmToken: '*',
-            // deviceId: deviceId,
-            // loction: 'Social Test Address',
-            // lat: "23.2",
-            // lon: '33.2',
-            googleId: googleSignInAccount.id,
-            // isEmailVerified: 1,
-            // loginSource: 'google',
-            name: googleSignInAccount.displayName ?? "",
-            // os: Platform.isAndroid ? 'android' : 'ios',
-          ),
-        );
-        if (res.status != ApiStatus.success) {
-          return res.errorMessage ?? "Something Went Wrong";
-        }
-        if (mounted) {
-          ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-          ref
-              .read(authRepositoryProvider.notifier)
-              .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
-          ref
-              .read(authRepositoryProvider.notifier)
-              .changeState(AuthStatus.authenticated);
-          ref.read(authRepositoryProvider.notifier).getAllUserDetails();
-        }
-        return '';
+
+      print("Internet connection available");
+
+      // Create a GoogleSignIn instance
+      final GoogleSignIn signIn = GoogleSignIn.instance;
+      await signIn.initialize(
+        serverClientId:
+            "696852379554-i91o5ktaudnci241627rq6i7rj9hnn6v.apps.googleusercontent.com",
+      );
+
+      print("Fetching FCM token");
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      print("FCM token: $fcmToken");
+
+      print("Starting Google authentication");
+      final GoogleSignInAccount googleUser = await signIn.authenticate();
+
+      print("Google account email: ${googleUser.email}");
+
+      print("Fetching device ID");
+      final deviceId = await getId();
+      print("Device ID: $deviceId");
+
+      print("Sending social login API request");
+      final res = await apiService.socialLogin(
+        socialLoginRequest: SocialLoginRequest(
+          email: googleUser.email,
+          fcmToken: fcmToken ?? "",
+          deviceId: deviceId,
+          googleId: googleUser.id,
+          loginSource: 'google',
+          name: googleUser.displayName ?? "",
+        ),
+      );
+
+      print("API response status: ${res.status}");
+      if (res.status != ApiStatus.success) {
+        print("API error message: ${res.errorMessage}");
+        return res.errorMessage ?? "Something Went Wrong";
       }
+
+      print("Updating user and setting tokens");
+      ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+      ref.read(authRepositoryProvider.notifier).setIdToken(
+            res.data?.token ?? "",
+            res.data?.userData.id ?? "",
+          );
+
+      ref
+          .read(authRepositoryProvider.notifier)
+          .changeState(AuthStatus.authenticated);
+      ref.read(authRepositoryProvider.notifier).getAllUserDetails();
+
+      print("Google Sign-in completed successfully");
       return '';
-    } catch (e) {
-      log(e.toString());
+    } catch (e, stackTrace) {
+      print("Exception during Google Sign-in: $e");
+      print("StackTrace: $stackTrace");
       return e.toString();
     }
   }
@@ -167,63 +184,124 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
   //   print(email);
   // }
 
-  Future<String> signInWithFacebook() async {
-    return "Feature Disabled by Admin";
-    // if (!(await hasInternetAccess())) {
-    //   return 'No internet connection!';
-    // }
-    // try {
-    //   final plugin = FacebookLogin(debug: true);
-    //   try {
-    //     await plugin.logOut();
-    //     // plugin.
-    //   } catch (e) {}
-    //   await plugin.logIn(permissions: [
-    //     FacebookPermission.publicProfile,
-    //     FacebookPermission.email,
-    //   ]);
-    //   final deviceId = await getId();
-    //   final profile = await plugin.getUserProfile();
-    //   final email = await plugin.getUserEmail();
-    //   final token = await plugin.accessToken;
-    //   if (email != null && email.isNotEmpty && profile != null) {
-    //     final res = await apiService.socialLogin(
-    //       socialLoginRequest: SocialLoginRequest(
-    //         email: email,
-    //         // fcmToken: '*',
-    //         // deviceId: deviceId,
-    //         // loction: 'Social Test Address',
-    //         // lat: "23.2",
-    //         // lon: '33.2',
-    //         // fbUid: profile.userId,
-    //         // authToken: token?.authenticationToken ?? "facebook",
-    //         // isEmailVerified: 1,
-    //         // loginSource: 'facebook',
-    //         name: profile.name ?? "Facebook User",
-    //         // os: Platform.isAndroid ? 'android' : 'ios',
-    //       ),
-    //     );
-    //     if (res.status != ApiStatus.success) {
-    //       return res.errorMessage ?? "Something Went Wrong";
-    //     }
-    //     if (mounted) {
-    //       ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-    //       ref
-    //           .read(authRepositoryProvider.notifier)
-    //           .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
-    //       ref
-    //           .read(authRepositoryProvider.notifier)
-    //           .changeState(AuthStatus.authenticated);
-    //       ref.read(authRepositoryProvider.notifier).getAllUserDetails();
-    //     }
+  // Future<String> signInWithFacebook() async {
+  //   // return
+  //   // "Feature Disabled by Admin";
+  //   if (!(await hasInternetAccess())) {
+  //     return 'No internet connection!';
+  //   }
+  //   try {
+  //     final plugin = FacebookLogin(debug: true);
+  //     try {
+  //       await plugin.logOut();
+  //       // plugin.
+  //     } catch (e) {}
+  //     await plugin.logIn(permissions: [
+  //       FacebookPermission.publicProfile,
+  //       FacebookPermission.email,
+  //     ]);
+  //     final deviceId = await getId();
+  //     final profile = await plugin.getUserProfile();
+  //     final email = await plugin.getUserEmail();
+  //     final token = await plugin.accessToken;
+  //     if (email != null && email.isNotEmpty && profile != null) {
+  //       final res = await apiService.socialLogin(
+  //         socialLoginRequest: SocialLoginRequest(
+  //           email: email,
+  //           fcmToken: '*',
+  //           deviceId: deviceId,
+  //           // loction: 'Social Test Address',
+  //           // lat: "23.2",
+  //           // lon: '33.2',
+  //           // fbUid: profile.userId,
+  //           // authToken: token?.authenticationToken ?? "facebook",
+  //           // isEmailVerified: 1,
+  //           loginSource: 'facebook',
+  //           name: profile.name ?? "Facebook User",
+  //           // os: Platform.isAndroid ? 'android' : 'ios',
+  //         ),
+  //       );
+  //       if (res.status != ApiStatus.success) {
+  //         return res.errorMessage ?? "Something Went Wrong";
+  //       }
+  //       if (mounted) {
+  //         ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+  //         ref
+  //             .read(authRepositoryProvider.notifier)
+  //             .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
+  //         ref
+  //             .read(authRepositoryProvider.notifier)
+  //             .changeState(AuthStatus.authenticated);
+  //         ref.read(authRepositoryProvider.notifier).getAllUserDetails();
+  //       }
 
-    //     return '';
-    //   } else {
-    //     return "Something Went Wrong!!!";
-    //   }
-    // } catch (e) {
-    //   return e.toString();
-    // }
+  //       return '';
+  //     } else {
+  //       return "Something Went Wrong!!!";
+  //     }
+  //   } catch (e) {
+  //     return e.toString();
+  //   }
+  // }
+  Future<String> signInWithFacebook(WidgetRef ref) async {
+    if (!(await hasInternetAccess())) {
+      return 'No internet connection!';
+    }
+
+    try {
+      // Log out any existing Facebook session
+      await FacebookAuth.instance.logOut();
+
+      // Trigger login
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['email', 'public_profile'],
+      );
+
+      if (result.status == LoginStatus.success) {
+        final accessToken = result.accessToken;
+        final userData = await FacebookAuth.instance.getUserData();
+
+        final email = userData['email'];
+        final name = userData['name'];
+        final fbUid = userData['id'];
+        final deviceId = await getId();
+
+        if (email != null && email.isNotEmpty) {
+          final res = await apiService.socialLogin(
+            socialLoginRequest: SocialLoginRequest(
+              email: email,
+              fcmToken: '*',
+              deviceId: deviceId,
+              loginSource: 'facebook',
+              name: name ?? "Facebook User",
+            ),
+          );
+
+          if (res.status != ApiStatus.success) {
+            return res.errorMessage ?? "Something went wrong";
+          }
+
+          ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+          ref
+              .read(authRepositoryProvider.notifier)
+              .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
+          ref
+              .read(authRepositoryProvider.notifier)
+              .changeState(AuthStatus.authenticated);
+          ref.read(authRepositoryProvider.notifier).getAllUserDetails();
+
+          return '';
+        } else {
+          return "Failed to get email from Facebook.";
+        }
+      } else if (result.status == LoginStatus.cancelled) {
+        return "Login cancelled by user.";
+      } else {
+        return result.message ?? "Facebook login failed.";
+      }
+    } catch (e) {
+      return "Facebook login error: $e";
+    }
   }
 
   Future<String> signInWithApple({List<Scope> scopes = const []}) async {

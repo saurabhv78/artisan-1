@@ -3,16 +3,15 @@ import 'package:Artisan/src/constants/colors.dart';
 import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
 import 'package:Artisan/src/logic/services/preference_services.dart';
 import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
-import 'package:Artisan/src/ui/cart/widgets/widgets.dart';
 import 'package:Artisan/src/widgets/custom_button.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class AddressFormScreen extends ConsumerStatefulWidget {
   final String? editAddressId;
@@ -36,11 +35,112 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
   bool _isSaving = false;
   final String _baseUrl = apiBaseUrl;
 
+  LatLng? _selectedLocation;
+  GoogleMapController? _mapController;
+
   @override
   void initState() {
     super.initState();
     if (widget.editAddressId != null) {
       _loadAddressDetails(widget.editAddressId!);
+    } else {
+      _initLocation();
+    }
+  }
+
+  Future<void> _initLocation() async {
+    try {
+      final hasPermission = await _handleLocationPermission();
+      if (!hasPermission) return;
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      final location = LatLng(position.latitude, position.longitude);
+      setState(() {
+        _selectedLocation = location;
+      });
+
+      // Fill address fields initially
+      await _updateAddressFromLatLng(location);
+    } catch (e) {
+      _showError('Error getting location: $e');
+    }
+  }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      _showError('Location services are disabled. Please enable them.');
+      return false;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        _showError('Location permission denied.');
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      _showError(
+          'Location permissions are permanently denied. Please enable them from settings.');
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> _updateAddressFromLatLng(LatLng? location) async {
+    if (location == null) {
+      print('Location is null, cannot reverse geocode');
+      return;
+    }
+
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(location.latitude, location.longitude);
+
+      if (placemarks.isNotEmpty) {
+        final place = placemarks.first;
+
+        print('--- Reverse Geocoding Result ---');
+        print('Name: ${place.name ?? ''}');
+        print('Street: ${place.street ?? ''}');
+        print('Locality / City: ${place.locality ?? ''}');
+        print('SubLocality: ${place.subLocality ?? ''}');
+        print('AdministrativeArea / State: ${place.administrativeArea ?? ''}');
+        print('SubAdministrativeArea: ${place.subAdministrativeArea ?? ''}');
+        print('Postal Code: ${place.postalCode ?? ''}');
+        print('Country: ${place.country ?? ''}');
+        print('ISO Country Code: ${place.isoCountryCode ?? ''}');
+        print('Thoroughfare: ${place.thoroughfare ?? ''}');
+        print('SubThoroughfare: ${place.subThoroughfare ?? ''}');
+        print('--------------------------------');
+
+        setState(() {
+          // _streetController.text = (place.street ?? '').trim();
+          _streetController.text = [place.street, place.subLocality]
+              .where((e) => e != null && e.isNotEmpty)
+              .join(', ')
+              .trim();
+          _cityController.text = (place.locality ?? '').trim();
+          _stateController.text = (place.administrativeArea ?? '').trim();
+          _countryController.text = (place.country ?? '').trim();
+          _postalCodeController.text = (place.postalCode ?? '').trim();
+        });
+      } else {
+        print('No placemarks found for the location.');
+      }
+    } catch (e) {
+      _showError("Error getting address: $e");
+      print('Error in _updateAddressFromLatLng: $e');
     }
   }
 
@@ -68,6 +168,18 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
         _postalCodeController.text = data['pincode'] ?? '';
         _fullNameController.text = data['fullName'] ?? '';
         _mobileController.text = data['contactNumber'] ?? '';
+
+        if (data['latitude'] != null && data['longitude'] != null) {
+          final location = LatLng(
+            double.tryParse(data['latitude'].toString()) ?? 0.0,
+            double.tryParse(data['longitude'].toString()) ?? 0.0,
+          );
+          setState(() {
+            _selectedLocation = location;
+          });
+        } else {
+          _initLocation();
+        }
       } else {
         _showError('Failed to load address');
       }
@@ -85,6 +197,7 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
     _countryController.dispose();
     _fullNameController.dispose();
     _mobileController.dispose();
+    _mapController?.dispose();
     super.dispose();
   }
 
@@ -92,6 +205,14 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
     final token =
         ref.read(preferenceServiceProvider).getString("auth_token") ?? '';
     final isEdit = widget.editAddressId != null;
+
+    final latitude = _selectedLocation?.latitude;
+    final longitude = _selectedLocation?.longitude;
+
+    if (latitude == null || longitude == null) {
+      _showError('Please select a location on the map');
+      return;
+    }
 
     final url = Uri.parse(isEdit
         ? '$_baseUrl/auth/address/update'
@@ -105,11 +226,11 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
       "pincode": _postalCodeController.text.trim(),
       "fullName": _fullNameController.text.trim(),
       "contactNumber": _mobileController.text.trim(),
+      "latitude": latitude.toString(),
+      "longitude": longitude.toString(),
     };
 
-    if (isEdit) {
-      body["id"] = widget.editAddressId!;
-    }
+    if (isEdit) body["id"] = widget.editAddressId!;
 
     setState(() => _isSaving = true);
 
@@ -147,16 +268,14 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       topPadding: 35,
-      // bgColor: Colors.white,
       child: Stack(children: [
         SingleChildScrollView(
           child: Column(
@@ -164,7 +283,6 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 15, 25, 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     BackBtn(
                       iconColor: Colors.black,
@@ -218,6 +336,51 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 25),
+
+              // Google Map with draggable marker
+              if (_selectedLocation != null) ...[
+                SizedBox(
+                  height: 250,
+                  child: GoogleMap(
+                    zoomGesturesEnabled: true,
+                    zoomControlsEnabled: true,
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      target: _selectedLocation!,
+                      zoom: 15,
+                    ),
+                    onMapCreated: (controller) => _mapController = controller,
+                    markers: {
+                      Marker(
+                        consumeTapEvents: true,
+                        markerId: const MarkerId('selected-location'),
+                        position: _selectedLocation!,
+                        draggable: true,
+                        onDragEnd: (newPosition) async {
+                          setState(() {
+                            _selectedLocation = newPosition;
+                          });
+                          await _updateAddressFromLatLng(newPosition);
+                        },
+                      ),
+                    },
+                    onTap: (newPosition) async {
+                      setState(() {
+                        _selectedLocation = newPosition;
+                      });
+                      await _updateAddressFromLatLng(newPosition);
+                    },
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                  ),
+                ),
+              ] else
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                ),
+
               const SizedBox(height: 40),
               CustomButton(
                 isProcessing: _isSaving,
@@ -228,6 +391,7 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
                 },
                 text: 'Save Changes',
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

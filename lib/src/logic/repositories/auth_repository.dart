@@ -41,10 +41,10 @@ class AuthRepository extends StateNotifier<AuthState> {
   }) : super(const AuthState()) {
     fetchUserDetails();
   }
-  updateUser(UserData? userData) => state =
+  AuthState updateUser(UserData? userData) => state =
       state.copyWith(authUser: userData, email: userData?.userData.email);
 
-  fetchUserDetails() async {
+  Future<void> fetchUserDetails() async {
     if (!await hasInternetAccess()) {
       showErrorMessage("No Internet Connection");
       state = state.copyWith(status: AuthStatus.unauthenticated);
@@ -180,6 +180,7 @@ class AuthRepository extends StateNotifier<AuthState> {
           wishlist: [],
           cartData: [],
           password: null);
+      GoogleSignIn.instance.disconnect();
       return "";
     } catch (e) {
       state = state.copyWith(

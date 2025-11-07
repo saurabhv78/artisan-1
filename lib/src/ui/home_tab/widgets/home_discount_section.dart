@@ -1,84 +1,130 @@
+import 'dart:async';
 import 'package:Artisan/src/routing/router.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../models/discount_data/discount_data.dart';
 
-class HomeDiscountSection extends ConsumerWidget {
+class HomeDiscountSection extends StatefulWidget {
   final List<DiscountData> data;
-  const HomeDiscountSection({
-    super.key,
-    required this.data,
-  });
+  const HomeDiscountSection({super.key, required this.data});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<HomeDiscountSection> createState() => _HomeDiscountSectionState();
+}
+
+class _HomeDiscountSectionState extends State<HomeDiscountSection> {
+  late final PageController _pageController;
+  int _currentPage = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController =
+        PageController(viewportFraction: 0.9); // show partial next
+    if (widget.data.isNotEmpty) {
+      _timer = Timer.periodic(const Duration(seconds: 3), (_) {
+        if (_pageController.hasClients) {
+          _currentPage++;
+          if (_currentPage >= widget.data.length) {
+            _currentPage = 0;
+          }
+          _pageController.animateToPage(
+            _currentPage,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.data.isEmpty) return const SizedBox.shrink();
+
     return SizedBox(
-      height: data.isEmpty ? 0 : 131,
-      child: ListView.builder(
-        itemCount: data.length,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemBuilder: (BuildContext context, int index) {
+      height: 150,
+      child: PageView.builder(
+        controller: _pageController,
+        itemCount: widget.data.length,
+        itemBuilder: (context, index) {
+          final discount = widget.data[index];
           return GestureDetector(
-              onTap: () {
-                context
-                    .navigateTo(ProductListRoute(discountId: data[index].id));
-              },
-              child: _DiscountCard(data: data[index]));
+            onTap: () {
+              context.navigateTo(ProductListRoute(discountId: discount.id));
+            },
+            child: _DiscountCard(data: discount),
+          );
         },
       ),
     );
   }
 }
 
-class _DiscountCard extends ConsumerWidget {
+class _DiscountCard extends StatelessWidget {
   final DiscountData data;
-  const _DiscountCard({
-    required this.data,
-  });
+  const _DiscountCard({super.key, required this.data});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 6),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: const Color(0xff141516),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                  offset: Offset(1, 2),
-                  blurRadius: 4,
-                )
-              ]),
-          height: 131,
-          width: 260,
-          child: Row(
+            color: const Color(0xff141516),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.25),
+                offset: Offset(1, 2),
+                blurRadius: 4,
+              ),
+            ],
+          ),
+          child: Stack(
+            fit: StackFit.expand,
             children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
+              NetworkImageWidget(
+                data.discountImage.toString(),
+                fit: BoxFit.cover,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.0),
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.center,
                   ),
-                  child: Center(
-                      child: Column(
+                ),
+              ),
+              if (data.isDiscountTextEnabled == true)
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "UPTO",
                         style: GoogleFonts.nunitoSans(
                           fontWeight: FontWeight.w400,
                           fontSize: 15,
-                          letterSpacing: .02,
                           color: Colors.white,
                         ),
                       ),
@@ -87,28 +133,20 @@ class _DiscountCard extends ConsumerWidget {
                         style: GoogleFonts.nunitoSans(
                           fontWeight: FontWeight.w700,
                           fontSize: 20,
-                          letterSpacing: .02,
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        "ON SELECTED ARTS",
-                        textAlign: TextAlign.center,
+                        data.discountName.toString(),
                         style: GoogleFonts.nunitoSans(
                           fontWeight: FontWeight.w400,
                           fontSize: 15,
-                          letterSpacing: .02,
                           color: Colors.white,
                         ),
                       ),
                     ],
-                  )),
+                  ),
                 ),
-              ),
-              Image.asset(
-                'assets/images/img_discount.png',
-                width: 110,
-              )
             ],
           ),
         ),

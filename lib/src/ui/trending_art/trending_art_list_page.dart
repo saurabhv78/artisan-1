@@ -63,7 +63,7 @@ class _TrendingArtStylesPageState extends ConsumerState<TrendingArtStylesPage> {
                         child: Text(
                           "Trending Art Styles",
                           style: GoogleFonts.nunitoSans(
-                            fontSize: 20,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
                           ),

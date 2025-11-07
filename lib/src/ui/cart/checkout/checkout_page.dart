@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:Artisan/src/constants/colors.dart';
 import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
+import 'package:Artisan/src/ui/cart/address/addNewAddress.dart';
 import 'package:Artisan/src/ui/cart/payment/payment_page.dart';
+import 'package:Artisan/src/ui/cart/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,7 +91,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
         final currency = data['currency'] ?? 'INR';
         final razorpayKey = data['razorpayKey']?.toString().isNotEmpty == true
             ? data['razorpayKey']
-            : 'rzp_test_RIZLixlOa7cEqX'; // fallback
+            : 'rzp_live_RStRs3fKDBv7Jk'; // fallback
         final prefill = data['razorpayPrefill'] ?? {};
 
         setState(() {
@@ -217,9 +219,10 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
+    log(response.message ?? 'Payment error occurred');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text("❌ Payment Failed\n${response.message}"),
+        content: Text("Your payment failed. Please try again."),
         backgroundColor: Colors.red,
       ),
     );
@@ -377,7 +380,41 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
 
   Widget _buildAddressSection(Map<String, dynamic> currentAddress) {
     if (_addressList.isEmpty) {
-      return const Text("No address found.");
+      return Text(
+        'No shipping address found. Please add one.',
+        style: GoogleFonts.nunitoSans(fontSize: 14, color: Colors.red),
+      );
+      // GestureDetector(
+      //   onTap: () {
+      //     // Navigate to address form
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (_) => const AddressFormScreen()),
+      //     );
+      //   },
+      //   child: Container(
+      //     decoration: BoxDecoration(
+      //       border: Border.all(color: Colors.red.shade600, width: 1.2),
+      //       borderRadius: const BorderRadius.all(Radius.circular(12)),
+      //       color: Colors.red.shade50.withOpacity(0.1),
+      //     ),
+      //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      //     child: Row(
+      //       mainAxisSize: MainAxisSize.min,
+      //       children: [
+      //         // const SizedBox(width: 8),
+      //         Text(
+      //           'Add New Shipping Address',
+      //           style: GoogleFonts.nunitoSans(
+      //             color: Colors.red[600],
+      //             fontSize: 16,
+      //             fontWeight: FontWeight.w600,
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // );
     }
     return Container(
       padding: const EdgeInsets.all(16),
@@ -416,14 +453,17 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
           color: Colors.white, borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
-          _priceRow('Subtotal', '₹${subtotal.toStringAsFixed(2)}'),
+          _priceRow('Subtotal', '\$${subtotal.toStringAsFixed(2)}'),
           _priceRow('Shipping & Handling Cost',
-              '₹${shippingAmount.toStringAsFixed(2)}'),
-          _priceRow('Discount', '- ₹${discount.toStringAsFixed(2)}',
+              '\$${shippingAmount.toStringAsFixed(2)}'),
+          _priceRow('Discount', '- \$${discount.toStringAsFixed(2)}',
               color: Colors.green),
-          _priceRow('Tax ' + "($taxPercentage%)", '₹${tax.toStringAsFixed(2)}'),
+          taxPercentage == 0
+              ? const SizedBox.shrink()
+              : _priceRow(
+                  'Tax' + "($taxPercentage%)", '\$${tax.toStringAsFixed(2)}'),
           const Divider(),
-          _priceRow('Total', '₹${total.toStringAsFixed(2)}',
+          _priceRow('Total', '\$${total.toStringAsFixed(2)}',
               isBold: true, color: Colors.black),
         ],
       ),
@@ -491,7 +531,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                   ],
                 ),
               ),
-              Text('₹${(item['totalPrice'] as num).toStringAsFixed(2)}',
+              Text('\$${(item['totalPrice'] as num).toStringAsFixed(2)}',
                   style: GoogleFonts.nunitoSans(
                       fontSize: 14, fontWeight: FontWeight.w600)),
             ],

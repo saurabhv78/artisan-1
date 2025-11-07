@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Artisan/src/ui/search/search_page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +15,34 @@ class SearchTextField extends ConsumerStatefulWidget {
 }
 
 class _SearchTextFieldState extends ConsumerState<SearchTextField> {
+  TextEditingController? _controller;
+  Timer? _debounce;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+        text: ref
+            .read(searchPageModelProvider.select((value) => value.searchText)));
+  }
+
+  void _onSearchChanged(String value) {
+    // Cancel previous timer
+    _debounce?.cancel();
+
+    // Set a new debounce timer
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      ref.read(searchPageModelProvider.notifier).setText(value);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,13 +52,8 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
         color: Colors.white,
       ),
       child: TextField(
-        onChanged: (value) {
-          ref.read(searchPageModelProvider.notifier).setText(value);
-        },
-        controller: TextEditingController(
-            text: ref.read(
-                searchPageModelProvider.select((value) => value.searchText))),
-        // enabled: false,
+        controller: _controller,
+        onChanged: _onSearchChanged,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(top: 15),
           prefixIcon: Column(
@@ -42,13 +67,12 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
             ],
           ),
           enabledBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          hintText: "Search for paintings,artists",
+          hintText: "Search for paintings, artists...",
           hintStyle: GoogleFonts.nunitoSans(
             fontSize: 16,
             fontStyle: FontStyle.italic,
-            color: Color(0xff89909A),
+            color: const Color(0xff89909A),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -56,7 +80,7 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
           fontSize: 16,
           fontStyle: FontStyle.italic,
           fontWeight: FontWeight.w700,
-          color: Color(0xff89909A),
+          color: const Color(0xff89909A),
         ),
       ),
     );

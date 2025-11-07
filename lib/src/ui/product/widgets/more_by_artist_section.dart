@@ -65,7 +65,7 @@ class MoreByArtistSection extends ConsumerWidget {
                           imageUrl: products[index].images.isNotEmpty
                               ? products[index].images[0]
                               : '',
-                          // price: "₹2999.00",
+                          // price: "\$2999.00",
                         ),
                       )
                     : const SizedBox(),
@@ -114,7 +114,7 @@ class _ArtistArtCard extends ConsumerWidget {
               ),
             ),
             Text(
-              "₹${data.prodPrice.toStringAsFixed(2)}",
+              "\$${data.prodPrice.toStringAsFixed(2)}",
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w700,
                 color: blackPrimaryColor,

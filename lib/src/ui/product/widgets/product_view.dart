@@ -1,9 +1,8 @@
-import 'package:Artisan/src/constants/colors.dart';
-import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-// import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+import 'package:Artisan/src/widgets/components/images.dart';
 
 class ImageViewerScreen extends StatefulWidget {
   final List<String> images;
@@ -20,31 +19,45 @@ class ImageViewerScreen extends StatefulWidget {
 }
 
 class _ImageViewerScreenState extends State<ImageViewerScreen> {
-  late String selectedImage;
+  late int selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    selectedImage = widget.initialImage;
+    selectedIndex = widget.images.indexOf(widget.initialImage);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
+    return CustomScaffold(
+      bgColor: const Color(0xffEFE4FF),
+      // backgroundColor: Colors.black,
+      child: SafeArea(
         child: Stack(
           children: [
-            // Center(
-            //   child: PhotoView(
-            //     imageProvider: NetworkImage(selectedImage),
-            //     backgroundDecoration: const BoxDecoration(color: Colors.black),
-            //     minScale: PhotoViewComputedScale.contained,
-            //     maxScale: PhotoViewComputedScale.covered * 2.0,
-            //   ),
-            // ),
+            // Photo Gallery
+            PhotoViewGallery.builder(
+              itemCount: widget.images.length,
+              pageController: PageController(initialPage: selectedIndex),
+              onPageChanged: (index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              builder: (context, index) {
+                return PhotoViewGalleryPageOptions(
+                  imageProvider: NetworkImage(widget.images[index]),
+                  minScale: PhotoViewComputedScale.contained,
+                  maxScale: PhotoViewComputedScale.covered * 3,
+                  heroAttributes:
+                      PhotoViewHeroAttributes(tag: widget.images[index]),
+                );
+              },
+              scrollPhysics: const BouncingScrollPhysics(),
+              backgroundDecoration: const BoxDecoration(color: Colors.black),
+            ),
 
-            // Back button
+            // Back Button
             Positioned(
               top: 10,
               left: 10,
@@ -71,12 +84,12 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
                     itemCount: widget.images.length,
                     itemBuilder: (context, index) {
                       final image = widget.images[index];
-                      final isSelected = selectedImage == image;
+                      final isSelected = selectedIndex == index;
 
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            selectedImage = image;
+                            selectedIndex = index;
                           });
                         },
                         child: Container(

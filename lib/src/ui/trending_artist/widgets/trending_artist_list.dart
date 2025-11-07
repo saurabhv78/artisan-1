@@ -47,7 +47,7 @@ class _TrendingArtistListSection
           token: ref.read(authRepositoryProvider).authUser?.token ?? "",
           getListDataRequest: GetListDataRequest(
             page: page,
-            limit: 50,
+            limit: 5,
           ));
   Future<void> _fetchPage(int pageKey) async {
     final response = await getTrendingArtistData(pageKey);

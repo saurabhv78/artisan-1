@@ -99,7 +99,7 @@ class _WishlistCardState extends ConsumerState<WishlistCard> {
                         ],
                       ),
                       Text(
-                        "₹${widget.data.prodPrice.toStringAsFixed(2)}",
+                        "\$${widget.data.prodPrice.toStringAsFixed(2)}",
                         style: GoogleFonts.nunitoSans(
                           fontWeight: FontWeight.w400,
                           color: bgDark,

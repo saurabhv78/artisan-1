@@ -142,7 +142,7 @@ class __CartProductCardState extends ConsumerState<_CartProductCard> {
             width: 15,
           ),
           Text(
-            "₹${(widget.data.price ?? 0).toStringAsFixed(2)}",
+            "\$${(widget.data.price ?? 0).toStringAsFixed(2)}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.nunitoSans(

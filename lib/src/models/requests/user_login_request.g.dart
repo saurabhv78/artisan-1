@@ -10,7 +10,7 @@ UserLoginRequest _$UserLoginRequestFromJson(Map<String, dynamic> json) =>
     UserLoginRequest(
       email: json['email'] as String,
       password: json['password'] as String,
-      fcmToken: json['fcm_token'] as String,
+      fcmToken: json['fcmToken'] as String,
       os: json['os'] as String,
       deviceId: json['device_id'] as String,
       loginSource: json['loginSource'] as String? ?? 'app',
@@ -20,7 +20,7 @@ Map<String, dynamic> _$UserLoginRequestToJson(UserLoginRequest instance) =>
     <String, dynamic>{
       'email': instance.email,
       'password': instance.password,
-      'fcm_token': instance.fcmToken,
+      'fcmToken': instance.fcmToken,
       'os': instance.os,
       'device_id': instance.deviceId,
       'loginSource': instance.loginSource,

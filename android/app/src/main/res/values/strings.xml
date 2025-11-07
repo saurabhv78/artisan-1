@@ -1,7 +1,14 @@
 
 <resources>
-    <string name="facebook_app_id">3917327441889327</string>
-    <string name="facebook_client_token">0d0ae0be6cc6046482990a56023d671e</string>
+    <string name="app_name">Artisans</string>
+    <string name="facebook_app_id">873707391752668</string>
+    <string name="facebook_client_token">79d8423303c174a6fe59bf006f85583a</string>
+    <string name="fb_login_protocol_scheme">fb873707391752668</string>
+
+    <!-- <string name="facebook_app_id">1234</string>
+    <string name="facebook_client_token">56789</string> -->
+
+
 </resources>
 
 

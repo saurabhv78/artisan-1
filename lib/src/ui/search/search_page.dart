@@ -25,6 +25,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     final text =
         ref.watch(searchPageModelProvider.select((value) => value.searchText));
     return CustomScaffold(
+        topPadding: 35,
         bgColor: const Color(0xffEFE4FF),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22),

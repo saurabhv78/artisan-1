@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/routing/router.dart';
 import 'package:Artisan/src/ui/home_tab/home_tab_page_model.dart';
@@ -6,6 +8,7 @@ import 'package:Artisan/src/utils/toast_utils.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
 import 'package:Artisan/src/widgets/try_again_widget.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,6 +29,12 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
   void initState() {
     super.initState();
     time = DateTime.now();
+    getFcmToken();
+  }
+
+  Future<void> getFcmToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    log("FCM Token: $token");
   }
 
   @override

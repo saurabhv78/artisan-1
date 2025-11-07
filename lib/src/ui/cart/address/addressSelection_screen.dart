@@ -138,11 +138,11 @@ class _AddressSelectionSheetState extends ConsumerState<AddressSelectionSheet> {
               const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 32),
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            gradient: LinearGradient(
-              colors: [Color(0xFFF4F4FF), Color(0xFFEAEAEA)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            // gradient: LinearGradient(
+            //   colors: [Color(0xFFF4F4FF), Color(0xFFEAEAEA)],
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            // ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

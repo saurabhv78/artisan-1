@@ -53,9 +53,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                       color: Colors.grey.shade300.withOpacity(0.5),
                     ),
                     child: NetworkImageWidget(
-                      widget.data.images.isNotEmpty
-                          ? widget.data.images[0]
-                          : '',
+                      widget.data.thumbnail.toString(),
                       height: 170,
                       width: MediaQuery.sizeOf(context).width,
                       fit: BoxFit.fill,
@@ -80,26 +78,26 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                         ),
                       ),
                     ),
-                    const Icon(
-                      Icons.star,
-                      color: Color(0xffFCAF23),
-                      size: 20,
-                    ),
+                    // const Icon(
+                    //   Icons.star,
+                    //   color: Color(0xffFCAF23),
+                    //   size: 20,
+                    // ),
                     const SizedBox(
                       width: 3,
                     ),
-                    Text(
-                      widget.data.totalRating.toStringAsFixed(1),
-                      style: GoogleFonts.nunitoSans(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: subHead,
-                      ),
-                    ),
+                    // Text(
+                    //   widget.data.totalRating.toStringAsFixed(1),
+                    //   style: GoogleFonts.nunitoSans(
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.w400,
+                    //     color: subHead,
+                    //   ),
+                    // ),
                   ],
                 ),
                 Text(
-                  "₹${(widget.data.discountData != null ? (widget.data.prodPrice - widget.data.prodPrice * widget.data.discountData!.discountVal / 100) : widget.data.prodPrice).toStringAsFixed(2)}",
+                  "\$${(widget.data.discountData != null ? (widget.data.prodPrice - widget.data.prodPrice * widget.data.discountData!.discountVal / 100) : widget.data.prodPrice).toStringAsFixed(2)}",
                   style: GoogleFonts.nunitoSans(
                     fontWeight: FontWeight.w400,
                     color: bgDark,

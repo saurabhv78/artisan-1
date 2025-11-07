@@ -1,7 +1,6 @@
 import 'package:Artisan/src/constants/colors.dart';
 
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
-import 'package:Artisan/src/widgets/components/images.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,9 +42,7 @@ class ProfileImageNameSection extends ConsumerWidget {
             ],
           ),
         ),
-        const SizedBox(
-          width: 10,
-        ),
+        const SizedBox(width: 10),
         Container(
           width: 84,
           height: 84,

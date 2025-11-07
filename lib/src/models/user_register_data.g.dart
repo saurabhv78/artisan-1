@@ -18,7 +18,7 @@ UserRegisterData _$UserRegisterDataFromJson(Map<String, dynamic> json) =>
       confirmPassword: json['confirmPassword'] as String,
       deviceId: json['device_id'] as String,
       os: json['os'] as String,
-      fcmToken: json['fcm_token'] as String,
+      fcmToken: json['fcmToken'] as String,
       isDefault: (json['isDefault'] as num?)?.toInt(),
       loginSource: json['loginSource'] as String? ?? 'app',
     );
@@ -35,7 +35,7 @@ Map<String, dynamic> _$UserRegisterDataToJson(UserRegisterData instance) =>
       'confirmPassword': instance.confirmPassword,
       'device_id': instance.deviceId,
       'os': instance.os,
-      'fcm_token': instance.fcmToken,
+      'fcmToken': instance.fcmToken,
       'loginSource': instance.loginSource,
       'isDefault': instance.isDefault,
     };

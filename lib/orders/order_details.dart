@@ -133,7 +133,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 style: GoogleFonts.nunitoSans(
                                     fontWeight: FontWeight.w600)),
                             subtitle: Text("${item['quantity']} unit"),
-                            trailing: Text("₹${item['price']}",
+                            trailing: Text("\$${item['price']}",
                                 style: GoogleFonts.nunitoSans(
                                     fontWeight: FontWeight.bold, fontSize: 16)),
                           )),
@@ -144,7 +144,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       buildKeyValue(
                           "Quantity", "${orderData!['items'].length}"),
                       buildKeyValue("Total Price",
-                          "₹${orderData!['pricing']['subtotal'] ?? 0}"),
+                          "\$${orderData!['pricing']['subtotal'] ?? 0}"),
                       buildKeyValue("Order Status", orderData!['orderStatus']),
                       buildKeyValue(
                           "Payment Status", orderData!['paymentStatus']),
@@ -153,21 +153,21 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       const Divider(height: 32),
                       buildSectionTitle("Bill Summary"),
                       buildKeyValue("Item Subtotal",
-                          "₹${orderData!['pricing']['subtotal'] ?? 0}"),
+                          "\$${orderData!['pricing']['subtotal'] ?? 0}"),
                       buildKeyValue("Shipping and Handling Charges",
-                          "₹${orderData!['pricing']['shipping'] ?? 0}"),
+                          "\$${orderData!['pricing']['shipping'] ?? 0}"),
                       buildKeyValue("Discount",
-                          "₹${orderData!['pricing']['discount'] ?? 0}"),
+                          "\$${orderData!['pricing']['discount'] ?? 0}"),
                       buildKeyValue(
                           "Tax(${orderData!['pricing']['taxPercentage'] ?? 0}%)",
-                          "₹${orderData!['pricing']['tax'] ?? 0}"),
+                          "\$${orderData!['pricing']['tax'] ?? 0}"),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Shipment Total",
                               style: GoogleFonts.nunitoSans(
                                   fontWeight: FontWeight.w600)),
-                          Text("₹${orderData!['pricing']['total'] ?? 0}",
+                          Text("\$${orderData!['pricing']['total'] ?? 0}",
                               style: GoogleFonts.nunitoSans(
                                   fontWeight: FontWeight.w600)),
                         ],

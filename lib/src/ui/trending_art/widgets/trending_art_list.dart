@@ -219,11 +219,11 @@ class YourArtStyleCardWidget extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const Icon(
-                      Icons.star,
-                      color: Color(0xffFCAF23),
-                      size: 20,
-                    ),
+                    // const Icon(
+                    //   Icons.star,
+                    //   color: Color(0xffFCAF23),
+                    //   size: 20,
+                    // ),
                     const SizedBox(
                       width: 3,
                     ),
@@ -238,7 +238,7 @@ class YourArtStyleCardWidget extends ConsumerWidget {
                   ],
                 ),
                 // Text(
-                //   "₹${(artStyle.discountData != null ? (artStyle.prodPrice - artStyle.prodPrice * artStyle.discountData!.discountVal / 100) : artStyle.prodPrice).toStringAsFixed(2)}",
+                //   "\$${(artStyle.discountData != null ? (artStyle.prodPrice - artStyle.prodPrice * artStyle.discountData!.discountVal / 100) : artStyle.prodPrice).toStringAsFixed(2)}",
                 //   style: GoogleFonts.nunitoSans(
                 //     fontWeight: FontWeight.w400,
                 //     color: bgDark,
@@ -249,40 +249,40 @@ class YourArtStyleCardWidget extends ConsumerWidget {
               ],
             ),
           ),
-          Positioned(
-            right: 10,
-            top: 10,
-            child: GestureDetector(
-              onTap: () async {
-                // You may need to refactor this logic if you want to handle state (like isProcessing) and mounted/setState,
-                // as ConsumerWidget does not have them. Consider using a state management solution or a StatefulWidget+Consumer.
-                // For now, just remove the isProcessing/mounted/setState logic or refactor as needed.
-                final res = await ref
-                    .read(authRepositoryProvider.notifier)
-                    .updateFav(artStyle.id);
-                if (res.keys.first != true) {
-                  showErrorMessage(res.values.first);
-                } else {
-                  showSuccessMessage(res.values.first);
-                  ref.read(authRepositoryProvider.notifier).getWishlist();
-                }
-              },
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 13,
-                child: Icon(
-                  Icons.favorite,
-                  color: ref.watch(authRepositoryProvider.select((value) =>
-                              value.wishlist.indexWhere(
-                                  (element) => element == artStyle.id))) !=
-                          -1
-                      ? Colors.red
-                      : const Color(0xffC5C5C5),
-                  size: 20,
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   right: 10,
+          //   top: 10,
+          //   child: GestureDetector(
+          //     onTap: () async {
+          //       // You may need to refactor this logic if you want to handle state (like isProcessing) and mounted/setState,
+          //       // as ConsumerWidget does not have them. Consider using a state management solution or a StatefulWidget+Consumer.
+          //       // For now, just remove the isProcessing/mounted/setState logic or refactor as needed.
+          //       final res = await ref
+          //           .read(authRepositoryProvider.notifier)
+          //           .updateFav(artStyle.id);
+          //       if (res.keys.first != true) {
+          //         showErrorMessage(res.values.first);
+          //       } else {
+          //         showSuccessMessage(res.values.first);
+          //         ref.read(authRepositoryProvider.notifier).getWishlist();
+          //       }
+          //     },
+          //     child: CircleAvatar(
+          //       backgroundColor: Colors.white,
+          //       radius: 13,
+          //       child: Icon(
+          //         Icons.favorite,
+          //         color: ref.watch(authRepositoryProvider.select((value) =>
+          //                     value.wishlist.indexWhere(
+          //                         (element) => element == artStyle.id))) !=
+          //                 -1
+          //             ? Colors.red
+          //             : const Color(0xffC5C5C5),
+          //         size: 20,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

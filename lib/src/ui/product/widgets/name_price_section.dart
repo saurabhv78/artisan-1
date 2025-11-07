@@ -54,7 +54,7 @@ class NamePriceSection extends ConsumerWidget {
           ),
           Row(children: [
             Text(
-              "₹${(productData.discountData != null ? (productData.prodPrice - productData.prodPrice * productData.discountData!.discountVal / 100) : productData.prodPrice).toStringAsFixed(2)}",
+              "\$${(productData.discountData != null ? (productData.prodPrice - productData.prodPrice * productData.discountData!.discountVal / 100) : productData.prodPrice).toStringAsFixed(2)}",
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w700,
                 color: bgDark,
@@ -67,7 +67,7 @@ class NamePriceSection extends ConsumerWidget {
             ),
             if (productData.discountData != null)
               Text(
-                "₹${(productData.prodPrice).toStringAsFixed(2)}",
+                "\$${(productData.prodPrice).toStringAsFixed(2)}",
                 style: GoogleFonts.nunitoSans(
                   fontWeight: FontWeight.w400,
                   decoration: TextDecoration.lineThrough,

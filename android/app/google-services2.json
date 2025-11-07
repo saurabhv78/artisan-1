@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "178888187457",
+    "project_id": "artisans-a721e",
+    "storage_bucket": "artisans-a721e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178888187457:android:06136688af39f0a689f0c0",
+        "android_client_info": {
+          "package_name": "com.artisans.artisans"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178888187457-msbo9gal2uce81u2cdfe0thna878h2j3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.artisans.artisans",
+            "certificate_hash": "af3dc5e73ae053f0e34661ba72e2c002f71aecac"
+          }
+        },
+        {
+          "client_id": "178888187457-j83mbdja3ji3sq7e6101gmvfmsdjop1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChFb92-zdnqmY-A8WUwcTe0pRREbi5Goo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178888187457-j83mbdja3ji3sq7e6101gmvfmsdjop1c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

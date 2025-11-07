@@ -1,4 +1,4 @@
-import 'package:Artisan/src/ui/profile_tab/edit_address_view.dart';
+import 'package:Artisan/src/ui/auth/tnc/deactivate.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
@@ -58,9 +58,17 @@ class AppRouter extends _$AppRouter {
       page: TnCRoute.page,
     ),
     AutoRoute(
+      path: '/tncs',
+      page: TnCRoutes.page,
+    ),
+    AutoRoute(
       path: '/change_password',
       page: ChangePasswordRoute.page,
     ),
+    // AutoRoute(
+    //   path: '/refund_policys',
+    //   page: RefundPolicyScreen.page,
+    // ),
     AutoRoute(
       path: '/privacy_plicy',
       page: PrivacyPolicyRoute.page,
@@ -133,3 +141,5 @@ class AppRouter extends _$AppRouter {
     ),
   ];
 }
+
+

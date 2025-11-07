@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>178888187457-msbo9gal2uce81u2cdfe0thna878h2j3.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDamOYBYxYVBevSlVqRkd1MngIAMG-aQw8</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,7 +11,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.artisans.artisans</string>
+	<string>com.artisans.app</string>
 	<key>PROJECT_ID</key>
 	<string>artisans-a721e</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +27,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:178888187457:ios:787019fa19e32f4289f0c0</string>
+	<string>1:178888187457:ios:57fb5451c58fbb6689f0c0</string>
 </dict>
 </plist>

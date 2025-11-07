@@ -153,7 +153,7 @@ class _ChangeAddressSectionState extends ConsumerState<ChangeAddressSection> {
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: Colors.white,
                     builder: (_) => AddressSelectionSheet(
                       isFromProfile: false,
                     ),
@@ -171,7 +171,7 @@ class _ChangeAddressSectionState extends ConsumerState<ChangeAddressSection> {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Center(
                       child: Text(
-                        "Change",
+                        "Manage Address",
                         style: GoogleFonts.nunitoSans(
                           color: primaryColor,
                           fontSize: 14,

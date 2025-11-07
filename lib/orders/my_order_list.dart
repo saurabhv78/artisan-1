@@ -70,7 +70,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
           _orders.addAll(data.map((e) => {
                 'orderId': e['orderNumber'],
                 'id': e['id'],
-                'price': '₹${e['totalAmount']}',
+                'price': '\$${e['totalAmount']}',
                 'status': e['orderStatus'],
                 'date': e['createdAt'],
                 'items': e['itemCount'],

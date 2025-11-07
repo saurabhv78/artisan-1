@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-@RoutePage()
-class PrivacyPolicyPage extends ConsumerWidget {
-  const PrivacyPolicyPage({super.key});
+class RefundPolicyScreen extends ConsumerWidget {
+  const RefundPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
-        Uri.parse("https://artisan-admin.handsandbrushes.com/privacy-policy"),
+        Uri.parse("https://artisan-admin.handsandbrushes.com/refund-policy"),
       );
 
     return Scaffold(

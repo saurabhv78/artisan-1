@@ -49,6 +49,7 @@ android {
         println "[CONFIG] 📌 Default config set: minSdk=${minSdk}, targetSdk=${targetSdk}, versionCode=${versionCode}, versionName=${versionName}"
     }
     
+    
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
@@ -94,6 +95,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.facebook.android:facebook-login:latest.release'
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'

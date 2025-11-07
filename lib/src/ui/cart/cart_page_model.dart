@@ -17,7 +17,7 @@ final cartPageModelProvider =
     StateNotifierProvider.autoDispose<CartPageModel, CartPageState>(
   (ref) => CartPageModel(
     ref: ref,
-    apiService: ref.read(apiServiceProvider),
+    apiService: ref.watch(apiServiceProvider),
   ),
 );
 
@@ -39,17 +39,17 @@ class CartPageModel extends StateNotifier<CartPageState> {
     if (ind != -1) {
       data.removeAt(ind);
     }
-    state = state.copyWith(
-      cartData: state.cartData.copyWith(items: data),
-    );
+    state = state.copyWith(cartData: state.cartData.copyWith(items: data));
+    getCartData(loading: false);
+    print(state);
   }
 
-  getCartData() async {
+  getCartData({bool loading = true}) async {
     try {
-      state = state.copyWith(
-        status: CartPageStatus.loading,
-        errorMessage: "",
-      );
+      if (loading) {
+        state =
+            state.copyWith(status: CartPageStatus.loading, errorMessage: "");
+      }
       if (!await hasInternetAccess()) {
         if (mounted) {
           state = state.copyWith(

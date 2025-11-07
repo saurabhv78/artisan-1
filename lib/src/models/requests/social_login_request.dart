@@ -6,13 +6,15 @@ part 'social_login_request.g.dart';
 class SocialLoginRequest {
   final String email;
   // final String password;
-  // @JsonKey(name: "fcm_token")
-  // final String fcmToken;
+  @JsonKey(name: "fcmToken")
+  final String fcmToken;
   // final String os;
-  // @JsonKey(name: "device_id")
-  // final String deviceId;
-  // @JsonKey(name: "login_source")
-  // final String loginSource;
+  @JsonKey(name: "deviceId")
+  final String deviceId;
+//   deviceId
+// loginSource
+  @JsonKey(name: "loginSource")
+  final String loginSource;
   // @JsonKey(name: "auth_token")
   // final String? authToken;
   // final String? lat;
@@ -29,16 +31,16 @@ class SocialLoginRequest {
 
   const SocialLoginRequest({
     required this.email,
-    // required this.fcmToken,
+    required this.fcmToken,
     // this.lat,
     // this.lon,
     // this.loction,
     // this.authToken,
-    // required this.deviceId,
+    required this.deviceId,
     this.googleId,
     // this.fbUid,
     // required this.isEmailVerified,
-    // required this.loginSource,
+    required this.loginSource,
     required this.name,
     // required this.os,
   });

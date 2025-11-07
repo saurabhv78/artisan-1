@@ -300,7 +300,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(width: 8),
+                    // const SizedBox(width: 8),
                     Text(
                       'Add New Shipping Address',
                       style: GoogleFonts.nunitoSans(

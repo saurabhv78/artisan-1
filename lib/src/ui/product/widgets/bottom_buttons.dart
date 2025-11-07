@@ -24,6 +24,7 @@ class BottomButtons extends ConsumerStatefulWidget {
 
 class _BottomButtonsState extends ConsumerState<BottomButtons> {
   bool isProcessing = false;
+  bool isProcessingbuy = false;
   @override
   Widget build(BuildContext context) {
     final cartData =
@@ -78,7 +79,7 @@ class _BottomButtonsState extends ConsumerState<BottomButtons> {
                 if (!cartData.contains(widget.data.id)) {
                   if (mounted) {
                     setState(() {
-                      isProcessing = true;
+                      isProcessingbuy = true;
                     });
                   }
 
@@ -103,14 +104,14 @@ class _BottomButtonsState extends ConsumerState<BottomButtons> {
 
                   if (mounted) {
                     setState(() {
-                      isProcessing = false;
+                      isProcessingbuy = false;
                     });
                   }
                 }
 
                 context.navigateTo(const CartRoute());
               },
-              isProcessing: isProcessing,
+              isProcessing: isProcessingbuy,
             ),
           ),
         ],

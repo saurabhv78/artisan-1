@@ -4,20 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 @RoutePage()
-class PrivacyPolicyPage extends ConsumerWidget {
-  const PrivacyPolicyPage({super.key});
+class TnCPages extends ConsumerWidget {
+  const TnCPages({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
-        Uri.parse("https://artisan-admin.handsandbrushes.com/privacy-policy"),
+        Uri.parse("https://artisan-admin.handsandbrushes.com/deactivate-user"),
       );
 
     return Scaffold(
       appBar: AppBar(
-          // title: const Text("Privacy Policy"),
+          // title: const Text("Terms & Conditions"
           ),
       body: WebViewWidget(controller: controller),
     );

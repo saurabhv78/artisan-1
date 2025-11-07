@@ -44,13 +44,14 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
           height: 30,
           child: Row(
             children: [
-              Image.asset(
-                'assets/images/ic_notification.png',
-                height: 26,
-              ),
-              const SizedBox(
-                width: 13,
-              ),
+              // Image.asset(
+              //   'assets/images/ic_notification.png',
+              //   height: 26,
+              // ),
+
+              // const SizedBox(
+              //   width: 13,
+              // ),
               GestureDetector(
                 onTap: () {
                   context.pushRoute(const WishlistRoute());

@@ -8,6 +8,7 @@ part 'featured_product.g.dart';
 class FeaturedProduct {
   final String? id;
   final String? name;
+  final String? thumbnail;
   final String? description;
   final int? price;
   final int? quantity;
@@ -25,6 +26,7 @@ class FeaturedProduct {
   FeaturedProduct({
     required this.id,
     required this.name,
+    required this.thumbnail,
     required this.description,
     required this.price,
     required this.quantity,

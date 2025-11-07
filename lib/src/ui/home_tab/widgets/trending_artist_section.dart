@@ -58,7 +58,7 @@ class TrendingArtistSection extends ConsumerWidget {
                       child: GestureDetector(
                         onTap: () {
                           context.pushRoute(
-                              ProductRoute(id: trendingArtists[0].id ?? ''));
+                              ProductRoute(id: trendingArtists[0].id));
                           // context.navigateTo(ArtistRoute(
                           //   artistData: trendingArtists[0],
                           // ));
@@ -76,7 +76,7 @@ class TrendingArtistSection extends ConsumerWidget {
                       child: GestureDetector(
                         onTap: () {
                           context.pushRoute(
-                              ProductRoute(id: trendingArtists[1].id ?? ''));
+                              ProductRoute(id: trendingArtists[1].id));
                           // context.navigateTo(ArtistRoute(
                           //   artistData: trendingArtists[1],
                           // ));

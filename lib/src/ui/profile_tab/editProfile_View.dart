@@ -51,8 +51,10 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     final phone = _phoneController.text.trim();
     final token = ref.read(authRepositoryProvider).authUser?.token ?? "";
 
-    // final url = Uri.parse('$_baseUrlauth+/update/profile');
-    final url = Uri.parse('/auth/update/profile');
+    // final url = Uri.parse('$_baseUrl auth+/update/profile');
+    final url = Uri.parse('$_baseUrl/auth/update/profile');
+
+    // final url = Uri.parse('/auth/update/profile');
 
     setState(() => _isLoading = true);
 
@@ -75,20 +77,24 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
-        if (!mounted) Navigator.pop(context);
+        if (context.mounted) Navigator.pop(context);
+        ref.read(authRepositoryProvider.notifier).fetchUserDetails();
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Profile updated successfully")),
         );
-        Navigator.popUntil(context, (route) => route.isFirst);
+
+        if (context.mounted) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        }
       } else {
-        if (!mounted) return;
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Update failed: ${response.body}")),
         );
       }
     } catch (e) {
-      if (!mounted) return;
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
       );

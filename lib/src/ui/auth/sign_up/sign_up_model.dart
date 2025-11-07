@@ -6,6 +6,7 @@ import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/user_register_data.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -70,6 +71,11 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
         return "Please enter valid email";
       }
       final deviceId = await getId();
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+      // final data = {
+      //   "fcmToken": fcmToken,
+      // };
       final res = await apiService.registerUser(
         userData: UserRegisterData(
           fullName: state.name,
@@ -82,7 +88,7 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
           isEmailVerified: 0,
           isPhoneVerified: 0,
           os: Platform.isAndroid ? 'android' : 'ios',
-          fcmToken: '*',
+          fcmToken: fcmToken.toString(),
         ),
       );
       if (res.status != ApiStatus.success) {

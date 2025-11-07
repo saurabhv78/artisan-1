@@ -582,7 +582,8 @@ class ApiServiceImpl extends ApiService {
         return ApiResponse.error(
             response['message'] ?? "Something Went Wrong!");
       } else if (response['success'] == true) {
-        return ApiResponse.success(CartData.fromJson(response['data']));
+        return ApiResponse.success(CartData.fromJson(
+            (response['data'] is Map) ? response['data'] : {}));
       } else {
         return ApiResponse.error('Something Went Wrong');
       }

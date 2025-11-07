@@ -1,8 +1,5 @@
-import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
 import 'package:Artisan/src/models/discount_data/discount_data.dart';
-import 'package:Artisan/src/models/media_data/media_data.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 import '../artist_data/artist_data.dart';
 import '../category_data/category_data.dart';
 
@@ -46,7 +43,7 @@ class ProductData {
 
   @JsonKey(name: 'price')
   final int prodPrice;
-
+  final String? thumbnail;
   @JsonKey(name: 'prod_similar')
   final List<dynamic>? prodSimilar;
 
@@ -89,6 +86,7 @@ class ProductData {
     this.updatedOn,
     this.categoryData,
     this.artistData,
+    this.thumbnail,
     this.prodPrice = 0,
     this.prodSimilar,
     this.images = const [],
@@ -102,6 +100,62 @@ class ProductData {
     this.framed = false,
   });
 
+  // ---------- copyWith ----------
+  ProductData copyWith({
+    String? id,
+    String? prodName,
+    String? prodDesc,
+    String? authCertificate,
+    String? category,
+    int? prodCount,
+    int? totalRating,
+    int? status,
+    int? createdOn,
+    int? updatedOn,
+    CategoryData? categoryData,
+    ArtistInfo? artistData,
+    int? prodPrice,
+    String? thumbnail,
+    List<dynamic>? prodSimilar,
+    List<String>? images,
+    List<dynamic>? review,
+    DiscountData? discountData,
+    bool? isLiked,
+    String? baseType,
+    String? paintingSize,
+    String? paintingType,
+    bool? signed,
+    bool? framed,
+  }) {
+    return ProductData(
+      id: id ?? this.id,
+      prodName: prodName ?? this.prodName,
+      prodDesc: prodDesc ?? this.prodDesc,
+      authCertificate: authCertificate ?? this.authCertificate,
+      category: category ?? this.category,
+      prodCount: prodCount ?? this.prodCount,
+      totalRating: totalRating ?? this.totalRating,
+      status: status ?? this.status,
+      createdOn: createdOn ?? this.createdOn,
+      updatedOn: updatedOn ?? this.updatedOn,
+      categoryData: categoryData ?? this.categoryData,
+      artistData: artistData ?? this.artistData,
+      thumbnail: thumbnail ?? this.thumbnail,
+      prodPrice: prodPrice ?? this.prodPrice,
+      prodSimilar: prodSimilar ?? this.prodSimilar,
+      images: images ?? this.images,
+      review: review ?? this.review,
+      discountData: discountData ?? this.discountData,
+      isLiked: isLiked ?? this.isLiked,
+      baseType: baseType ?? this.baseType,
+      paintingSize: paintingSize ?? this.paintingSize,
+      paintingType: paintingType ?? this.paintingType,
+      signed: signed ?? this.signed,
+      framed: framed ?? this.framed,
+    );
+  }
+
+  // ---------- JSON ----------
   factory ProductData.fromJson(Map<String, dynamic> json) =>
       _$ProductDataFromJson(json);
 

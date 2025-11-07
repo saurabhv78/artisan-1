@@ -138,7 +138,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                         height: 15,
                       ),
                       CustomAuthTextField(
-                        hintText: 'Email/Phone Number',
+                        hintText: 'Email',
                         isEnabled: !isProcessing,
                         initialText: ref.read(signInPageModelProvider
                             .select((value) => value.email)),
@@ -397,7 +397,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                                 }
                                 final res = await ref
                                     .read(signInPageModelProvider.notifier)
-                                    .signInWithFacebook();
+                                    .signInWithFacebook(ref);
                                 if (res != '') {
                                   showErrorMessage(res);
                                 }

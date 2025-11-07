@@ -18,7 +18,7 @@ class UserRegisterData {
   @JsonKey(name: 'device_id')
   final String deviceId;
   final String os;
-  @JsonKey(name: 'fcm_token')
+  @JsonKey(name: 'fcmToken')
   final String fcmToken;
   final String loginSource;
 

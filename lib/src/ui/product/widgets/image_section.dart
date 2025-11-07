@@ -1,8 +1,7 @@
-import 'package:Artisan/src/constants/colors.dart';
-import 'package:Artisan/src/ui/product/product_page_model.dart';
+import 'dart:developer';
+import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
 import 'package:Artisan/src/ui/product/widgets/product_view.dart';
-import 'package:Artisan/src/utils/extensions.dart';
-import 'package:auto_route/auto_route.dart';
+import 'package:Artisan/src/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,160 +23,170 @@ class ImageSection extends ConsumerStatefulWidget {
 }
 
 class _ImageSectionState extends ConsumerState<ImageSection> {
+  late ProductData _product; // local, mutable via copyWith
   late String selectedImage;
   bool isProcessing = false;
 
   @override
   void initState() {
     super.initState();
-    selectedImage = widget.data.images.isNotEmpty
-        ? widget.data.images.first
+    _product = widget.data;
+    selectedImage = _product.images.isNotEmpty
+        ? _product.images.first
         : "assets/images/no_image_avail.png";
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      width: MediaQuery.sizeOf(context).width,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(8),
-          bottomRight: Radius.circular(8),
-        ),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            // Main image with tap to view full screen
-            InkWell(
+    return Padding(
+      padding: const EdgeInsets.only(top: 35),
+      child: Column(
+        children: [
+          // Top buttons row
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Back Button
+                BackBtn(
+                  onTap: () => Navigator.of(context).pop(),
+                  iconColor: Colors.red,
+                ),
+
+                // Wishlist Button (Immutable copyWith update)
+                GestureDetector(
+                  onTap: () async {
+                    if (isProcessing) return;
+
+                    setState(() => isProcessing = true);
+
+                    final prevLiked = _product.isLiked;
+                    // Optimistic UI update
+                    setState(() {
+                      _product = _product.copyWith(isLiked: !prevLiked);
+                    });
+
+                    try {
+                      final res = await ref
+                          .read(authRepositoryProvider.notifier)
+                          .updateFav(_product.id);
+
+                      final success = res.keys.first;
+                      final message = res.values.first;
+
+                      if (success) {
+                        showSuccessMessage(message);
+                      } else {
+                        // revert if failed
+                        setState(() {
+                          _product = _product.copyWith(isLiked: prevLiked);
+                        });
+                        showErrorMessage(message);
+                      }
+                    } catch (e, st) {
+                      log("updateFav error: $e\n$st");
+                      // revert on exception
+                      setState(() {
+                        _product = _product.copyWith(isLiked: prevLiked);
+                      });
+                      showErrorMessage("Something went wrong");
+                    } finally {
+                      if (mounted) setState(() => isProcessing = false);
+                    }
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red.withOpacity(0.3),
+                    radius: 19,
+                    child: Icon(
+                      _product.isLiked ? Icons.favorite : Icons.favorite_border,
+                      color: Colors.red,
+                      size: 26,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Image with gradient background
+          Container(
+            height: 400,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(16),
+              ),
+              gradient: LinearGradient(
+                colors: [hexToColor("#FFC2C6"), hexToColor("#FFFFFF")],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
+            ),
+            child: InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => ImageViewerScreen(
-                      images: widget.data.images,
+                      images: _product.images,
                       initialImage: selectedImage,
                     ),
                   ),
                 );
               },
               child: Hero(
-                tag: 'product-${widget.data.id}',
+                tag: 'product-${_product.id}',
                 child: NetworkImageWidget(
                   selectedImage,
-                  fit: BoxFit.contain, // Or BoxFit.scaleDown
+                  fit: BoxFit.contain,
                   height: 400,
-                  width: MediaQuery.sizeOf(context).width,
+                  width: double.infinity,
                 ),
               ),
             ),
+          ),
 
-            // Back Button
-            Positioned(
-              top: kToolbarHeight,
-              left: 25,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Image.asset(
-                  'assets/images/ic_back.png',
-                  height: 38,
-                  width: 38,
-                ),
-              ),
-            ),
-
-            // Wishlist Button
-            // Wishlist Button
-            Positioned(
-              top: kToolbarHeight,
-              right: 25,
-              child: GestureDetector(
-                onTap: () async {
-                  if (isProcessing) return;
-                  setState(() => isProcessing = true);
-
-                  final res = await ref
-                      .read(authRepositoryProvider.notifier)
-                      .updateFav(widget.data.id);
-                  final success = res.keys.first;
-                  final message = res.values.first;
-
-                  success
-                      ? showSuccessMessage(message)
-                      : showErrorMessage(message);
-
-                  await ref.read(authRepositoryProvider.notifier).getWishlist();
-
-                  if (mounted) setState(() => isProcessing = false);
-
-                  // Fire-and-forget: no loading
-                  ref
-                      .read(productPageModelProvider.notifier)
-                      .getProductData(widget.data.id);
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.white.withOpacity(0.7),
-                  radius: 19,
-                  child: Icon(
-                    Icons.favorite,
-                    color: widget.data.isLiked == true
-                        ? Colors.red
-                        : const Color(0xffC5C5C5),
-                    size: 26,
-                  ),
-                ),
-              ),
-            ),
-
-            // Thumbnail carousel
-            if (widget.data.images.length > 1)
-              Positioned(
-                bottom: 20,
-                child: Container(
-                  height: 54,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.black.withOpacity(0.4),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: widget.data.images.map((e) {
-                      final isSelected = e == selectedImage;
-                      return GestureDetector(
-                        onTap: () => setState(() => selectedImage = e),
-                        child: AnimatedContainer(
-                          margin: const EdgeInsets.symmetric(horizontal: 3),
-                          duration: const Duration(milliseconds: 200),
-                          padding: isSelected
-                              ? const EdgeInsets.all(2)
-                              : EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: isSelected
-                                ? Border.all(color: Colors.redAccent, width: 2)
-                                : null,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: NetworkImageWidget(
-                              e,
-                              height: 46,
-                              width: 46,
-                              fit: BoxFit.cover,
-                            ),
+          // Thumbnail carousel
+          if (_product.images.length > 1)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: SizedBox(
+                height: 54,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _product.images.map((e) {
+                    final isSelected = e == selectedImage;
+                    return GestureDetector(
+                      onTap: () => setState(() => selectedImage = e),
+                      child: AnimatedContainer(
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        duration: const Duration(milliseconds: 200),
+                        padding: isSelected
+                            ? const EdgeInsets.all(2)
+                            : EdgeInsets.zero,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: isSelected
+                              ? Border.all(color: Colors.redAccent, width: 2)
+                              : null,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: NetworkImageWidget(
+                            e,
+                            height: 46,
+                            width: 46,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

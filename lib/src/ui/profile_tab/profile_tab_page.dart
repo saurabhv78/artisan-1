@@ -3,6 +3,8 @@ import 'package:Artisan/src/constants/colors.dart';
 
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/routing/router.dart';
+import 'package:Artisan/src/ui/auth/tnc/deactivate.dart';
+import 'package:Artisan/src/ui/auth/tnc/tnc_page.dart';
 import 'package:Artisan/src/ui/profile_tab/editProfile_View.dart';
 import 'package:Artisan/src/ui/profile_tab/edit_address_view.dart';
 
@@ -15,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
+import '../auth/tnc/refund_policy.dart';
 import 'widgets/image_name_section.dart';
 
 @RoutePage()
@@ -78,7 +81,7 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                         // context.pushRoute(const EditAddress());
                       },
                       subtitle: 'Edit your home address',
-                      title: 'Your Address',
+                      title: 'Manage Address',
                       icon: Icons.location_on_outlined,
                     ),
                     const SizedBox(height: 20),
@@ -105,24 +108,56 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                       icon: Icons.favorite_outline,
                     ),
                     const SizedBox(height: 20),
-                    const ProfileContainer(
-                      subtitle: 'Check your Artisan wallet balance',
-                      title: 'Wallet',
-                      icon: Icons.account_balance_wallet_outlined,
+                    ProfileContainer(
+                      onTap: () {
+                        showAdaptiveDialog(
+                          context: context,
+                          builder: (context) => Padding(
+                            padding: const EdgeInsets.all(30.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: TnCPages(),
+                            ),
+                          ),
+                        );
+                      },
+                      title: 'Deactivate Account',
+                      subtitle:
+                          'Permanently delete or disable your Artisan account',
+                      icon: Icons
+                          .person_off_outlined, // or Icons.person_off_outlined
                     ),
                     const SizedBox(height: 20),
-                    const ProfileContainer(
-                      subtitle: 'Edit the Artisn app settings',
-                      title: 'Settings',
-                      icon: Icons.settings_outlined,
+                    ProfileContainer(
+                      onTap: () {
+                        showAdaptiveDialog(
+                          context: context,
+                          builder: (context) => Padding(
+                            padding: const EdgeInsets.all(30.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: RefundPolicyScreen(),
+                            ),
+                          ),
+                        );
+                      },
+                      title: 'Refund Policy',
+                      subtitle: 'View details about Artisan\'s refund policy',
+                      icon: Icons.policy_outlined,
                     ),
                     const SizedBox(height: 20),
-                    const ProfileContainer(
-                      subtitle: 'Get help regarding your account or orders',
-                      title: 'Help and Support',
-                      icon: Icons.help_outline,
-                    ),
-                    const SizedBox(height: 20),
+                    // const ProfileContainer(
+                    //   subtitle: 'Edit the Artisn app settings',
+                    //   title: 'Settings',
+                    //   icon: Icons.settings_outlined,
+                    // ),
+                    // const SizedBox(height: 20),
+                    // const ProfileContainer(
+                    //   subtitle: 'Get help regarding your account or orders',
+                    //   title: 'Help and Support',
+                    //   icon: Icons.help_outline,
+                    // ),
+                    // const SizedBox(height: 20),
                     ProfileContainer(
                       onTap: () async {
                         if (!isProcessing) {

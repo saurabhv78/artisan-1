@@ -135,6 +135,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const TnCPage(),
       );
     },
+    TnCRoutes.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TnCPages(),
+      );
+    },
     TrendingArtStylesRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -495,6 +501,20 @@ class TnCRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'TnCRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TnCPages]
+class TnCRoutes extends PageRouteInfo<void> {
+  const TnCRoutes({List<PageRouteInfo>? children})
+      : super(
+          TnCRoutes.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TnCRoutes';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

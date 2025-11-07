@@ -1,5 +1,6 @@
 import 'package:Artisan/src/ui/product/product_page_model.dart';
 import 'package:Artisan/src/ui/product/widgets/widgets.dart';
+import 'package:Artisan/src/utils/extensions.dart';
 import 'package:Artisan/src/widgets/custom_scaffold.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,29 +57,28 @@ class _ProductPageState extends ConsumerState<ProductPage> {
                         .getProductData(widget.id);
                   },
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40),
-                          child: ImageSection(data: productData),
-                        ),
-                        const SizedBox(height: 10),
-                        NamePriceSection(productData: productData),
-                        const SizedBox(height: 10),
+                    child: Container(
+                      width: double.maxFinite,
+                      // color: Colors.blue,
+                      child: Column(
+                        children: [
+                          ImageSection(data: productData),
+                          const SizedBox(height: 10),
+                          NamePriceSection(productData: productData),
+                          const SizedBox(height: 10),
 
-                        /// TODO: model accepts artist data not info
-                        ArtistDetailSection(
-                            artistData: productData.artistData!),
-                        // const SizedBox(height: 10),
+                          /// TODO: model accepts artist data not info
+                          ArtistDetailSection(
+                              artistData: productData.artistData!),
+                          // const SizedBox(height: 10),
 
-                        MoreByArtistSection(
-                          products: moreByArtist,
-                          data: productData,
-                        ),
-                        const SizedBox(height: 75),
-                      ],
+                          MoreByArtistSection(
+                            products: moreByArtist,
+                            data: productData,
+                          ),
+                          const SizedBox(height: 75),
+                        ],
+                      ),
                     ),
                   ),
                 ),

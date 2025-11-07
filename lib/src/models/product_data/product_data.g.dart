@@ -23,6 +23,7 @@ ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(
       artistData: json['artist'] == null
           ? null
           : ArtistInfo.fromJson(json['artist'] as Map<String, dynamic>),
+      thumbnail: json['thumbnail'] as String?,
       prodPrice: (json['price'] as num?)?.toInt() ?? 0,
       prodSimilar: json['prod_similar'] as List<dynamic>?,
       images: (json['images'] as List<dynamic>?)
@@ -56,6 +57,7 @@ Map<String, dynamic> _$ProductDataToJson(ProductData instance) =>
       'cat_id': instance.categoryData,
       'artist': instance.artistData,
       'price': instance.prodPrice,
+      'thumbnail': instance.thumbnail,
       'prod_similar': instance.prodSimilar,
       'images': instance.images,
       'review': instance.review,
