@@ -42,74 +42,74 @@ PODS:
   - DKPhotoGallery/Resource (0.0.19):
     - SDWebImage
     - SwiftyGif
-  - FBAEMKit (16.3.1):
-    - FBSDKCoreKit_Basics (= 16.3.1)
-  - FBSDKCoreKit (16.3.1):
-    - FBAEMKit (= 16.3.1)
-    - FBSDKCoreKit_Basics (= 16.3.1)
-  - FBSDKCoreKit_Basics (16.3.1)
-  - FBSDKLoginKit (16.3.1):
-    - FBSDKCoreKit (= 16.3.1)
+  - FBAEMKit (17.0.3):
+    - FBSDKCoreKit_Basics (= 17.0.3)
+  - FBSDKCoreKit (17.0.3):
+    - FBAEMKit (= 17.0.3)
+    - FBSDKCoreKit_Basics (= 17.0.3)
+  - FBSDKCoreKit_Basics (17.0.3)
+  - FBSDKLoginKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
-  - Firebase/Auth (12.2.0):
+  - Firebase/Auth (12.4.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 12.2.0)
-  - Firebase/CoreOnly (12.2.0):
-    - FirebaseCore (~> 12.2.0)
-  - Firebase/Messaging (12.2.0):
+    - FirebaseAuth (~> 12.4.0)
+  - Firebase/CoreOnly (12.4.0):
+    - FirebaseCore (~> 12.4.0)
+  - Firebase/Messaging (12.4.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 12.2.0)
-  - firebase_app_check (0.4.1):
-    - Firebase/CoreOnly (~> 12.2.0)
+    - FirebaseMessaging (~> 12.4.0)
+  - firebase_app_check (0.4.1-2):
+    - Firebase/CoreOnly (~> 12.4.0)
     - firebase_core
-    - FirebaseAppCheck (~> 12.2.0)
+    - FirebaseAppCheck (~> 12.4.0)
     - Flutter
-  - firebase_auth (6.1.0):
-    - Firebase/Auth (= 12.2.0)
-    - firebase_core
-    - Flutter
-  - firebase_core (4.1.1):
-    - Firebase/CoreOnly (= 12.2.0)
-    - Flutter
-  - firebase_messaging (16.0.2):
-    - Firebase/Messaging (= 12.2.0)
+  - firebase_auth (6.1.2):
+    - Firebase/Auth (= 12.4.0)
     - firebase_core
     - Flutter
-  - FirebaseAppCheck (12.2.0):
+  - firebase_core (4.2.1):
+    - Firebase/CoreOnly (= 12.4.0)
+    - Flutter
+  - firebase_messaging (16.0.4):
+    - Firebase/Messaging (= 12.4.0)
+    - firebase_core
+    - Flutter
+  - FirebaseAppCheck (12.4.0):
     - AppCheckCore (~> 11.0)
-    - FirebaseAppCheckInterop (~> 12.2.0)
-    - FirebaseCore (~> 12.2.0)
+    - FirebaseAppCheckInterop (~> 12.4.0)
+    - FirebaseCore (~> 12.4.0)
     - GoogleUtilities/Environment (~> 8.1)
     - GoogleUtilities/UserDefaults (~> 8.1)
-  - FirebaseAppCheckInterop (12.2.0)
-  - FirebaseAuth (12.2.0):
-    - FirebaseAppCheckInterop (~> 12.2.0)
-    - FirebaseAuthInterop (~> 12.2.0)
-    - FirebaseCore (~> 12.2.0)
-    - FirebaseCoreExtension (~> 12.2.0)
+  - FirebaseAppCheckInterop (12.4.0)
+  - FirebaseAuth (12.4.0):
+    - FirebaseAppCheckInterop (~> 12.4.0)
+    - FirebaseAuthInterop (~> 12.4.0)
+    - FirebaseCore (~> 12.4.0)
+    - FirebaseCoreExtension (~> 12.4.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
     - GoogleUtilities/Environment (~> 8.1)
     - GTMSessionFetcher/Core (< 6.0, >= 3.4)
     - RecaptchaInterop (~> 101.0)
-  - FirebaseAuthInterop (12.2.0)
-  - FirebaseCore (12.2.0):
-    - FirebaseCoreInternal (~> 12.2.0)
+  - FirebaseAuthInterop (12.4.0)
+  - FirebaseCore (12.4.0):
+    - FirebaseCoreInternal (~> 12.4.0)
     - GoogleUtilities/Environment (~> 8.1)
     - GoogleUtilities/Logger (~> 8.1)
-  - FirebaseCoreExtension (12.2.0):
-    - FirebaseCore (~> 12.2.0)
-  - FirebaseCoreInternal (12.2.0):
+  - FirebaseCoreExtension (12.4.0):
+    - FirebaseCore (~> 12.4.0)
+  - FirebaseCoreInternal (12.4.0):
     - "GoogleUtilities/NSData+zlib (~> 8.1)"
-  - FirebaseInstallations (12.2.0):
-    - FirebaseCore (~> 12.2.0)
+  - FirebaseInstallations (12.4.0):
+    - FirebaseCore (~> 12.4.0)
     - GoogleUtilities/Environment (~> 8.1)
     - GoogleUtilities/UserDefaults (~> 8.1)
     - PromisesObjC (~> 2.4)
-  - FirebaseMessaging (12.2.0):
-    - FirebaseCore (~> 12.2.0)
-    - FirebaseInstallations (~> 12.2.0)
+  - FirebaseMessaging (12.4.0):
+    - FirebaseCore (~> 12.4.0)
+    - FirebaseInstallations (~> 12.4.0)
     - GoogleDataTransport (~> 10.1)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
     - GoogleUtilities/Environment (~> 8.1)
@@ -117,12 +117,14 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
   - Flutter (1.0.0)
-  - flutter_facebook_auth (6.0.4):
-    - FBSDKLoginKit (~> 16.3.1)
+  - flutter_facebook_auth (6.2.0):
+    - FBSDKLoginKit (~> 17.0.0)
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_pdfview (1.0.2):
+    - Flutter
+  - flutter_secure_storage (6.0.0):
     - Flutter
   - fluttertoast (0.0.2):
     - Flutter
@@ -236,6 +238,7 @@ DEPENDENCIES:
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
@@ -309,6 +312,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_pdfview:
     :path: ".symlinks/plugins/flutter_pdfview/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   geocoding_ios:
@@ -348,29 +353,30 @@ SPEC CHECKSUMS:
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
-  FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
-  FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942
-  FBSDKCoreKit_Basics: cd7b5f5d1e8868c26706917919d058999ca672c3
-  FBSDKLoginKit: 572cca0bc6c90067ef197187697cb3b584310c52
+  FBAEMKit: 9900b2edd99a2d21629a6277e6166f14c6215799
+  FBSDKCoreKit: 0791f8f68a8630931a4c12aa23a56cc021551596
+  FBSDKCoreKit_Basics: 46d6b472c0dd0a5a7e972c025033d1c567f54eb4
+  FBSDKLoginKit: b4a4eba1d62eb452544411824f41689adabd5bd2
   file_picker: a0560bc09d61de87f12d246fc47d2119e6ef37be
-  Firebase: 26f6f8d460603af3df970ad505b16b15f5e2e9a1
-  firebase_app_check: b3aabe5dc48178ae5671c53a2b7068a249bbdf68
-  firebase_auth: 069b05a861a7c2f7a73112dd616a49a40f35ae52
-  firebase_core: dfc4bd142bee4bc53a5d482397ca322c2dd3165d
-  firebase_messaging: 38c66c1184695b0c87abe51d40fc590718abed1a
-  FirebaseAppCheck: 3289eeac32eadb5da4ebed126b3a6acdf47dc745
-  FirebaseAppCheckInterop: a1b2598c64c5a8c42fd6f6a1c3d0938ae4324678
-  FirebaseAuth: 059c11702bdb759bb49b6c7ec6ff67abf21f39c4
-  FirebaseAuthInterop: 217702acd4cc6baa98ba9d6c054532e0de0b8a16
-  FirebaseCore: 311c48a147ad4a0ab7febbaed89e8025c67510cd
-  FirebaseCoreExtension: 73af080c22a2f7b44cefa391dc08f7e4ee162cb5
-  FirebaseCoreInternal: 56ea29f3dad2894f81b060f706f9d53509b6ed3b
-  FirebaseInstallations: 3e884b01feabdf67582a80f3250425a00979b4ed
-  FirebaseMessaging: 43ec73bbfedd0c385a849bb91593ab4ad4b9e48e
+  Firebase: f07b15ae5a6ec0f93713e30b923d9970d144af3e
+  firebase_app_check: 61fb3578a0761c806533482aca240a2d5cc5b5ef
+  firebase_auth: 9225db04db5d8e3b46dc8940e04bc6aec6833e27
+  firebase_core: f1aafb21c14f497e5498f7ffc4dc63cbb52b2594
+  firebase_messaging: c17a29984eafce4b2997fe078bb0a9e0b06f5dde
+  FirebaseAppCheck: 73721d98fa29cf199da6004e57715cbaddd49651
+  FirebaseAppCheckInterop: f734c802f21fe1da0837708f0f9a27218c8a4ed0
+  FirebaseAuth: 4a2aed737c84114a9d9b33d11ae1b147d6b94889
+  FirebaseAuthInterop: 858e6b754966e70740a4370dd1503dfffe6dbb49
+  FirebaseCore: bb595f3114953664e3c1dc032f008a244147cfd3
+  FirebaseCoreExtension: 7e1f7118ee970e001a8013719fb90950ee5e0018
+  FirebaseCoreInternal: d7f5a043c2cd01a08103ab586587c1468047bca6
+  FirebaseInstallations: ae9f4902cb5bf1d0c5eaa31ec1f4e5495a0714e2
+  FirebaseMessaging: d33971b7bb252745ea6cd31ab190d1a1df4b8ed5
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_facebook_auth: 81e624a905d30b1f97ebffb8b2feaf9e5330537a
+  flutter_facebook_auth: 2f28c889d5727b4538ed8d25be3367092b2cbef7
   flutter_local_notifications: a5a732f069baa862e728d839dd2ebb904737effb
   flutter_pdfview: 32bf27bda6fd85b9dd2c09628a824df5081246cf
+  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   fluttertoast: 2c67e14dce98bbdb200df9e1acf610d7a6264ea1
   geocoding_ios: 33776c9ebb98d037b5e025bb0e7537f6dd19646e
   geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
@@ -401,6 +407,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
   webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
 
-PODFILE CHECKSUM: 43011188497f08419493f44e9ad590bf5b0881cb
+PODFILE CHECKSUM: 507d7405203d4a05f95bb7171259d2adcee18b8e
 
 COCOAPODS: 1.16.2
