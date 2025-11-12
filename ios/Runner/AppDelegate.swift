@@ -1,44 +1,27 @@
-import UIKit
 import Flutter
-import FBSDKCoreKit
+import UIKit
 import FirebaseCore
 import FirebaseMessaging
 import UserNotifications
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate, MessagingDelegate {
-
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+      // Firebase Init
+      FirebaseApp.configure()
+      Messaging.messaging().delegate = self
 
-    // Facebook SDK
-    ApplicationDelegate.shared.application(
-      application,
-      didFinishLaunchingWithOptions: launchOptions
-    )
+      // Notification Setup
+      UNUserNotificationCenter.current().delegate = self
+      application.registerForRemoteNotifications()
 
-    // Firebase Init
-    FirebaseApp.configure()
-    Messaging.messaging().delegate = self
-
-    // Notification Setup
-    UNUserNotificationCenter.current().delegate = self
-    application.registerForRemoteNotifications()
-
-    GeneratedPluginRegistrant.register(with: self)
+      GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  // Facebook Login Redirect
-  override func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-  ) -> Bool {
-    return ApplicationDelegate.shared.application(app, open: url, options: options)
-  }
 
   // FCM Token
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {

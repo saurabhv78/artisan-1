@@ -12,44 +12,20 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>app</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb873707391752668</string>
-			</array>
-		</dict>
-	</array>
+	<string>1.0.2</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>FacebookAdvertiserIDCollectionEnabled</key>
-	<false/>
-	<key>FacebookAppID</key>
-	<string>873707391752668</string>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<false/>
-	<key>FacebookClientToken</key>
-	<string>79d8423303c174a6fe59bf006f85583a</string>
-	<key>FacebookDisplayName</key>
-	<string>Artisans</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fbauth2</string>
-	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Camera access needed</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location required</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo library access required</string>
+	<string>2</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -57,42 +33,53 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
-	<!-- <key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string> -->
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App needs permission to upload photos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app requires access to your location while you are using the app to show relevant features and improve your experience.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to your location even when the app is in the background to provide uninterrupted service.</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key><true/>
-	</dict>
-
-	<!-- ✅ ADD THIS BLOCK HERE -->
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-	<key>UISceneConfigurations</key>
-	<dict>
-		<key>UIWindowSceneSessionRoleApplication</key>
-		<array>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<false/>
+	<key>FacebookAppID</key>
+	<string>873707391752668</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
+	<key>FacebookClientToken</key>
+	<string>79d8423303c174a6fe59bf006f85583ar</string>
+	<key>FacebookDisplayName</key>
+	<string>Artisans</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
 		<dict>
-			<key>UISceneConfigurationName</key>
-			<string>Default Configuration</string>
-			<key>UISceneDelegateClassName</key>
-			<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb873707391752668</string>
+				<string>com.googleusercontent.apps.696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcqr</string>
+			</array>
 		</dict>
-		</array>
-	</dict>
-	</dict>
-	<key>UILaunchStoryboardName</key>
-<string>LaunchScreen.storyboard</string>
-
-	<!-- ✅ END BLOCK -->
-
+	</array>
+	<key>GIDClientID</key>
+	<string>696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcqr.apps.googleusercontent.com</string>
 </dict>
 </plist>
