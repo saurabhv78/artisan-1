@@ -47,11 +47,11 @@ class _ForgotOtpTextFieldState extends ConsumerState<ForgotOtpTextField> {
       controller: _controller,
       fieldStyle: FieldStyle.box,
       otpFieldStyle: OtpFieldStyle(
-        backgroundColor: Colors.white.withOpacity(0.2),
-        borderColor: Colors.white.withOpacity(.6),
-        focusBorderColor: Colors.white.withOpacity(.6),
-        disabledBorderColor: Colors.white.withOpacity(.6),
-        enabledBorderColor: Colors.white.withOpacity(.6),
+        backgroundColor: Colors.black.withOpacity(0.2),
+        borderColor: Colors.black.withOpacity(.6),
+        focusBorderColor: Colors.black.withOpacity(.6),
+        disabledBorderColor: Colors.black.withOpacity(.6),
+        enabledBorderColor: Colors.black.withOpacity(.6),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 15),
       onChanged: ref.read(forgotPasswordPageModelProvider.notifier).setOtp,
@@ -60,5 +60,6 @@ class _ForgotOtpTextFieldState extends ConsumerState<ForgotOtpTextField> {
         left: 2,
       ),
     );
+  
   }
 }

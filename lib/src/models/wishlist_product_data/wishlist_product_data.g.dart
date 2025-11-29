@@ -24,6 +24,7 @@ WishlistProductData _$WishlistProductDataFromJson(Map<String, dynamic> json) =>
       createdOn: json['created_on'] as String,
       updatedOn: json['updated_on'] as String,
       isRemoved: json['isRemoved'] as bool? ?? false,
+      isSold: json['isSold'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$WishlistProductDataToJson(
@@ -42,4 +43,5 @@ Map<String, dynamic> _$WishlistProductDataToJson(
       'created_on': instance.createdOn,
       'updated_on': instance.updatedOn,
       'isRemoved': instance.isRemoved,
+      'isSold': instance.isSold,
     };

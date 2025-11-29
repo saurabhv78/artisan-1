@@ -40,6 +40,7 @@ ProductData _$ProductDataFromJson(Map<String, dynamic> json) => ProductData(
       paintingType: json['paintingType'] as String? ?? '',
       signed: json['signed'] as bool? ?? false,
       framed: json['framed'] as bool? ?? false,
+      isSold: json['isSold'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$ProductDataToJson(ProductData instance) =>
@@ -68,4 +69,5 @@ Map<String, dynamic> _$ProductDataToJson(ProductData instance) =>
       'paintingType': instance.paintingType,
       'signed': instance.signed,
       'framed': instance.framed,
+      'isSold': instance.isSold,
     };

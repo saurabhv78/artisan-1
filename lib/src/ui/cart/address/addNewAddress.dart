@@ -320,8 +320,8 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
                         _postalCodeController,
                         'Postal Code',
                         inputType: TextInputType.number,
-                        maxLength: 6,
-                        minLength: 6,
+                        maxLength: 10,
+                        minLength: 3,
                       ),
                       const SizedBox(height: 16),
                       buildInputField(_fullNameController, 'Full Name'),
@@ -330,7 +330,8 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
                         _mobileController,
                         'Mobile Number',
                         inputType: TextInputType.number,
-                        maxLength: 10,
+                        minLength: 8,
+                        maxLength: 15,
                       ),
                     ],
                   ),
@@ -340,39 +341,42 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
 
               // Google Map with draggable marker
               if (_selectedLocation != null) ...[
-                SizedBox(
-                  height: 250,
-                  child: GoogleMap(
-                    zoomGesturesEnabled: true,
-                    zoomControlsEnabled: true,
-                    mapType: MapType.normal,
-                    initialCameraPosition: CameraPosition(
-                      target: _selectedLocation!,
-                      zoom: 15,
-                    ),
-                    onMapCreated: (controller) => _mapController = controller,
-                    markers: {
-                      Marker(
-                        consumeTapEvents: true,
-                        markerId: const MarkerId('selected-location'),
-                        position: _selectedLocation!,
-                        draggable: true,
-                        onDragEnd: (newPosition) async {
-                          setState(() {
-                            _selectedLocation = newPosition;
-                          });
-                          await _updateAddressFromLatLng(newPosition);
-                        },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: SizedBox(
+                    height: 250,
+                    child: GoogleMap(
+                      zoomGesturesEnabled: true,
+                      zoomControlsEnabled: true,
+                      mapType: MapType.normal,
+                      initialCameraPosition: CameraPosition(
+                        target: _selectedLocation!,
+                        zoom: 15,
                       ),
-                    },
-                    onTap: (newPosition) async {
-                      setState(() {
-                        _selectedLocation = newPosition;
-                      });
-                      await _updateAddressFromLatLng(newPosition);
-                    },
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
+                      onMapCreated: (controller) => _mapController = controller,
+                      markers: {
+                        Marker(
+                          consumeTapEvents: true,
+                          markerId: const MarkerId('selected-location'),
+                          position: _selectedLocation!,
+                          draggable: true,
+                          onDragEnd: (newPosition) async {
+                            setState(() {
+                              _selectedLocation = newPosition;
+                            });
+                            await _updateAddressFromLatLng(newPosition);
+                          },
+                        ),
+                      },
+                      onTap: (newPosition) async {
+                        setState(() {
+                          _selectedLocation = newPosition;
+                        });
+                        await _updateAddressFromLatLng(newPosition);
+                      },
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                    ),
                   ),
                 ),
               ] else
@@ -382,14 +386,17 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
                 ),
 
               const SizedBox(height: 40),
-              CustomButton(
-                isProcessing: _isSaving,
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    _saveAddress();
-                  }
-                },
-                text: 'Save Changes',
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CustomButton(
+                  isProcessing: _isSaving,
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      _saveAddress();
+                    }
+                  },
+                  text: 'Save Changes',
+                ),
               ),
               const SizedBox(height: 20),
             ],

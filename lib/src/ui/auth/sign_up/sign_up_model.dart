@@ -46,12 +46,12 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
       if (state.email.trim().isEmpty) {
         return 'Please enter email';
       }
-      if (state.mobile.trim().isEmpty) {
-        return 'Please enter phone number';
-      }
-      if (state.mobile.trim().length != 10) {
-        return 'Invalid phone number';
-      }
+      // if (state.mobile.trim().isEmpty) {
+      //   return 'Please enter phone number';
+      // }
+      // if (state.mobile.trim().length != 10) {
+      //   return 'Invalid phone number';
+      // }
       final password = state.password.trim();
       final regexp = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$');
 
@@ -80,7 +80,7 @@ class SignUpPageModel extends StateNotifier<SignUpPageState> {
         userData: UserRegisterData(
           fullName: state.name,
           email: state.email,
-          phone: state.mobile,
+          // phone: state.mobile,
           password: state.password,
           confirmPassword: state.confirmPassword,
           deviceId: deviceId,

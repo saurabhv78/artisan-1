@@ -73,7 +73,7 @@ class _CartPageState extends ConsumerState<CartPage> {
             ),
             if (status == CartPageStatus.loaded && data.items.isNotEmpty)
               Positioned(
-                bottom: 0,
+                bottom: 25,
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(

@@ -41,8 +41,10 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
   Widget build(BuildContext context) {
     ref.listen(authRepositoryProvider, (prev, next) {
       if (next.status == AuthStatus.unauthenticated) {
-        showSuccessMessage("Logged Out Sucessfully!");
-        context.replaceRoute(const WelcomeRoute());
+        if (!(prev?.isGuest == true)) {
+          showSuccessMessage("Logged Out Sucessfully!");
+        }
+        context.replaceRoute(const SignInRoute());
       }
     });
 

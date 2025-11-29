@@ -21,8 +21,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.debug,
+    // providerAndroid: AndroidDebugProvider(),
+    providerApple:
+        AppleDebugProvider(debugToken: 'E2118E41-B9D7-4354-868A-1B7838F707A1'),
+    // appleProvider: AppleProvider.deviceCheck,
   );
   await Hive.initFlutter();
   runApp(

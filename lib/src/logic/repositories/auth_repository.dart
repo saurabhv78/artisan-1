@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:Artisan/src/models/requests/get_list_data_request.dart';
-import 'package:Artisan/src/models/requests/user_logout_request.dart';
+import 'package:Artisan/src/routing/router.dart';
 import 'package:Artisan/src/utils/toast_utils.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../models/api_response.dart';
@@ -32,7 +34,7 @@ class AuthRepository extends StateNotifier<AuthState> {
   final ApiService apiService;
   late final StreamSubscription _subscription;
   final PreferenceService preferenceService;
-  final StateNotifierProviderRef ref;
+  final Ref ref;
 
   AuthRepository({
     required this.apiService,
@@ -53,7 +55,7 @@ class AuthRepository extends StateNotifier<AuthState> {
     final token = ref
         .read(sharedPreferencesProvider)
         .getString(PreferenceService.authToken);
-    if (token == 'guest') {
+    if (token?.toLowerCase() == 'guest') {
       loginAsGuest();
       return;
     }
@@ -158,9 +160,9 @@ class AuthRepository extends StateNotifier<AuthState> {
     state = state.copyWith(cartData: cartData);
   }
 
-  Future<String> logOut() async {
+  Future<(bool, String?)> logOut() async {
     if (!await hasInternetAccess()) {
-      return "No Internet Connection!";
+      return (false, "No Internet Connection!");
     }
     try {
       final deviceId = await getId();
@@ -181,7 +183,7 @@ class AuthRepository extends StateNotifier<AuthState> {
           cartData: [],
           password: null);
       GoogleSignIn.instance.disconnect();
-      return "";
+      return (true, "");
     } catch (e) {
       state = state.copyWith(
           authUser: null,
@@ -193,7 +195,7 @@ class AuthRepository extends StateNotifier<AuthState> {
       setIdToken('', '');
       // GoogleSignIn().disconnect();
       changeState(AuthStatus.unauthenticated);
-      return e.toString();
+      return (false, e.toString());
     }
   }
 
@@ -304,6 +306,78 @@ class AuthRepository extends StateNotifier<AuthState> {
     state = state.copyWith(status: authStatus);
   }
 
+  void showLoginPopUp(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        // Logout डायलॉग से स्टाइल कॉपी करें
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        // 'Logout' की जगह 'Login Required' टाइटल
+        title: Row(
+          children: [
+            // Icon को बदलें (उदा. 'person' या 'lock_open')
+            const Icon(Icons.lock_open, color: Colors.redAccent),
+            const SizedBox(width: 10),
+            Text(
+              'Login Required',
+              style: GoogleFonts.nunitoSans(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+        // कंटेंट बदलें
+        content: Text(
+          'You need to log in to access this feature.',
+          style: GoogleFonts.nunitoSans(fontSize: 16),
+        ),
+        // एक्शन बटन और स्टाइल
+        actionsAlignment: MainAxisAlignment.end,
+        actionsPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context)
+                .pop(), // Pop with no value (implicitly false)
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.grey[700],
+            ),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.nunitoSans(fontSize: 15),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              logOut();
+              // Navigator.of(context)
+              //     .pop(true); // Pop with true to indicate 'Login' was pressed
+              // // Login स्क्रीन पर नेविगेट करें
+              // context.replaceRoute(const SignInRoute());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent, // कलर बदलें
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              'Login',
+              style: GoogleFonts.nunitoSans(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -323,6 +397,10 @@ class AuthState with _$AuthState {
     @Default([]) List<String> cartData,
     @Default(AuthStatus.initial) AuthStatus status,
   }) = _AuthState;
+}
+
+extension AuthStateX on AuthState {
+  bool get isGuest => authUser?.userData.isGuest == true;
 }
 
 enum AuthStatus {

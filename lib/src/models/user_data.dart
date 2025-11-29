@@ -81,5 +81,6 @@ class UserLoggedData {
         id: 'guest',
         email: '',
         fullName: 'Guest',
+        isGuest: true,
       );
 }

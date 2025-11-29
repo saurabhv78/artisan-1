@@ -10,6 +10,7 @@ class CustomAuthBtn extends ConsumerStatefulWidget {
   final Color? borderColor;
   final double height;
   final double? width;
+  final Color? backgroundcolor;
   const CustomAuthBtn({
     super.key,
     required this.height,
@@ -18,6 +19,7 @@ class CustomAuthBtn extends ConsumerStatefulWidget {
     required this.text,
     this.borderColor,
     this.width,
+    this.backgroundcolor,
   });
 
   @override
@@ -32,7 +34,7 @@ class _CustomAuthBtnState extends ConsumerState<CustomAuthBtn> {
       behavior: HitTestBehavior.opaque,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
+          color: widget.backgroundcolor ?? Colors.white.withOpacity(0.2),
           border: Border.all(
               color: widget.borderColor ?? const Color(0xffA39B9B), width: 1),
           borderRadius: BorderRadius.circular(50),

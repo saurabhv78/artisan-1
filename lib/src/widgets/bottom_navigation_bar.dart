@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/colors.dart';
+import '../logic/repositories/auth_repository.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({
@@ -20,6 +21,8 @@ class BottomBar extends ConsumerStatefulWidget {
 class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   Widget build(BuildContext context) {
+    final isGuest =
+        ref.watch(authRepositoryProvider.select((value) => value.isGuest));
     return Container(
       color: const Color.fromRGBO(135, 225, 227, .24),
       child: Column(
@@ -70,41 +73,47 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                           icon: 'assets/images/ic_grid.png',
                           index: 1,
                           isActive: context.tabsRouter.activeIndex == 1,
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            context.tabsRouter.setActiveIndex(1);
+                          onTap: isGuest
+                              ? () => _showLoginPop(context)
+                              : () {
+                                  FocusScope.of(context).unfocus();
+                                  context.tabsRouter.setActiveIndex(1);
 
-                            // if (mounted) {
-                            setState(() {});
-                            // }/
-                          },
+                                  // if (mounted) {
+                                  setState(() {});
+                                  // }/
+                                },
                         ),
                         _NavigationBarItem(
                           label: 'Chat',
                           index: 2,
                           icon: 'assets/images/ic_chat.png',
                           isActive: context.tabsRouter.activeIndex == 2,
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            context.tabsRouter.setActiveIndex(2);
+                          onTap: isGuest
+                              ? () => _showLoginPop(context)
+                              : () {
+                                  FocusScope.of(context).unfocus();
+                                  context.tabsRouter.setActiveIndex(2);
 
-                            // if (mounted) {
-                            setState(() {});
-                            // }
-                          },
+                                  // if (mounted) {
+                                  setState(() {});
+                                  // }
+                                },
                         ),
                         _NavigationBarItem(
                           label: 'Profile',
                           index: 3,
                           icon: 'assets/images/ic_user.png',
                           isActive: context.tabsRouter.activeIndex == 3,
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            if (mounted) {
-                              setState(() {});
-                            }
-                            context.tabsRouter.setActiveIndex(3);
-                          },
+                          onTap: isGuest
+                              ? () => _showLoginPop(context)
+                              : () {
+                                  FocusScope.of(context).unfocus();
+                                  if (mounted) {
+                                    setState(() {});
+                                  }
+                                  context.tabsRouter.setActiveIndex(3);
+                                },
                         ),
                       ],
                     ),
@@ -117,13 +126,16 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       ),
     );
   }
+
+  void _showLoginPop(BuildContext context) =>
+      ref.read(authRepositoryProvider.notifier).showLoginPopUp(context);
 }
 
 class _NavigationBarItem extends StatelessWidget {
   final String label;
   final bool isActive;
   final String icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final int? index;
 
   const _NavigationBarItem({

@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/models/api_response.dart';
 import 'package:Artisan/src/models/requests/social_login_request.dart';
 import 'package:Artisan/src/models/requests/user_login_request.dart';
 import 'package:Artisan/src/utils/network_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart'
     show FirebaseMessaging;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -11,8 +14,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:the_apple_sign_in/the_apple_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../../logic/services/api_services/api_service.dart';
+
+import 'package:crypto/crypto.dart';
 part 'signin_model.freezed.dart';
 
 final signInPageModelProvider =
@@ -108,8 +113,9 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       // Create a GoogleSignIn instance
       final GoogleSignIn signIn = GoogleSignIn.instance;
       await signIn.initialize(
-        serverClientId:
-            "696852379554-i91o5ktaudnci241627rq6i7rj9hnn6v.apps.googleusercontent.com",
+        serverClientId: Platform.isIOS
+            ? "696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcq.apps.googleusercontent.com"
+            : "696852379554-i91o5ktaudnci241627rq6i7rj9hnn6v.apps.googleusercontent.com",
       );
 
       print("Fetching FCM token");
@@ -251,7 +257,7 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
     try {
       // Log out any existing Facebook session
       await FacebookAuth.instance.logOut();
-
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
       // Trigger login
       final LoginResult result = await FacebookAuth.instance.login(
         permissions: ['email', 'public_profile'],
@@ -270,7 +276,7 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
           final res = await apiService.socialLogin(
             socialLoginRequest: SocialLoginRequest(
               email: email,
-              fcmToken: '*',
+              fcmToken: fcmToken.toString(),
               deviceId: deviceId,
               loginSource: 'facebook',
               name: name ?? "Facebook User",
@@ -304,40 +310,230 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
     }
   }
 
-  Future<String> signInWithApple({List<Scope> scopes = const []}) async {
-    if (!(await hasInternetAccess())) {
-      return 'No internet connection!';
-    }
+  // Future<void> signInWithAppleTest() async {
+  //   try {
+  //     final credential = await SignInWithApple.getAppleIDCredential(
+  //       scopes: [
+  //         AppleIDAuthorizationScopes.email,
+  //         AppleIDAuthorizationScopes.fullName,
+  //       ],
+  //     );
 
-    // state = state.copyWith(
-    //   status: AuthPageStatus.authenticatingWithApple,
-    // );
-    final result = await TheAppleSignIn.performRequests(
-        [AppleIdRequest(requestedScopes: scopes)]);
+  //     print("User ID: ${credential.userIdentifier}");
+  //     print("Email: ${credential.email}");
+  //     print("Full Name: ${credential.givenName}");
+
+  //     // You will use credential.identityToken for backend or Firebase
+  //   } catch (e) {
+  //     print("Apple Signin Error: $e");
+  //   }
+  // }
+
+  // Future<User?> appleSignInFirebase() async {
+  //   try {
+  //     final appleCredential = await SignInWithApple.getAppleIDCredential(
+  //       scopes: [
+  //         AppleIDAuthorizationScopes.email,
+  //         AppleIDAuthorizationScopes.fullName,
+  //       ],
+  //     );
+  //     final oauthCredential = OAuthProvider("apple.com").credential(
+  //       idToken: appleCredential.identityToken,
+  //       accessToken: appleCredential.authorizationCode,
+  //     );
+
+  //     return await FirebaseAuth.instance
+  //         .signInWithCredential(oauthCredential)
+  //         .then((value) {
+  //       print("User ID: ${value.user?.uid}");
+  //       print("Email: ${value.user?.email}");
+  //       print("Full Name: ${value.user?.displayName}");
+  //       return value.user;
+  //     });
+  //   } catch (error) {
+  //     print("Apple Sign In Error: $error");
+  //     return null;
+  //   }
+  // }
+
+  // Future<String> signInWithApple(WidgetRef ref) async {
+  //   if (!(await hasInternetAccess())) {
+  //     return 'No internet connection!';
+  //   }
+
+  //   try {
+  //     // 1️⃣ Generate nonce
+  //     final rawNonce = generateNonce();
+  //     final hashedNonce = sha256ofString(rawNonce);
+
+  //     // 2️⃣ Request Apple Credential
+  //     final appleCredential = await SignInWithApple.getAppleIDCredential(
+  //       scopes: [
+  //         AppleIDAuthorizationScopes.email,
+  //         AppleIDAuthorizationScopes.fullName,
+  //       ],
+  //       // nonce: hashedNonce, // REQUIRED
+  //     );
+
+  //     // 3️⃣ Firebase Credentials
+  //     final oauth = OAuthProvider("apple.com").credential(
+  //         idToken: appleCredential.identityToken,
+  //         accessToken: appleCredential.authorizationCode
+  //         // rawNonce: rawNonce, // REQUIRED
+  //         );
+
+  //     final userCredential =
+  //         await FirebaseAuth.instance.signInWithCredential(oauth);
+
+  //     final firebaseUser = userCredential.user;
+
+  //     // 4️⃣ Extract email, name, id
+  //     final email = firebaseUser?.email ?? appleCredential.email ?? "";
+  //     final fullName =
+  //         "${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}"
+  //             .trim();
+
+  //     final appleUserId = appleCredential.userIdentifier;
+  //     if (appleUserId == null) return "Unable to get Apple user ID";
+
+  //     // 5️⃣ Device ID
+  //     final deviceId = await getId();
+
+  //     // 6️⃣ Social Login API
+  //     final res = await apiService.socialLogin(
+  //       socialLoginRequest: SocialLoginRequest(
+  //         email: email,
+  //         name: fullName.isNotEmpty ? fullName : "Apple User",
+  //         deviceId: deviceId,
+  //         fcmToken: "*",
+  //         loginSource: "apple",
+  //       ),
+  //     );
+
+  //     if (res.status != ApiStatus.success) {
+  //       return res.errorMessage ?? "Something went wrong";
+  //     }
+
+  //     // 7️⃣ Update auth provider
+  //     ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+  //     ref
+  //         .read(authRepositoryProvider.notifier)
+  //         .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
+  //     ref
+  //         .read(authRepositoryProvider.notifier)
+  //         .changeState(AuthStatus.authenticated);
+  //     ref.read(authRepositoryProvider.notifier).getAllUserDetails();
+
+  //     return "";
+  //   } catch (e) {
+  //     if (e.toString().contains("AuthorizationDenied")) {
+  //       return "Apple sign in denied.";
+  //     }
+
+  //     if (e.toString().contains("AuthorizationCanceled")) {
+  //       return "Apple sign in cancelled.";
+  //     }
+
+  //     return "Apple login error: $e";
+  //   }
+  // }
+
+  // Future<UserCredential> signInWithAppleCred() async {
+  //   // To prevent replay attacks with the credential returned from Apple, we
+  //   // include a nonce in the credential request. When signing in with
+  //   // Firebase, the nonce in the id token returned by Apple, is expected to
+  //   // match the sha256 hash of `rawNonce`.
+  //   final rawNonce = generateNonce();
+  //   final nonce = sha256ofString(rawNonce);
+
+  //   // Request credential for the currently signed in Apple account.
+  //   final appleCredential = await SignInWithApple.getAppleIDCredential(
+  //     scopes: [
+  //       AppleIDAuthorizationScopes.email,
+  //       AppleIDAuthorizationScopes.fullName,
+  //     ],
+  //     nonce: nonce,
+  //   );
+
+  //   // Create an `OAuthCredential` from the credential returned by Apple.
+  //   final oauthCredential = OAuthProvider("apple.com").credential(
+  //     idToken: appleCredential.identityToken,
+  //     rawNonce: rawNonce,
+  //   );
+
+  //   // Sign in the user with Firebase. If the nonce we generated earlier does
+  //   // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+  //   final cred =
+  //       await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  //   print('Cred: ${cred.user?.email}');
+  //   print('Cred: ${cred.user?.displayName}');
+  //   return cred;
+  // }
+  Future<String> signInWithApple(WidgetRef ref) async {
     try {
-      switch (result.status) {
-        case AuthorizationStatus.authorized:
-          // final appleIdCredential = result.credential!;
-
-          return '';
-        case AuthorizationStatus.error:
-          // state = state.copyWith(
-          //   status: AuthPageStatus.error,
-          // );
-          return 'ERROR_AUTHORIZATION_DENIED';
-
-        case AuthorizationStatus.cancelled:
-          // state = state.copyWith(
-          //   status: AuthPageStatus.error,
-          // );
-          return 'Sign in aborted by user';
-
-        default:
-          return 'Authentication Failed';
+      if (!(await hasInternetAccess())) {
+        return "No internet connection!";
       }
+
+      final rawNonce = generateNonce();
+      final hashedNonce = sha256ofString(rawNonce);
+
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: hashedNonce,
+      );
+
+      final oauth = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(oauth);
+
+      return ""; // success
     } catch (e) {
-      return e.toString();
+      print("APPLE LOGIN ERROR → $e");
+
+      // Specific Apple Errors
+      if (e.toString().contains("AuthorizationCanceled")) {
+        return "Apple sign-in cancelled.";
+      }
+
+      if (e.toString().contains("AuthorizationDenied")) {
+        return "Apple sign-in denied.";
+      }
+
+      // Firebase / App Check / OAuth
+      if (e.toString().contains("invalid-credential") ||
+          e.toString().contains("AppCheck") ||
+          e.toString().contains("PERMISSION_DENIED") ||
+          e.toString().contains("403") ||
+          e.toString().contains("App attestation failed")) {
+        return "Unable to sign in with Apple. Please try Google or Facebook.";
+      }
+
+      return "Unable to sign in with Apple. Please try Google or Facebook.";
     }
+  }
+
+  /// Generates a cryptographically secure random nonce, to be included in a
+  /// credential request.
+  String generateNonce([int length = 32]) {
+    final charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+  /// Returns the sha256 hash of [input] in hex notation.
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
   }
 }
 

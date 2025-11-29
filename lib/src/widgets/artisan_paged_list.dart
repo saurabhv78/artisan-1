@@ -23,42 +23,37 @@ class ArtisanPagedList<ItemType> extends PagedMasonryGridView<int, ItemType> {
     super.key,
   }) : super(
           pagingController: pagingController,
+
+          // ⭐ Masonry grid with manual spacing (fully compatible)
           gridDelegateBuilder: (index) =>
-              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+              SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _getCrossAxisCount(),
           ),
+
           builderDelegate: PagedChildBuilderDelegate<ItemType>(
-            itemBuilder: itemBuilder,
+            itemBuilder: (context, item, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8), // ⭐ spacing fix
+                child: itemBuilder(context, item, index),
+              );
+            },
             firstPageProgressIndicatorBuilder: (context) => const Center(
-              child: SizedBox(
-                height: 30,
-                width: 30,
-                child: CircularProgressIndicator(
-                  color: primaryColor,
-                ),
-              ),
+              child: CircularProgressIndicator(),
             ),
-            noItemsFoundIndicatorBuilder: (_) => FirstPageExceptionIndicator(
-              errorWidget: emptyItemWidget ??
-                  Text(
-                    'No Item Found',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.nunitoSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-            ),
-            firstPageErrorIndicatorBuilder: (_) => FirstPageExceptionIndicator(
-              errorWidget: null,
-              errMessage: pagingController.error,
-              onTryAgain: pagingController.retryLastFailedRequest,
-            ),
-            newPageErrorIndicatorBuilder: (_) => NewPageErrorIndicator(
-              onTap: pagingController.retryLastFailedRequest,
+            noItemsFoundIndicatorBuilder: (_) => Center(
+              child: emptyItemWidget ?? Text("No Items Found"),
             ),
           ),
         );
+
+  static int _getCrossAxisCount() {
+    final width = WidgetsBinding
+            .instance.platformDispatcher.views.first.physicalSize.width /
+        WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
+
+    if (width >= 600) return 3;
+    return 2;
+  }
 }
 
 /// implementation of PagedSliverList with custom error UI

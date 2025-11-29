@@ -98,7 +98,7 @@ class _ChatTabPageState extends ConsumerState<ChatTabPage> {
     final messages = ref.watch(chatProvider);
 
     return CustomScaffold(
-      topPadding: 35,
+      topPadding: 45,
       resizeToAvoidBottomInset: true, // ✅ important
       child: Column(
         children: [

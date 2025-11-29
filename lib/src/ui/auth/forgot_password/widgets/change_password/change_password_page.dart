@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:Artisan/src/constants/colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,6 +39,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               width: MediaQuery.sizeOf(context).width,
               fit: BoxFit.fill,
             ),
+     
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: SingleChildScrollView(
@@ -104,7 +106,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                       initialText: ref.read(forgotPasswordPageModelProvider
                           .select((value) => value.password)),
                       maxLength: null,
-                      backgroundColor: Colors.white.withOpacity(0.15),
+                      backgroundColor: Colors.black.withOpacity(0.3),
                       onChanged: ref
                           .read(forgotPasswordPageModelProvider.notifier)
                           .setPassword,
@@ -134,7 +136,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                       initialText: ref.read(forgotPasswordPageModelProvider
                           .select((value) => value.confPass)),
                       maxLength: null,
-                      backgroundColor: Colors.white.withOpacity(0.15),
+                      backgroundColor: Colors.black.withOpacity(0.3),
                       onChanged: ref
                           .read(forgotPasswordPageModelProvider.notifier)
                           .setConfPass,
@@ -144,7 +146,8 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     ),
                     CustomAuthBtn(
                       height: 50,
-                      borderColor: Colors.white.withOpacity(.6),
+                      borderColor: primaryColor.withOpacity(.6),
+                      backgroundcolor: primaryColor,
                       isProcessing: isProcessing,
                       onTap: () async {
                         if (!isProcessing) {
@@ -176,6 +179,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 ),
               ),
             ),
+         
           ],
         ),
       ),

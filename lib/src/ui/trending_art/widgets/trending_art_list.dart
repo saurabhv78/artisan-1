@@ -1,8 +1,6 @@
-import 'package:Artisan/src/constants/colors.dart';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/logic/services/api_services/api_service.dart';
 import 'package:Artisan/src/models/artstyle_data/art_style_data.dart';
-import 'package:Artisan/src/utils/toast_utils.dart';
 
 import 'package:Artisan/src/widgets/artisan_paged_list.dart';
 import 'package:Artisan/src/widgets/components/images.dart';
@@ -15,11 +13,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../models/api_response.dart';
 
-import '../../../models/product_data/product_data.dart';
 import '../../../models/requests/get_list_data_request.dart';
 import '../../../routing/router.dart';
-
-import '../../../widgets/product_card.dart';
 
 class TrendingArtPagedListSection extends ConsumerStatefulWidget {
   const TrendingArtPagedListSection({
@@ -75,36 +70,6 @@ class _TrendingArtListSection
     }
   }
 
-  // _refresh() async {
-  //   await Future.delayed(const Duration(seconds: 1));
-  //   final response = await getTrendingArtistData(1);
-
-  //   _pagingController.value.itemList?.clear();
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  //   // _pagingController.refresh();
-  //   if (response.status != ApiStatus.success) {
-  //     // print(response.errorMessage);
-  //     _pagingController.error =
-  //         response.errorMessage ?? 'Something went wrong!';
-  //     _pagingController.refresh();
-  //   } else {
-  //     final list = response.data!.values.first;
-
-  //     final isLastPage = list.length < _pageSize;
-  //     if (isLastPage) {
-  //       _pagingController.appendLastPage(list);
-  //     } else {
-  //       _pagingController.appendPage(list, 2);
-  //     }
-  //   }
-  //   // ref.read(categoryTabPageModelProvider.notifier).isRefreshing(false);
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  // }
-
   @override
   void dispose() {
     _pagingController.dispose();
@@ -113,16 +78,6 @@ class _TrendingArtListSection
 
   @override
   Widget build(BuildContext context) {
-    // ref.listen(
-    //   categoryTabPageModelProvider,
-    //   (previous, next) {
-    //     if (previous?.refreshCounter != next.refreshCounter) {
-    //       debugPrint('Refreshing...');
-    //       _refresh();
-    //     }
-    //   },
-    // );
-
     return ArtisanPagedList<ArtStyle>(_pagingController,
         padding: const EdgeInsets.only(bottom: 50),
         itemBuilder: (context, data, index) {
@@ -134,21 +89,10 @@ class _TrendingArtListSection
           //   id: data.id,
           // ));
         },
-        child: Padding(
-          padding: EdgeInsets.only(top: 15, right: index % 2 == 0 ? 15 : 0),
-          // Convert ArtStyle to ProductData or use a suitable widget
-          // Example: If you have a method to convert ArtStyle to ProductData:
-          // child: ProductCard(
-          //   data: artStyleToProductData(data),
-          //   index: index,
-          //   key: ValueKey(data),
-          // ),
-          // Or use a widget that accepts ArtStyle:
-          child: YourArtStyleCardWidget(
-            artStyle: data,
-            index: index,
-            key: ValueKey(data),
-          ),
+        child: YourArtStyleCardWidget(
+          artStyle: data,
+          index: index,
+          key: ValueKey(data),
         ),
       );
     }
@@ -162,20 +106,21 @@ class YourArtStyleCardWidget extends ConsumerWidget {
   final int index;
 
   const YourArtStyleCardWidget({
-    Key? key,
+    super.key,
     required this.artStyle,
     required this.index,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       key: ValueKey(index),
       padding: EdgeInsets.only(
-          top: 10,
-          bottom: 10,
-          right: index % 2 == 0 ? 5 : 0,
-          left: index % 2 != 0 ? 5 : 0),
+          // top: 10,
+          // bottom: 10,
+          // right: index % 2 == 0 ? 5 : 0,
+          // left: index % 2 != 0 ? 5 : 0
+          ),
       child: Stack(
         children: [
           Container(
@@ -219,70 +164,14 @@ class YourArtStyleCardWidget extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    // const Icon(
-                    //   Icons.star,
-                    //   color: Color(0xffFCAF23),
-                    //   size: 20,
-                    // ),
                     const SizedBox(
                       width: 3,
                     ),
-                    // Text(
-                    //   artStyle.,
-                    //   style: GoogleFonts.nunitoSans(
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.w400,
-                    //     color: subHead,
-                    //   ),
-                    // ),
                   ],
                 ),
-                // Text(
-                //   "\$${(artStyle.discountData != null ? (artStyle.prodPrice - artStyle.prodPrice * artStyle.discountData!.discountVal / 100) : artStyle.prodPrice).toStringAsFixed(2)}",
-                //   style: GoogleFonts.nunitoSans(
-                //     fontWeight: FontWeight.w400,
-                //     color: bgDark,
-                //     fontSize: 14,
-                //     letterSpacing: .2,
-                //   ),
-                // ),
               ],
             ),
           ),
-          // Positioned(
-          //   right: 10,
-          //   top: 10,
-          //   child: GestureDetector(
-          //     onTap: () async {
-          //       // You may need to refactor this logic if you want to handle state (like isProcessing) and mounted/setState,
-          //       // as ConsumerWidget does not have them. Consider using a state management solution or a StatefulWidget+Consumer.
-          //       // For now, just remove the isProcessing/mounted/setState logic or refactor as needed.
-          //       final res = await ref
-          //           .read(authRepositoryProvider.notifier)
-          //           .updateFav(artStyle.id);
-          //       if (res.keys.first != true) {
-          //         showErrorMessage(res.values.first);
-          //       } else {
-          //         showSuccessMessage(res.values.first);
-          //         ref.read(authRepositoryProvider.notifier).getWishlist();
-          //       }
-          //     },
-          //     child: CircleAvatar(
-          //       backgroundColor: Colors.white,
-          //       radius: 13,
-          //       child: Icon(
-          //         Icons.favorite,
-          //         color: ref.watch(authRepositoryProvider.select((value) =>
-          //                     value.wishlist.indexWhere(
-          //                         (element) => element == artStyle.id))) !=
-          //                 -1
-          //             ? Colors.red
-          //             : const Color(0xffC5C5C5),
-          //         size: 20,
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

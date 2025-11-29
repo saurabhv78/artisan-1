@@ -72,7 +72,7 @@ class ProductData {
 
   @JsonKey(name: 'framed', defaultValue: false)
   final bool framed;
-
+  final bool isSold;
   ProductData({
     this.id = '',
     this.prodName = '',
@@ -98,6 +98,7 @@ class ProductData {
     this.paintingType = '',
     this.signed = false,
     this.framed = false,
+    this.isSold = false,
   });
 
   // ---------- copyWith ----------
@@ -126,6 +127,7 @@ class ProductData {
     String? paintingType,
     bool? signed,
     bool? framed,
+    bool? isSold,
   }) {
     return ProductData(
       id: id ?? this.id,
@@ -152,6 +154,7 @@ class ProductData {
       paintingType: paintingType ?? this.paintingType,
       signed: signed ?? this.signed,
       framed: framed ?? this.framed,
+      isSold: isSold ?? this.isSold,
     );
   }
 

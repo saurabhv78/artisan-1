@@ -7,9 +7,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Artisans</string>
+	<string>Artisan</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -19,13 +23,53 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string>
+	<string>1.0.9</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb873707391752668</string>
+				<string>com.googleusercontent.apps.696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcq</string>
+				<string>com.googleusercontent.apps.178888187457-msbo9gal2uce81u2cdfe0thna878h2j3</string>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>9</string>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<false/>
+	<key>FacebookAppID</key>
+	<string>873707391752668</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
+	<key>FacebookClientToken</key>
+	<string>79d8423303c174a6fe59bf006f85583ar</string>
+	<key>FacebookDisplayName</key>
+	<string>Artisan</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>GIDClientID</key>
+	<string>696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcq.apps.googleusercontent.com</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>Artisan uses your contacts to help you share artworks with friends directly.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string></string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to your location even when the app is in the background to provide uninterrupted service.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app requires access to your location while you are using the app to show relevant features and improve your experience.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Artisan uses your microphone to record audio descriptions for your artwork.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App needs permission to upload photos.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -37,13 +81,6 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App needs permission to upload photos.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app requires access to your location while you are using the app to show relevant features and improve your experience.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>This app needs access to your location even when the app is in the background to provide uninterrupted service.</string>
-
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -57,29 +94,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>FacebookAdvertiserIDCollectionEnabled</key>
-	<false/>
-	<key>FacebookAppID</key>
-	<string>873707391752668</string>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<false/>
-	<key>FacebookClientToken</key>
-	<string>79d8423303c174a6fe59bf006f85583ar</string>
-	<key>FacebookDisplayName</key>
-	<string>Artisans</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb873707391752668</string>
-				<string>com.googleusercontent.apps.696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcqr</string>
-			</array>
-		</dict>
-	</array>
-	<key>GIDClientID</key>
-	<string>696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcqr.apps.googleusercontent.com</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

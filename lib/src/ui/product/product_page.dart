@@ -82,17 +82,19 @@ class _ProductPageState extends ConsumerState<ProductPage> {
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  child: SizedBox(
-                    // color: Colors.white,
-                    height: 66,
-                    width: MediaQuery.sizeOf(context).width,
-                    child: BottomButtons(
-                      data: productData,
-                    ),
-                  ),
-                ),
+                productData.isSold == true
+                    ? SizedBox()
+                    : Positioned(
+                        bottom: 0,
+                        child: SizedBox(
+                          // color: Colors.white,
+                          height: 66,
+                          width: MediaQuery.sizeOf(context).width,
+                          child: BottomButtons(
+                            data: productData,
+                          ),
+                        ),
+                      ),
               ],
             )
           : TryAgainWidget(

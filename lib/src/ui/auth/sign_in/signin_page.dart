@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../logic/repositories/auth_repository.dart';
@@ -66,13 +65,478 @@ class _SignInPageState extends ConsumerState<SignInPage> {
     ref.listen(authRepositoryProvider, (prev, next) {
       if (prev?.status != next.status) {
         if (next.status == AuthStatus.authenticated) {
-          showSuccessMessage('Logged In Successfully!');
+          if (!next.isGuest) showSuccessMessage('Logged In Successfully!');
           context.replaceRoute(const MainRoute());
         } else if (next.status == AuthStatus.authenticatedNotVerified) {
           context.replaceRoute(const VerifyEmailOtpRoute());
         } else if (next.status == AuthStatus.unauthenticated) {}
       }
     });
+    // return WillPopScope(
+    //   onWillPop: () async {
+    //     context.replaceRoute(const WelcomeRoute());
+    //     return false;
+    //   },
+    //   child: SafeArea(
+    //     child: Scaffold(
+    //       body: Stack(
+    //         children: [
+    //           Image.asset(
+    //             'assets/images/bg_auth.png',
+    //             height: MediaQuery.sizeOf(context).height,
+    //             width: MediaQuery.sizeOf(context).width,
+    //             fit: BoxFit.fill,
+    //           ),
+    //           Padding(
+    //             padding: const EdgeInsets.symmetric(horizontal: 22),
+    //             child: SingleChildScrollView(
+    //               physics: const AlwaysScrollableScrollPhysics(),
+    //               child: Column(
+    //                 crossAxisAlignment: CrossAxisAlignment.stretch,
+    //                 children: [
+    //                   const SizedBox(
+    //                     height: 25,
+    //                   ),
+    //                   Row(
+    //                     children: [
+    //                       BackBtn(
+    //                         onTap: () {
+    //                           Focus.maybeOf(context)?.unfocus();
+    //                           context.replaceRoute(const WelcomeRoute());
+    //                         },
+    //                       ),
+    //                     ],
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 25,
+    //                   ),
+    //                   Text(
+    //                     "Sign in",
+    //                     style: GoogleFonts.nunitoSans(
+    //                       color: Colors.white,
+    //                       fontSize: 32,
+    //                       fontWeight: FontWeight.w700,
+    //                     ),
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 10,
+    //                   ),
+    //                   FittedBox(
+    //                     child: Text(
+    //                       "Enter the email you would like to use PEA with",
+    //                       // textAlign: TextAlign.center,
+
+    //                       style: GoogleFonts.nunitoSans(
+    //                         color: Colors.white,
+    //                         fontSize: 16,
+    //                         fontWeight: FontWeight.w400,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 50,
+    //                   ),
+    //                   CustomAuthTextField(
+    //                     hintText: 'Email',
+    //                     isEnabled: !isProcessing,
+    //                     initialText: ref.read(signInPageModelProvider
+    //                         .select((value) => value.email)),
+    //                     maxLength: null,
+    //                     backgroundColor: Colors.black.withOpacity(0.3),
+    //                     onChanged:
+    //                         ref.read(signInPageModelProvider.notifier).setEmail,
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 15,
+    //                   ),
+    //                   CustomAuthTextField(
+    //                     backgroundColor: Colors.black.withOpacity(0.3),
+    //                     hideText: isNotVisible,
+    //                     suffix: GestureDetector(
+    //                       onTap: () {
+    //                         if (mounted) {
+    //                           setState(() {
+    //                             isNotVisible = !isNotVisible;
+    //                           });
+    //                         }
+    //                       },
+    //                       child: Icon(
+    //                         isNotVisible
+    //                             ? Icons.visibility_off
+    //                             : Icons.visibility,
+    //                         color: Colors.white,
+    //                       ),
+    //                     ),
+    //                     hintText: 'Password',
+    //                     isEnabled: !isProcessing,
+    //                     initialText: ref.read(signInPageModelProvider
+    //                         .select((value) => value.password)),
+    //                     maxLength: null,
+    //                     onChanged: ref
+    //                         .read(signInPageModelProvider.notifier)
+    //                         .setPassword,
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 10,
+    //                   ),
+    //                   Row(
+    //                     children: [
+    //                       // SizedBox(
+    //                       //   width: 18,
+    //                       //   child: ClipRRect(
+    //                       //     borderRadius: BorderRadius.circular(8),
+    //                       //     child: Checkbox(
+    //                       //       value: checkBox,
+    //                       //       splashRadius: 0,
+    //                       //       focusColor: primaryColor,
+    //                       //       checkColor: Colors.white,
+    //                       //       activeColor: primaryColor,
+    //                       //       side: const BorderSide(color: Colors.white),
+    //                       //       shape: RoundedRectangleBorder(
+    //                       //           borderRadius: BorderRadius.circular(10)),
+    //                       //       onChanged: (value) async {
+    //                       //         setState(() => checkBox = value ?? false);
+
+    //                       //         final prefs =
+    //                       //             await SharedPreferences.getInstance();
+    //                       //         await prefs.setBool('remember_me', checkBox);
+
+    //                       //         if (!checkBox) {
+    //                       //           // Clear stored credentials if unchecked
+    //                       //           await prefs.remove('saved_email');
+    //                       //           await prefs.remove('saved_password');
+    //                       //         }
+    //                       //       },
+    //                       //     ),
+    //                       //   ),
+    //                       // ),
+    //                       // const SizedBox(
+    //                       //   width: 5,
+    //                       // ),
+    //                       // Text(
+    //                       //   "Remember me",
+    //                       //   style: GoogleFonts.nunitoSans(
+    //                       //     color: Colors.white,
+    //                       //     fontSize: 16,
+    //                       //     fontWeight: FontWeight.w400,
+    //                       //   ),
+    //                       // ),
+    //                       const Expanded(child: SizedBox()),
+    //                       GestureDetector(
+    //                         onTap: () {
+    //                           context.navigateTo(const ForgotPasswordRoute());
+    //                         },
+    //                         child: Text(
+    //                           "Forgot Password?",
+    //                           style: GoogleFonts.nunitoSans(
+    //                             color: primaryColor,
+    //                             fontSize: 16,
+    //                             fontWeight: FontWeight.w400,
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 20,
+    //                   ),
+    //                   CustomAuthBtn(
+    //                     backgroundcolor: primaryColor,
+    //                     height: 50,
+    //                     borderColor: primaryColor,
+    //                     isProcessing: isProcessing,
+    //                     onTap: () async {
+    //                       if (!isProcessing) {
+    //                         if (mounted) {
+    //                           setState(() {
+    //                             isProcessing = true;
+    //                           });
+    //                         }
+    //                         final res = await ref
+    //                             .read(signInPageModelProvider.notifier)
+    //                             .loginUser(checkBox: true);
+    //                         if (res != '') {
+    //                           showErrorMessage(res);
+    //                         }
+    //                         if (mounted) {
+    //                           setState(() {
+    //                             isProcessing = false;
+    //                           });
+    //                         }
+    //                       }
+    //                     },
+    //                     text: 'Continue',
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 15,
+    //                   ),
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       Text(
+    //                         "Don’t have an account?",
+    //                         style: GoogleFonts.nunitoSans(
+    //                           color: Colors.black,
+    //                           fontSize: 16,
+    //                           letterSpacing: -0.011,
+    //                           fontWeight: FontWeight.w400,
+    //                         ),
+    //                       ),
+    //                       GestureDetector(
+    //                         onTap: () {
+    //                           context.replaceRoute(const SignUpRoute());
+    //                         },
+    //                         child: Text(
+    //                           " Sign up",
+    //                           style: GoogleFonts.nunitoSans(
+    //                             color: primaryColor,
+    //                             fontSize: 16,
+    //                             letterSpacing: -0.011,
+    //                             fontWeight: FontWeight.w400,
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 60,
+    //                   ),
+    //                   Row(
+    //                     children: [
+    //                       const Expanded(
+    //                         child: Divider(
+    //                           color: Colors.black,
+    //                           thickness: 1,
+    //                         ),
+    //                       ),
+    //                       Text(
+    //                         " Or Continue with ",
+    //                         style: GoogleFonts.nunitoSans(
+    //                           color: Colors.black,
+    //                           fontSize: 14,
+    //                           letterSpacing: -0.011,
+    //                           fontWeight: FontWeight.w400,
+    //                         ),
+    //                       ),
+    //                       const Expanded(
+    //                         child: Divider(
+    //                           color: Colors.black,
+    //                           thickness: 1,
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 20,
+    //                   ),
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       // GestureDetector(
+    //                       //   onTap: () async {
+    //                       //     GoogleSignIn.instance.disconnect();
+    //                       //     showSuccessMessage("Coming Soon!");
+    //                       //   },
+    //                       //   child: Image.asset(
+    //                       //     'assets/images/ic_apple.png',
+    //                       //     width: 45.5,
+    //                       //     height: 45.5,
+    //                       //   ),
+    //                       // ),
+    //                       // const SizedBox(
+    //                       //   width: 20,
+    //                       // ),
+    //                       GestureDetector(
+    //                         onTap: () async {
+    //                           if (!isFbProcessing) {
+    //                             if (mounted) {
+    //                               setState(() {
+    //                                 isFbProcessing = true;
+    //                               });
+    //                             }
+    //                             final res = await ref
+    //                                 .read(signInPageModelProvider.notifier)
+    //                                 .signInWithFacebook(ref);
+    //                             if (res != '') {
+    //                               showErrorMessage(res);
+    //                             }
+    //                             if (mounted) {
+    //                               setState(() {
+    //                                 isFbProcessing = false;
+    //                               });
+    //                             }
+    //                           }
+    //                         },
+    //                         child: Stack(
+    //                           alignment: Alignment.center,
+    //                           children: [
+    //                             Image.asset(
+    //                               'assets/images/ic_facebook.png',
+    //                               width: 45.5,
+    //                               height: 45.5,
+    //                             ),
+    //                             if (isFbProcessing)
+    //                               Center(
+    //                                 child: Container(
+    //                                   height: 27,
+    //                                   width: 27,
+    //                                   decoration: BoxDecoration(
+    //                                     color: Colors.white.withOpacity(0.5),
+    //                                   ),
+    //                                   child: const CircularProgressIndicator(
+    //                                     color: Colors.red,
+    //                                     strokeWidth: 2,
+    //                                   ),
+    //                                 ),
+    //                               ),
+    //                           ],
+    //                         ),
+    //                       ),
+    //                       const SizedBox(
+    //                         width: 20,
+    //                       ),
+    //                       GestureDetector(
+    //                         onTap: () async {
+    //                           final res = await ref
+    //                               .read(signInPageModelProvider.notifier)
+    //                               .signinWithGoogle();
+    //                           if (res != '') {
+    //                             showErrorMessage(res);
+    //                           }
+    //                         },
+    //                         child: Image.asset(
+    //                           'assets/images/ic_google.png',
+    //                           width: 45.5,
+    //                           height: 45.5,
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 30,
+    //                   ),
+    //                   RichText(
+    //                     textAlign: TextAlign.start,
+    //                     text: TextSpan(
+    //                       style: GoogleFonts.nunitoSans(
+    //                           color: Colors.white,
+    //                           fontSize: 14,
+    //                           fontWeight: FontWeight.w400,
+    //                           height: 1.7),
+    //                       children: [
+    //                         TextSpan(
+    //                           text: 'By Logging in you agree to our ',
+    //                           style: GoogleFonts.nunitoSans(
+    //                             color: Colors.black,
+    //                             fontSize: 14,
+    //                             fontWeight: FontWeight.w400,
+    //                           ),
+    //                         ),
+    //                         TextSpan(
+    //                           text: 'Terms & Condition',
+    //                           recognizer: TapGestureRecognizer()
+    //                             ..onTap = () {
+    //                               showAdaptiveDialog(
+    //                                 context: context,
+    //                                 builder: (context) => Padding(
+    //                                   padding: const EdgeInsets.all(30.0),
+    //                                   child: ClipRRect(
+    //                                     borderRadius: BorderRadius.circular(5),
+    //                                     child: const TnCPage(),
+    //                                   ),
+    //                                 ),
+    //                               );
+    //                             },
+    //                           style: GoogleFonts.nunitoSans(
+    //                             color: primaryColor,
+    //                             fontSize: 14,
+    //                             fontWeight: FontWeight.w400,
+    //                           ),
+    //                         ),
+    //                         TextSpan(
+    //                           text: ' and ',
+    //                           style: GoogleFonts.nunitoSans(
+    //                             color: Colors.black,
+    //                             fontSize: 14,
+    //                             fontWeight: FontWeight.w400,
+    //                           ),
+    //                         ),
+    //                         TextSpan(
+    //                           text: 'Privacy Policy',
+    //                           recognizer: TapGestureRecognizer()
+    //                             ..onTap = () {
+    //                               showAdaptiveDialog(
+    //                                 context: context,
+    //                                 builder: (context) => Padding(
+    //                                   padding: const EdgeInsets.all(30.0),
+    //                                   child: ClipRRect(
+    //                                     borderRadius: BorderRadius.circular(5),
+    //                                     child: const PrivacyPolicyPage(),
+    //                                   ),
+    //                                 ),
+    //                               );
+    //                             },
+    //                           style: GoogleFonts.nunitoSans(
+    //                             color: primaryColor,
+    //                             fontSize: 14,
+    //                             fontWeight: FontWeight.w400,
+    //                           ),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 40,
+    //                   ),
+    //                   // const SizedBox(
+    //                   //   height: 20,
+    //                   // ),
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       GestureDetector(
+    //                         onTap: () async {
+    //                           if (!isProcessing) {
+    //                             if (mounted) {
+    //                               setState(() {
+    //                                 isProcessing = true;
+    //                               });
+    //                             }
+    //                             final res = await ref
+    //                                 .read(authRepositoryProvider.notifier)
+    //                                 .loginAsGuest();
+    //                             if (res != '') {
+    //                               showErrorMessage(res);
+    //                             }
+    //                             if (mounted) {
+    //                               setState(() {
+    //                                 isProcessing = false;
+    //                               });
+    //                             }
+    //                           }
+    //                         },
+    //                         child: Text(
+    //                           "Continue as Guest",
+    //                           style: GoogleFonts.nunitoSans(
+    //                             color: primaryColor,
+    //                             fontSize: 16,
+    //                             letterSpacing: -0.011,
+    //                             fontWeight: FontWeight.w400,
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
+
     return WillPopScope(
       onWillPop: () async {
         context.replaceRoute(const WelcomeRoute());
@@ -82,457 +546,346 @@ class _SignInPageState extends ConsumerState<SignInPage> {
         child: Scaffold(
           body: Stack(
             children: [
-              Image.asset(
-                'assets/images/bg_auth.png',
-                height: MediaQuery.sizeOf(context).height,
-                width: MediaQuery.sizeOf(context).width,
-                fit: BoxFit.fill,
+              /// BACKGROUND IMAGE - Always full screen
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/images/bg_auth.png',
+                  fit: BoxFit.cover,
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22),
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        children: [
-                          BackBtn(
-                            onTap: () {
-                              Focus.maybeOf(context)?.unfocus();
-                              context.replaceRoute(const WelcomeRoute());
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Text(
-                        "Sign in",
-                        style: GoogleFonts.nunitoSans(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      FittedBox(
-                        child: Text(
-                          "Enter the email you would like to use PEA with",
-                          // textAlign: TextAlign.center,
+              Positioned(
+                top: 50, // iPhone + iPad perfect safe-area
+                left: 20,
+                child: BackBtn(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    context.replaceRoute(const WelcomeRoute());
+                  },
+                ),
+              ),
 
-                          style: GoogleFonts.nunitoSans(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      CustomAuthTextField(
-                        hintText: 'Email',
-                        isEnabled: !isProcessing,
-                        initialText: ref.read(signInPageModelProvider
-                            .select((value) => value.email)),
-                        maxLength: null,
-                        backgroundColor: Colors.white.withOpacity(0.15),
-                        onChanged:
-                            ref.read(signInPageModelProvider.notifier).setEmail,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      CustomAuthTextField(
-                        hideText: isNotVisible,
-                        suffix: GestureDetector(
-                          onTap: () {
-                            if (mounted) {
-                              setState(() {
-                                isNotVisible = !isNotVisible;
-                              });
-                            }
-                          },
-                          child: Icon(
-                            isNotVisible
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.white,
-                          ),
-                        ),
-                        hintText: 'Password',
-                        isEnabled: !isProcessing,
-                        initialText: ref.read(signInPageModelProvider
-                            .select((value) => value.password)),
-                        maxLength: null,
-                        backgroundColor: Colors.white.withOpacity(0.15),
-                        onChanged: ref
-                            .read(signInPageModelProvider.notifier)
-                            .setPassword,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          // SizedBox(
-                          //   width: 18,
-                          //   child: ClipRRect(
-                          //     borderRadius: BorderRadius.circular(8),
-                          //     child: Checkbox(
-                          //       value: checkBox,
-                          //       splashRadius: 0,
-                          //       focusColor: primaryColor,
-                          //       checkColor: Colors.white,
-                          //       activeColor: primaryColor,
-                          //       side: const BorderSide(color: Colors.white),
-                          //       shape: RoundedRectangleBorder(
-                          //           borderRadius: BorderRadius.circular(10)),
-                          //       onChanged: (value) async {
-                          //         setState(() => checkBox = value ?? false);
+              /// MAIN CONTENT
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isTablet = constraints.maxWidth > 600;
 
-                          //         final prefs =
-                          //             await SharedPreferences.getInstance();
-                          //         await prefs.setBool('remember_me', checkBox);
+                  return Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: isTablet ? 480 : constraints.maxWidth,
+                      ),
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isTablet ? 32 : 22,
+                          vertical: 20,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: 25),
+                            // Row(
+                            //   children: [
+                            //     BackBtn(
+                            //       onTap: () {
+                            //         context.replaceRoute(const WelcomeRoute());
+                            //       },
+                            //     ),
+                            //   ],
+                            // ),
+                            const SizedBox(height: 25),
 
-                          //         if (!checkBox) {
-                          //           // Clear stored credentials if unchecked
-                          //           await prefs.remove('saved_email');
-                          //           await prefs.remove('saved_password');
-                          //         }
-                          //       },
-                          //     ),
-                          //   ),
-                          // ),
-                          // const SizedBox(
-                          //   width: 5,
-                          // ),
-                          // Text(
-                          //   "Remember me",
-                          //   style: GoogleFonts.nunitoSans(
-                          //     color: Colors.white,
-                          //     fontSize: 16,
-                          //     fontWeight: FontWeight.w400,
-                          //   ),
-                          // ),
-                          const Expanded(child: SizedBox()),
-                          GestureDetector(
-                            onTap: () {
-                              context.navigateTo(const ForgotPasswordRoute());
-                            },
-                            child: Text(
-                              "Forgot Password?",
+                            Text(
+                              "Sign in",
                               style: GoogleFonts.nunitoSans(
-                                color: primaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                                fontSize: isTablet ? 40 : 32,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                            const SizedBox(height: 10),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomAuthBtn(
-                        height: 50,
-                        borderColor: Colors.white.withOpacity(.6),
-                        isProcessing: isProcessing,
-                        onTap: () async {
-                          if (!isProcessing) {
-                            if (mounted) {
-                              setState(() {
-                                isProcessing = true;
-                              });
-                            }
-                            final res = await ref
-                                .read(signInPageModelProvider.notifier)
-                                .loginUser(checkBox: true);
-                            if (res != '') {
-                              showErrorMessage(res);
-                            }
-                            if (mounted) {
-                              setState(() {
-                                isProcessing = false;
-                              });
-                            }
-                          }
-                        },
-                        text: 'Continue',
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Don’t have an account?",
-                            style: GoogleFonts.nunitoSans(
-                              color: Colors.white,
-                              fontSize: 16,
-                              letterSpacing: -0.011,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              context.replaceRoute(const SignUpRoute());
-                            },
-                            child: Text(
-                              " Sign up",
+                            Text(
+                              "Enter the email you would like to use PEA with",
                               style: GoogleFonts.nunitoSans(
-                                color: primaryColor,
-                                fontSize: 16,
-                                letterSpacing: -0.011,
-                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                                fontSize: isTablet ? 18 : 16,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      // const SizedBox(
-                      //   height: 15,
-                      // ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     GestureDetector(
-                      //       onTap: () async {
-                      //         if (!isProcessing) {
-                      //           if (mounted) {
-                      //             setState(() {
-                      //               isProcessing = true;
-                      //             });
-                      //           }
-                      //           final res = await ref
-                      //               .read(authRepositoryProvider.notifier)
-                      //               .loginAsGuest();
-                      //           if (res != '') {
-                      //             showErrorMessage(res);
-                      //           }
-                      //           if (mounted) {
-                      //             setState(() {
-                      //               isProcessing = false;
-                      //             });
-                      //           }
-                      //         }
-                      //       },
-                      //       child: Text(
-                      //         "Continue as Guest",
-                      //         style: GoogleFonts.nunitoSans(
-                      //           color: primaryColor,
-                      //           fontSize: 16,
-                      //           letterSpacing: -0.011,
-                      //           fontWeight: FontWeight.w400,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
+                            const SizedBox(height: 40),
 
-                      const SizedBox(
-                        height: 60,
-                      ),
-                      Row(
-                        children: [
-                          const Expanded(
-                            child: Divider(
-                              color: Colors.white,
-                              thickness: 1,
+                            /// Email
+                            CustomAuthTextField(
+                              hintText: "Email",
+                              isEnabled: !isProcessing,
+                              initialText: ref.read(signInPageModelProvider
+                                  .select((value) => value.email)),
+                              backgroundColor: Colors.black.withOpacity(0.3),
+                              onChanged: ref
+                                  .read(signInPageModelProvider.notifier)
+                                  .setEmail,
                             ),
-                          ),
-                          Text(
-                            " Or Continue with ",
-                            style: GoogleFonts.nunitoSans(
-                              color: Colors.white,
-                              fontSize: 14,
-                              letterSpacing: -0.011,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          const Expanded(
-                            child: Divider(
-                              color: Colors.white,
-                              thickness: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              GoogleSignIn.instance.disconnect();
-                              showSuccessMessage("Coming Soon!");
-                            },
-                            child: Image.asset(
-                              'assets/images/ic_apple.png',
-                              width: 45.5,
-                              height: 45.5,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              if (!isFbProcessing) {
-                                if (mounted) {
-                                  setState(() {
-                                    isFbProcessing = true;
-                                  });
-                                }
-                                final res = await ref
-                                    .read(signInPageModelProvider.notifier)
-                                    .signInWithFacebook(ref);
-                                if (res != '') {
-                                  showErrorMessage(res);
-                                }
-                                if (mounted) {
-                                  setState(() {
-                                    isFbProcessing = false;
-                                  });
-                                }
-                              }
-                            },
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/ic_facebook.png',
-                                  width: 45.5,
-                                  height: 45.5,
+                            const SizedBox(height: 15),
+
+                            /// Password
+                            CustomAuthTextField(
+                              hintText: "Password",
+                              hideText: isNotVisible,
+                              isEnabled: !isProcessing,
+                              initialText: ref.read(signInPageModelProvider
+                                  .select((value) => value.password)),
+                              backgroundColor: Colors.black.withOpacity(0.3),
+                              suffix: GestureDetector(
+                                onTap: () => setState(() {
+                                  isNotVisible = !isNotVisible;
+                                }),
+                                child: Icon(
+                                  isNotVisible
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.white,
                                 ),
-                                if (isFbProcessing)
-                                  Center(
-                                    child: Container(
-                                      height: 27,
-                                      width: 27,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.5),
-                                      ),
-                                      child: const CircularProgressIndicator(
-                                        color: Colors.red,
-                                        strokeWidth: 2,
-                                      ),
+                              ),
+                              onChanged: ref
+                                  .read(signInPageModelProvider.notifier)
+                                  .setPassword,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            Row(
+                              children: [
+                                const Spacer(),
+                                GestureDetector(
+                                  onTap: () => context.navigateTo(
+                                    const ForgotPasswordRoute(),
+                                  ),
+                                  child: Text(
+                                    "Forgot Password?",
+                                    style: GoogleFonts.nunitoSans(
+                                      color: primaryColor,
+                                      fontSize: isTablet ? 17 : 16,
                                     ),
                                   ),
+                                ),
                               ],
                             ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              final res = await ref
-                                  .read(signInPageModelProvider.notifier)
-                                  .signinWithGoogle();
-                              if (res != '') {
-                                showErrorMessage(res);
-                              }
-                            },
-                            child: Image.asset(
-                              'assets/images/ic_google.png',
-                              width: 45.5,
-                              height: 45.5,
+
+                            const SizedBox(height: 20),
+
+                            CustomAuthBtn(
+                              text: "Continue",
+                              isProcessing: isProcessing,
+                              height: 50,
+                              backgroundcolor: primaryColor,
+                              borderColor: primaryColor,
+                              onTap: () async {
+                                if (isProcessing) return;
+
+                                setState(() => isProcessing = true);
+
+                                final res = await ref
+                                    .read(signInPageModelProvider.notifier)
+                                    .loginUser(checkBox: true);
+
+                                if (res.isNotEmpty) showErrorMessage(res);
+
+                                if (mounted) {
+                                  setState(() => isProcessing = false);
+                                }
+                              },
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 60,
-                      ),
-                      RichText(
-                        textAlign: TextAlign.start,
-                        text: TextSpan(
-                          style: GoogleFonts.nunitoSans(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              height: 1.7),
-                          children: [
-                            TextSpan(
-                              text: 'By Logging in you agree to our ',
-                              style: GoogleFonts.nunitoSans(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'Terms & Condition',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  showAdaptiveDialog(
-                                    context: context,
-                                    builder: (context) => Padding(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: const TnCPage(),
-                                      ),
+
+                            const SizedBox(height: 15),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Don’t have an account?",
+                                    style:
+                                        GoogleFonts.nunitoSans(fontSize: 16)),
+                                GestureDetector(
+                                  onTap: () =>
+                                      context.replaceRoute(const SignUpRoute()),
+                                  child: Text(
+                                    " Sign up",
+                                    style: GoogleFonts.nunitoSans(
+                                      color: primaryColor,
+                                      fontSize: 16,
                                     ),
-                                  );
-                                },
-                              style: GoogleFonts.nunitoSans(
-                                color: primaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 50),
+
+                            Row(
+                              children: [
+                                const Expanded(
+                                    child: Divider(color: Colors.black)),
+                                Text(" Or Continue with ",
+                                    style:
+                                        GoogleFonts.nunitoSans(fontSize: 14)),
+                                const Expanded(
+                                    child: Divider(color: Colors.black)),
+                              ],
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    final res = await ref
+                                        .read(signInPageModelProvider.notifier)
+                                        .signInWithApple(ref);
+                                    if (res.isNotEmpty) showErrorMessage(res);
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/ic_apple.png',
+                                    width: 45.5,
+                                    height: 45.5,
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+
+                                // GestureDetector(
+                                //   onTap: () async {
+                                //     final res = await ref
+                                //         .read(signInPageModelProvider.notifier)
+                                //         .appleSignInFirebase();
+                                //   },
+                                //   child: Image.asset(
+                                //     'assets/images/ic_apple.png',
+                                //     width: 45.5,
+                                //     height: 45.5,
+                                //   ),
+                                // ),
+
+                                // const SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () async {
+                                    if (isFbProcessing) return;
+                                    setState(() => isFbProcessing = true);
+
+                                    final res = await ref
+                                        .read(signInPageModelProvider.notifier)
+                                        .signInWithFacebook(ref);
+
+                                    if (res.isNotEmpty) showErrorMessage(res);
+
+                                    if (mounted) {
+                                      setState(() => isFbProcessing = false);
+                                    }
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/ic_facebook.png',
+                                    width: 45,
+                                    height: 45,
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () async {
+                                    final res = await ref
+                                        .read(signInPageModelProvider.notifier)
+                                        .signinWithGoogle();
+
+                                    if (res.isNotEmpty) showErrorMessage(res);
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/ic_google.png',
+                                    width: 45,
+                                    height: 45,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 30),
+
+                            RichText(
+                              text: TextSpan(
+                                style: GoogleFonts.nunitoSans(
+                                    fontSize: 14, height: 1.6),
+                                children: [
+                                  TextSpan(
+                                    text: "By logging in you agree to our ",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  TextSpan(
+                                    text: "Terms & Condition",
+                                    style: TextStyle(color: primaryColor),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => showAdaptiveDialog(
+                                            context: context,
+                                            builder: (_) => const TnCPage(),
+                                          ),
+                                  ),
+                                  TextSpan(
+                                    text: " and ",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  TextSpan(
+                                    text: "Privacy Policy",
+                                    style: TextStyle(color: primaryColor),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => showAdaptiveDialog(
+                                            context: context,
+                                            builder: (_) =>
+                                                const PrivacyPolicyPage(),
+                                          ),
+                                  ),
+                                ],
                               ),
                             ),
-                            TextSpan(
-                              text: ' and ',
-                              style: GoogleFonts.nunitoSans(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'Privacy Policy',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  showAdaptiveDialog(
-                                    context: context,
-                                    builder: (context) => Padding(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: const PrivacyPolicyPage(),
-                                      ),
+
+                            const SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    if (!isProcessing) {
+                                      if (mounted) {
+                                        setState(() {
+                                          isProcessing = true;
+                                        });
+                                      }
+                                      final res = await ref
+                                          .read(authRepositoryProvider.notifier)
+                                          .loginAsGuest();
+                                      if (res != '') {
+                                        showErrorMessage(res);
+                                      }
+                                      if (mounted) {
+                                        setState(() {
+                                          isProcessing = false;
+                                        });
+                                      }
+                                    }
+                                  },
+                                  child: Text(
+                                    "Continue as Guest",
+                                    style: GoogleFonts.nunitoSans(
+                                      color: primaryColor,
+                                      fontSize: isTablet ? 18 : 16,
+                                      letterSpacing: -0.011,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                  );
-                                },
-                              style: GoogleFonts.nunitoSans(
-                                color: primaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/logic/services/api_services/retrofit/auth_api_client/auth_api_client.dart';
+import 'package:Artisan/src/ui/auth/widgets/back_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -133,6 +134,10 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    BackBtn(
+                      iconColor: Colors.black,
+                      onTap: () => Navigator.pop(context),
+                    ),
                     const SizedBox(width: 24),
                     Text(
                       'Edit Profile',

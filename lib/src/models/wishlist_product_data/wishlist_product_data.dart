@@ -130,6 +130,7 @@ class WishlistProductData {
 
   @JsonKey(defaultValue: false)
   final bool isRemoved;
+  final bool isSold;
 
   WishlistProductData({
     required this.id,
@@ -145,6 +146,7 @@ class WishlistProductData {
     required this.createdOn,
     required this.updatedOn,
     this.isRemoved = false,
+    this.isSold = false,
   });
 
   factory WishlistProductData.fromJson(Map<String, dynamic> json) =>

@@ -3,6 +3,7 @@ import UIKit
 import FirebaseCore
 import FirebaseMessaging
 import UserNotifications
+import GoogleMaps
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, MessagingDelegate {
@@ -10,18 +11,22 @@ import UserNotifications
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+
+      // Google Maps **must be initialized first**
+      GMSServices.provideAPIKey("AIzaSyCr8az6JaT_rY5r3-w3euSmjaaGXbNwmVM")   // <-- ADD YOUR KEY HERE
+      
       // Firebase Init
       FirebaseApp.configure()
       Messaging.messaging().delegate = self
 
+      
       // Notification Setup
       UNUserNotificationCenter.current().delegate = self
       application.registerForRemoteNotifications()
 
       GeneratedPluginRegistrant.register(with: self)
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+      return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-
 
   // FCM Token
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {

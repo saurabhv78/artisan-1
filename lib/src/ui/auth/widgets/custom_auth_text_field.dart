@@ -36,7 +36,7 @@ class CustomAuthTextField extends ConsumerStatefulWidget {
     this.isEnabled = true,
     this.maxlines = 1,
     this.backgroundColor = Colors.white,
-    required this.maxLength,
+     this.maxLength,
     this.hideText = false,
     this.suffix,
     required this.onChanged,

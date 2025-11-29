@@ -73,6 +73,7 @@
 //   }
 // }
 import 'dart:developer';
+import 'package:Artisan/services/location_service.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -99,43 +100,46 @@ class _AppState extends State<MyApp> {
   void initState() {
     super.initState();
     _appRouter = AppRouter();
-    NotificationService.initialize();
-    _enableLocation(); // 👈 Enable location on app start
+    setState(() {
+      NotificationService.initialize();
+      LocationService.initialize();
+    });
+    // 👈 Enable location on app start
   }
 
-  /// ✅ Handles location permission, service check, and logs location
-  Future<void> _enableLocation() async {
-    try {
-      // Check location permission
-      LocationPermission permission = await Geolocator.checkPermission();
+  // /// ✅ Handles location permission, service check, and logs location
+  // Future<void> _enableLocation() async {
+  //   try {
+  //     // Check location permission
+  //     LocationPermission permission = await Geolocator.checkPermission();
 
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
+  //     if (permission == LocationPermission.denied) {
+  //       permission = await Geolocator.requestPermission();
+  //     }
 
-      if (permission == LocationPermission.deniedForever) {
-        // Open app settings using permission_handler
-        await openAppSettings();
-        return;
-      }
+  //     if (permission == LocationPermission.deniedForever) {
+  //       // Open app settings using permission_handler
+  //       await openAppSettings();
+  //       return;
+  //     }
 
-      // Check if location service (GPS) is enabled
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        await Geolocator.openLocationSettings();
-        return;
-      }
+  //     // Check if location service (GPS) is enabled
+  //     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //     if (!serviceEnabled) {
+  //       await Geolocator.openLocationSettings();
+  //       return;
+  //     }
 
-      // Get the current user position
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+  //     // Get the current user position
+  //     Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high,
+  //     );
 
-      log('✅ User Location: ${position.latitude}, ${position.longitude}');
-    } catch (e) {
-      log('❌ Error getting location: $e');
-    }
-  }
+  //     log('✅ User Location: ${position.latitude}, ${position.longitude}');
+  //   } catch (e) {
+  //     log('❌ Error getting location: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
