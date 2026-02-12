@@ -32,110 +32,114 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
     final cartData =
         ref.watch(authRepositoryProvider.select((value) => value.cartData));
     return CustomScaffold(
-        topPadding: 35,
+        topPadding: 0,
         bgColor: const Color(0xffEFE4FF),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Stack(
-              alignment: Alignment.centerLeft,
-              children: [
-                BackBtn(
-                  onTap: () {
-                    context.maybePop();
-                  },
-                  iconColor: Colors.black,
-                ),
-                Center(
-                  child: Text(
-                    "Wishlist",
-                    style: GoogleFonts.nunitoSans(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
+          child: SafeArea(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(
+                    height: 15,
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        context.pushRoute(const CartRoute());
-                      },
-                      child: Stack(
-                        children: [
-                          Image.asset(
-                            'assets/images/ic_cart.png',
-                            height: 26,
-                            width: 30,
+                  Stack(
+                    alignment: Alignment.centerLeft,
+                    children: [
+                      BackBtn(
+                        onTap: () {
+                          context.maybePop();
+                        },
+                        iconColor: Colors.black,
+                      ),
+                      Center(
+                        child: Text(
+                          "Wishlist",
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
                           ),
-                          if (cartData.isNotEmpty)
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              child: Container(
-                                height: 16,
-                                width: 16,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: primaryColor,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              context.pushRoute(const CartRoute());
+                            },
+                            child: Stack(
+                              children: [
+                                Image.asset(
+                                  'assets/images/ic_cart.png',
+                                  height: 26,
+                                  width: 30,
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    cartData.length > 99
-                                        ? "99"
-                                        : cartData.length.toString(),
-                                    style: GoogleFonts.nunitoSans(
-                                      color: Colors.white,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
+                                if (cartData.isNotEmpty)
+                                  Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: Container(
+                                      height: 16,
+                                      width: 16,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        color: primaryColor,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          cartData.length > 99
+                                              ? "99"
+                                              : cartData.length.toString(),
+                                          style: GoogleFonts.nunitoSans(
+                                            color: Colors.white,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                              ],
                             ),
+                          ),
                         ],
                       ),
+                    ],
+                  ),
+                  if (status == WishlistPageStatus.loaded &&
+                      data.isNotEmpty) ...[
+                    Expanded(
+                      child: WishListSection(
+                        data: data,
+                      ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            if (status == WishlistPageStatus.loaded && data.isNotEmpty) ...[
-              Expanded(
-                child: WishListSection(
-                  data: data,
-                ),
-              ),
-            ] else
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 300),
-                child: const Center(child: Text("No Favourite Found")),
-              )
-            // TryAgainWidget(
-            //   onTap: () {
-            //     ref
-            //         .read(wishlistPageModelProvider.notifier)
-            //         .getWishlistData();
-            //   },
-            //   isProcessing: status == WishlistPageStatus.initial ||
-            //       status == WishlistPageStatus.loading,
-            //   errMessage: ref.watch(
-            //     wishlistPageModelProvider.select(
-            //       (value) => value.errMessage.trim().isEmpty
-            //           ? data.isEmpty
-            //               ? "No Favourite Found"
-            //               : "Something Went Wrong!!!"
-            //           : value.errMessage.trim(),
-            //     ),
-            //   ),
-            // )
-          ]),
+                  ] else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 300),
+                      child: const Center(child: Text("No Favourite Found")),
+                    )
+                  // TryAgainWidget(
+                  //   onTap: () {
+                  //     ref
+                  //         .read(wishlistPageModelProvider.notifier)
+                  //         .getWishlistData();
+                  //   },
+                  //   isProcessing: status == WishlistPageStatus.initial ||
+                  //       status == WishlistPageStatus.loading,
+                  //   errMessage: ref.watch(
+                  //     wishlistPageModelProvider.select(
+                  //       (value) => value.errMessage.trim().isEmpty
+                  //           ? data.isEmpty
+                  //               ? "No Favourite Found"
+                  //               : "Something Went Wrong!!!"
+                  //           : value.errMessage.trim(),
+                  //     ),
+                  //   ),
+                  // )
+                ]),
+          ),
         ));
   }
 }

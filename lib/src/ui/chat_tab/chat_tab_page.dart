@@ -98,119 +98,121 @@ class _ChatTabPageState extends ConsumerState<ChatTabPage> {
     final messages = ref.watch(chatProvider);
 
     return CustomScaffold(
-      topPadding: 45,
+      topPadding: 0,
       resizeToAvoidBottomInset: true, // ✅ important
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(width: 40),
-              Text(
-                "Artisan Ally",
-                style: GoogleFonts.nunitoSans(
-                  fontWeight: FontWeight.w700,
-                  color: bgDark,
-                  fontSize: 22,
-                ),
-              ),
-            ],
-          ),
-
-          /// Chat Messages List
-          Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                // Every time height changes (keyboard open/close), scroll to bottom
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _scrollToBottom();
-                });
-
-                return GroupedListView(
-                  controller: _scrollController,
-                  elements: messages,
-                  groupBy: (msg) => DateTime(
-                    msg.createdAt.year,
-                    msg.createdAt.month,
-                    msg.createdAt.day,
-                  ),
-                  groupSeparatorBuilder: (DateTime date) => Align(
-                    alignment: Alignment.topCenter, // ✅ always top center
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        _dayLabel(date.toLocal()),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ),
-                  itemBuilder: (_, msg) => ChatMessageTile(message: msg),
-                  useStickyGroupSeparators: true, // ✅ sticky on scroll
-                  floatingHeader: true,
-                  order: GroupedListOrder.ASC,
-                  addAutomaticKeepAlives: false,
-                  addRepaintBoundaries: false,
-                  reverse: false,
-                );
-              },
-            ),
-          ),
-
-          /// Input Field
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
+      child: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: TextFormField(
-                      focusNode: _focusNode,
-                      controller: _controller,
-                      textInputAction: TextInputAction.send,
-                      decoration: InputDecoration(
-                        counterStyle: GoogleFonts.outfit(fontSize: 14),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: "Type your message...",
-                        hintStyle: GoogleFonts.nunitoSans(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      onFieldSubmitted: (_) => _sendMessage(),
-                    ),
+                const SizedBox(width: 40),
+                Text(
+                  "Artisan Ally",
+                  style: GoogleFonts.nunitoSans(
+                    fontWeight: FontWeight.w700,
+                    color: bgDark,
+                    fontSize: 22,
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _sendMessage,
                 ),
               ],
             ),
-          ),
-        ],
+
+            /// Chat Messages List
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // Every time height changes (keyboard open/close), scroll to bottom
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _scrollToBottom();
+                  });
+
+                  return GroupedListView(
+                    controller: _scrollController,
+                    elements: messages,
+                    groupBy: (msg) => DateTime(
+                      msg.createdAt.year,
+                      msg.createdAt.month,
+                      msg.createdAt.day,
+                    ),
+                    groupSeparatorBuilder: (DateTime date) => Align(
+                      alignment: Alignment.topCenter, // ✅ always top center
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          _dayLabel(date.toLocal()),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                    itemBuilder: (_, msg) => ChatMessageTile(message: msg),
+                    useStickyGroupSeparators: true, // ✅ sticky on scroll
+                    floatingHeader: true,
+                    order: GroupedListOrder.ASC,
+                    addAutomaticKeepAlives: false,
+                    addRepaintBoundaries: false,
+                    reverse: false,
+                  );
+                },
+              ),
+            ),
+
+            /// Input Field
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: TextFormField(
+                        focusNode: _focusNode,
+                        controller: _controller,
+                        textInputAction: TextInputAction.send,
+                        decoration: InputDecoration(
+                          counterStyle: GoogleFonts.outfit(fontSize: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: "Type your message...",
+                          hintStyle: GoogleFonts.nunitoSans(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onFieldSubmitted: (_) => _sendMessage(),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: _sendMessage,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

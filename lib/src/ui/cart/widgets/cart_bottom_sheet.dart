@@ -585,7 +585,6 @@ class _CartBottomSheetState extends ConsumerState<CartBottomSheet> {
                       _showError('Please add your address before checkout.');
                       return;
                     }
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(

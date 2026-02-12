@@ -26,50 +26,52 @@ class _CartPageState extends ConsumerState<CartPage> {
     final status =
         ref.watch(cartPageModelProvider.select((value) => value.status));
     return CustomScaffold(
-        topPadding: 35,
+        topPadding: 0,
         // bgColor: Colors.white,
         child: Stack(
           children: [
-            Column(
-              children: [
-                const CartAppBar(),
-                status == CartPageStatus.loaded
-                    ? Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 15),
-                              const ChangeAddressSection(),
-                              const SizedBox(height: 10),
-                              CartProductListSection(
-                                data: data.items,
-                              ),
-                              const SizedBox(height: 20),
-                              // const MorePaintingSection(),
-                              const SizedBox(height: 250),
-                            ],
+            SafeArea(
+              child: Column(
+                children: [
+                  const CartAppBar(),
+                  status == CartPageStatus.loaded
+                      ? Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 15),
+                                const ChangeAddressSection(),
+                                const SizedBox(height: 10),
+                                CartProductListSection(
+                                  data: data.items,
+                                ),
+                                const SizedBox(height: 20),
+                                // const MorePaintingSection(),
+                                const SizedBox(height: 250),
+                              ],
+                            ),
+                          ),
+                        )
+                      : TryAgainWidget(
+                          onTap: () {
+                            ref
+                                .read(cartPageModelProvider.notifier)
+                                .getCartData();
+                          },
+                          isProcessing: status == CartPageStatus.initial ||
+                              status == CartPageStatus.loading,
+                          errMessage: ref.watch(
+                            cartPageModelProvider.select(
+                              (value) => value.errorMessage.trim().isEmpty
+                                  ? data.items.isEmpty
+                                      ? "No Favourite Found"
+                                      : "Something Went Wrong!!!"
+                                  : value.errorMessage.trim(),
+                            ),
                           ),
                         ),
-                      )
-                    : TryAgainWidget(
-                        onTap: () {
-                          ref
-                              .read(cartPageModelProvider.notifier)
-                              .getCartData();
-                        },
-                        isProcessing: status == CartPageStatus.initial ||
-                            status == CartPageStatus.loading,
-                        errMessage: ref.watch(
-                          cartPageModelProvider.select(
-                            (value) => value.errorMessage.trim().isEmpty
-                                ? data.items.isEmpty
-                                    ? "No Favourite Found"
-                                    : "Something Went Wrong!!!"
-                                : value.errorMessage.trim(),
-                          ),
-                        ),
-                      ),
-              ],
+                ],
+              ),
             ),
             if (status == CartPageStatus.loaded && data.items.isNotEmpty)
               Positioned(

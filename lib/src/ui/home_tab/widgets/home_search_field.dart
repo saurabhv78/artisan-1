@@ -1,22 +1,29 @@
 import 'package:Artisan/src/routing/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeSearchField extends StatefulWidget {
+import '../../../logic/repositories/auth_repository.dart';
+
+class HomeSearchField extends ConsumerStatefulWidget {
   const HomeSearchField({super.key});
 
   @override
-  State<HomeSearchField> createState() => _HomeSearchFieldState();
+  ConsumerState<HomeSearchField> createState() => _HomeSearchFieldState();
 }
 
-class _HomeSearchFieldState extends State<HomeSearchField> {
+class _HomeSearchFieldState extends ConsumerState<HomeSearchField> {
   @override
   Widget build(BuildContext context) {
+    final isGuest =
+        ref.watch(authRepositoryProvider.select((value) => value.isGuest));
     return GestureDetector(
-      onTap: () {
-        context.pushRoute(const SearchRoute());
-      },
+      onTap: isGuest
+          ? () => _showLoginPop(context, ref)
+          : () {
+              context.pushRoute(const SearchRoute());
+            },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -65,4 +72,7 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
       ),
     );
   }
+
+  void _showLoginPop(BuildContext context, WidgetRef ref) =>
+      ref.read(authRepositoryProvider.notifier).showLoginPopUp(context);
 }

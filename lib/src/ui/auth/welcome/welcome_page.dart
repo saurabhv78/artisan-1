@@ -247,7 +247,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
           "Find a curated feed of new paintings, exhibits, and featured artists waiting to be explored every day."
     },
     {
-      "image": "assets/images/Landing-portrait 1 (1).png",
+      "image": "assets/images/Product-portrait.png",
       "title": "Deep Dive into Artistry",
       "subtitle":
           "View high-resolution images, read the artist's story, and see detailed provenance before making a secure purchase."
@@ -259,7 +259,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
           "View high-resolution images, read the artist's story, and see detailed provenance before making a secure purchase."
     },
     {
-      "image": "assets/images/Landing-portrait 1 (3).png",
+      "image": "assets/images/Checkout-portrait.png",
       "title": "Secure and Simple Checkout",
       "subtitle":
           "Complete your purchase in a few taps. Our secure payment gateway ensures a seamless and protected transaction for every piece of art."
@@ -286,6 +286,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
           /// Onboarding Slides
           Column(
             children: [
+              SizedBox(height: height * 0.05),
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
@@ -324,7 +325,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
                           Padding(
                             padding: const EdgeInsets.only(top: 0),
                             child: SizedBox(
-                              height: isTablet ? height * 0.65 : height * 0.60,
+                              height: isTablet ? height * 0.64 : height * 0.60,
                               child: Image.asset(
                                 data["image"]!,
                                 fit: BoxFit.contain,
@@ -390,14 +391,14 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
                     /// Next / Get Started
                     currentIndex == onboardingData.length - 1
                         ? CustomAuthBtn(
-                            height: isTablet ? 65 : 50,
+                            height: isTablet ? 42 : 40,
                             isProcessing: false,
                             onTap: () {
                               context.replaceRoute(const SignInRoute());
                             },
                             text: "Let’s Get Started",
                             backgroundcolor: Colors.red,
-                            width: isTablet ? 250 : 188,
+                            width: isTablet ? 180 : 150,
                           )
                         : ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -426,7 +427,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage> {
           /// ⭐ WORKING SKIP BUTTON (TOP OF STACK)
           Positioned(
             right: isTablet ? 40 : 20,
-            top: isTablet ? 80 : 50,
+            top: isTablet ? 80 : 40,
             child: InkWell(
               onTap: () {
                 log("Skip pressed → SignIn");

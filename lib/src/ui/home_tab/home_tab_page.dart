@@ -89,88 +89,90 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
 
         return false;
       },
-      child: CustomScaffold(
-          topPadding: 35,
-          bgColor: Colors.white,
-          child: RefreshIndicator(
-            displacement: 60,
-            edgeOffset: 120,
-            onRefresh: () async {
-              await ref
-                  .read(homeTabPageModelProvider.notifier)
-                  .init(loading: false);
-            },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        bottomRight: Radius.circular(8),
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 22),
-                      child: Column(
-                        children: [
-                          // SizedBox(height: 15),
-                          HomeAppBar(),
-                          SizedBox(height: 15),
-                          HomeSearchField(),
-                          SizedBox(height: 15),
-                        ],
-                      ),
-                    ),
-                  ),
-                  if (status == HomePageStatus.loaded &&
-                      categoryData != null) ...[
-                    AnimatedOpacity(
-                      key: ValueKey(opacity),
-                      opacity: opacity,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 20),
-                          HomeCategorySection(data: categoryData),
-                          const SizedBox(height: 10),
-                          if ((discountData ?? []).isNotEmpty) ...[
-                            HomeDiscountSection(data: discountData ?? []),
-                            const SizedBox(height: 25),
-                          ],
-                          FeaturedSection(data: featuredProducts ?? []),
-                          const SizedBox(height: 20),
-                          const TrendingArtistSection(),
-                          const SizedBox(height: 20),
-                          TrendingArtStylesSection(
-                              trendingArtists: trendingArtists),
-                          const SizedBox(height: 40),
-                        ],
-                      ),
-                    ),
-                  ] else ...[
-                    TryAgainWidget(
-                      onTap: () {
-                        ref.read(homeTabPageModelProvider.notifier).init();
-                      },
-                      isProcessing: status == HomePageStatus.initial ||
-                          status == HomePageStatus.loading,
-                      errMessage: ref.watch(
-                        homeTabPageModelProvider.select(
-                          (value) => value.errorMessage.trim().isEmpty
-                              ? "Something Went Wrong!!!"
-                              : value.errorMessage.trim(),
+      child: SafeArea(
+        child: CustomScaffold(
+            topPadding: 0,
+            bgColor: Colors.white,
+            child: RefreshIndicator(
+              displacement: 60,
+              edgeOffset: 120,
+              onRefresh: () async {
+                await ref
+                    .read(homeTabPageModelProvider.notifier)
+                    .init(loading: false);
+              },
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
                         ),
                       ),
-                    )
-                  ]
-                ],
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 22),
+                        child: Column(
+                          children: [
+                            // SizedBox(height: 15),
+                            HomeAppBar(),
+                            SizedBox(height: 15),
+                            HomeSearchField(),
+                            SizedBox(height: 15),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (status == HomePageStatus.loaded &&
+                        categoryData != null) ...[
+                      AnimatedOpacity(
+                        key: ValueKey(opacity),
+                        opacity: opacity,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            HomeCategorySection(data: categoryData),
+                            const SizedBox(height: 10),
+                            if ((discountData ?? []).isNotEmpty) ...[
+                              HomeDiscountSection(data: discountData ?? []),
+                              const SizedBox(height: 25),
+                            ],
+                            FeaturedSection(data: featuredProducts ?? []),
+                            const SizedBox(height: 20),
+                            const TrendingArtistSection(),
+                            const SizedBox(height: 20),
+                            TrendingArtStylesSection(
+                                trendingArtists: trendingArtists),
+                            const SizedBox(height: 40),
+                          ],
+                        ),
+                      ),
+                    ] else ...[
+                      TryAgainWidget(
+                        onTap: () {
+                          ref.read(homeTabPageModelProvider.notifier).init();
+                        },
+                        isProcessing: status == HomePageStatus.initial ||
+                            status == HomePageStatus.loading,
+                        errMessage: ref.watch(
+                          homeTabPageModelProvider.select(
+                            (value) => value.errorMessage.trim().isEmpty
+                                ? "Something Went Wrong!!!"
+                                : value.errorMessage.trim(),
+                          ),
+                        ),
+                      )
+                    ]
+                  ],
+                ),
               ),
-            ),
-          )),
+            )),
+      ),
     );
   }
 }

@@ -49,104 +49,106 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
     final artistData =
         ref.watch(artistPageModelProvider.select((value) => value.artistInfo));
     return CustomScaffold(
-        topPadding: 35,
+        topPadding: 0,
         child: status == ArtistPageStatus.loaded && popularProducts != null
             ? SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      height: 234,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: NetworkImageWidget(
-                              artistData?.coverImage ?? "",
-                              height: 200,
-                              width: MediaQuery.sizeOf(context).width,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Color.fromRGBO(0, 0, 0, .22),
-                                  Color.fromRGBO(0, 0, 0, .22),
-                                ],
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: 234,
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: NetworkImageWidget(
+                                artistData?.coverImage ?? "",
+                                height: 200,
+                                width: MediaQuery.sizeOf(context).width,
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            height: 200,
-                            width: MediaQuery.sizeOf(context).width,
-                          ),
-                          Positioned(
-                            top: 10,
-                            left: 22,
-                            child: BackBtn(
-                                iconColor: Colors.white,
-                                onTap: () {
-                                  context.maybePop();
-                                }),
-                          ),
-                          Positioned(
-                            left: 22,
-                            bottom: 0,
-                            child: CircleAvatar(
-                                radius: 37,
-                                backgroundImage: NetworkImageWidget(
-                                  artistData?.profilePicture ?? "",
-                                ).image),
-                          ),
-                        ],
+                            Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color.fromRGBO(0, 0, 0, .22),
+                                    Color.fromRGBO(0, 0, 0, .22),
+                                  ],
+                                ),
+                              ),
+                              height: 200,
+                              width: MediaQuery.sizeOf(context).width,
+                            ),
+                            Positioned(
+                              top: 10,
+                              left: 22,
+                              child: BackBtn(
+                                  iconColor: Colors.white,
+                                  onTap: () {
+                                    context.maybePop();
+                                  }),
+                            ),
+                            Positioned(
+                              left: 22,
+                              bottom: 0,
+                              child: CircleAvatar(
+                                  radius: 37,
+                                  backgroundImage: NetworkImageWidget(
+                                    artistData?.profilePicture ?? "",
+                                  ).image),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 22),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            artistData?.fullName ?? '',
-                            maxLines: 2,
-                            style: GoogleFonts.nunitoSans(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            '${artistData?.city ?? ''} , ${artistData?.country ?? ''}',
-                            // maxLines: 2,
-                            style: GoogleFonts.nunitoSans(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Text(
-                            artistData?.bio ?? '',
-                            // maxLines: 2,
-                            style: GoogleFonts.nunitoSans(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          PopularProductsSection(data: popularProducts),
-                        ],
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 22),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              artistData?.fullName ?? '',
+                              maxLines: 2,
+                              style: GoogleFonts.nunitoSans(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '${artistData?.city ?? ''} , ${artistData?.country ?? ''}',
+                              // maxLines: 2,
+                              style: GoogleFonts.nunitoSans(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
+                              artistData?.bio ?? '',
+                              // maxLines: 2,
+                              style: GoogleFonts.nunitoSans(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            PopularProductsSection(data: popularProducts),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             : TryAgainWidget(

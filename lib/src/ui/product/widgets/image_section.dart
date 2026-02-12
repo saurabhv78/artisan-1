@@ -124,27 +124,76 @@ class _ImageSectionState extends ConsumerState<ImageSection> {
               ),
             ),
             child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ImageViewerScreen(
-                      images: _product.images,
-                      initialImage: selectedImage,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ImageViewerScreen(
+                        images: _product.images,
+                        initialImage: selectedImage,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: Hero(
-                tag: 'product-${_product.id}',
-                child: NetworkImageWidget(
-                  selectedImage,
-                  fit: BoxFit.contain,
-                  height: 400,
-                  width: double.infinity,
+                  );
+                },
+                child: Stack(
+                  children: [
+                    Hero(
+                      tag: 'product-${_product.id}',
+                      child: NetworkImageWidget(
+                        selectedImage,
+                        fit: BoxFit.contain,
+                        height: 400,
+                        width: double.infinity,
+                      ),
+                    ),
+
+                    // SOLD OUT Overlay
+                    // Stack के अंदर, Positioned widget को बदलें:
+
+// SOLD OUT Badge - Bottom Center
+                    if (_product.isSold == true)
+                      Positioned(
+                        bottom: 40,
+                        left: 25,
+                        right: 25,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
+                          margin: const EdgeInsets.symmetric(horizontal: 40),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: const Text(
+                            "SOLD OUT",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                )
+
+                // child: Stack(
+                //   children: [
+                //     Hero(
+                //       tag: 'product-${_product.id}',
+                //       child: NetworkImageWidget(
+                //         selectedImage,
+                //         fit: BoxFit.contain,
+                //         height: 400,
+                //         width: double.infinity,
+                //       ),
+                //     ),
+                //     Possition( Text("data")),
+                //   ],
+                // ),
                 ),
-              ),
-            ),
           ),
 
           // Thumbnail carousel

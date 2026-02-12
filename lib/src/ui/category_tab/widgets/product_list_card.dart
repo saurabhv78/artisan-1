@@ -140,41 +140,71 @@ class _ProductListCardState extends ConsumerState<ProductListCard> {
           /// 🔥 SAME UI Heights, just responsive
           height: isSmallCard ? smallCardHeight : bigCardHeight,
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Stack(
             children: [
-              /// 🔥 FIXED IMAGE — NO CUT, NO DISTORT
-              SizedBox(
-                height: isSmallCard ? smallImgHeight : bigImgHeight,
-                child: NetworkImageWidget(
-                  widget.data.thumbnail?.isNotEmpty == true
-                      ? widget.data.thumbnail.toString()
-                      : 'https://via.placeholder.com/150',
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  /// 🔥 FIXED IMAGE — NO CUT, NO DISTORT
+                  SizedBox(
+                    height: isSmallCard ? smallImgHeight : bigImgHeight,
+                    child: NetworkImageWidget(
+                      widget.data.thumbnail?.isNotEmpty == true
+                          ? widget.data.thumbnail.toString()
+                          : 'https://via.placeholder.com/150',
 
-                  fit: BoxFit.cover, // 👈 UI change nahi, sirf image perfect
-                  width: double.infinity,
-                ),
-              ),
+                      fit:
+                          BoxFit.cover, // 👈 UI change nahi, sirf image perfect
+                      width: double.infinity,
+                    ),
+                  ),
 
-              Expanded(
-                child: Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Center(
-                      child: Text(
-                        widget.data.prodName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.nunitoSans(
-                          fontSize: isTablet ? 20 : 18,
-                          fontWeight: FontWeight.w400,
+                  Expanded(
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Center(
+                          child: Text(
+                            widget.data.prodName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.nunitoSans(
+                              fontSize: isTablet ? 20 : 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
+              if (widget.data.isSold == true)
+                Positioned(
+                  bottom: 30,
+                  left: 20,
+                  right: 20,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 0),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Text(
+                      "SOLD OUT",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

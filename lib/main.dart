@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:screen_protector/screen_protector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'src/app.dart';
 import 'src/logic/services/preference_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await ScreenProtector.protectDataLeakageWithBlur();
   final sharedPreferences = await SharedPreferences.getInstance();
 
   final container = ProviderContainer(overrides: [

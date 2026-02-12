@@ -158,11 +158,40 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                     decoration: BoxDecoration(
                       color: Colors.grey.shade300.withOpacity(0.5),
                     ),
-                    child: NetworkImageWidget(
-                      widget.data.thumbnail.toString(),
-                      height: imageHeight,
-                      width: double.infinity,
-                      fit: BoxFit.cover, // ⭐ prevents stretching + cutting
+                    child: Stack(
+                      children: [
+                        NetworkImageWidget(
+                          widget.data.thumbnail.toString(),
+                          height: imageHeight,
+                          width: double.infinity,
+                          fit: BoxFit.cover, // ⭐ prevents stretching + cutting
+                        ),
+                        if (widget.data.isSold == true)
+                          Positioned(
+                            bottom: 30,
+                            left: 20,
+                            right: 20,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 10),
+                              margin: const EdgeInsets.symmetric(horizontal: 0),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: const Text(
+                                "SOLD OUT",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  letterSpacing: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ),

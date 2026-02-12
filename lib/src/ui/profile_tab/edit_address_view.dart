@@ -504,180 +504,185 @@ class _EditAddressState extends ConsumerState<EditAddress> {
     final sectionSpacing = width < 600 ? 20.0 : 30.0;
 
     return CustomScaffold(
-      topPadding: 40,
+      topPadding: 0,
       child: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: width < 600 ? 20 : 35),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// HEADER
-            Row(
-              children: [
-                BackBtn(
-                  iconColor: Colors.black,
-                  onTap: () => context.maybePop(),
-                ),
-                const SizedBox(width: 15),
-                Text(
-                  "Saved Addresses",
-                  style: GoogleFonts.nunitoSans(
-                    fontWeight: FontWeight.w600,
-                    color: bgDark,
-                    fontSize: titleSize,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// HEADER
+              Row(
+                children: [
+                  BackBtn(
+                    iconColor: Colors.black,
+                    onTap: () => context.maybePop(),
                   ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: sectionSpacing),
-
-            if (_addressList.isEmpty && !_isProcessing)
-              const Center(child: Text("No saved addresses found")),
-
-            /// Address List
-            ..._addressList.map((item) {
-              final isSelected = _selectedAddressId == item['id'];
-
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: isSelected ? Colors.red : Colors.grey.shade300,
-                    width: isSelected ? 1.6 : 1,
+                  const SizedBox(width: 15),
+                  Text(
+                    "Saved Addresses",
+                    style: GoogleFonts.nunitoSans(
+                      fontWeight: FontWeight.w600,
+                      color: bgDark,
+                      fontSize: titleSize,
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: InkWell(
-                  onTap: () => setState(() => _selectedAddressId = item['id']),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /// Address Title
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: isSelected ? Colors.red : bgDark,
-                            size: iconSize,
-                          ),
-                          const SizedBox(width: 5),
-                          Expanded(
-                            child: Text(
-                              item['label']!,
-                              style: GoogleFonts.nunitoSans(
-                                fontSize: listTitleSize,
-                                fontWeight: FontWeight.w500,
+                ],
+              ),
+
+              SizedBox(height: sectionSpacing),
+
+              if (_addressList.isEmpty && !_isProcessing)
+                const Center(child: Text("No saved addresses found")),
+
+              /// Address List
+              ..._addressList.map((item) {
+                final isSelected = _selectedAddressId == item['id'];
+
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: isSelected ? Colors.red : Colors.grey.shade300,
+                      width: isSelected ? 1.6 : 1,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: InkWell(
+                    onTap: () =>
+                        setState(() => _selectedAddressId = item['id']),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Address Title
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: isSelected ? Colors.red : bgDark,
+                              size: iconSize,
+                            ),
+                            const SizedBox(width: 5),
+                            Expanded(
+                              child: Text(
+                                item['label']!,
+                                style: GoogleFonts.nunitoSans(
+                                  fontSize: listTitleSize,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                          Icon(
-                            isSelected
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            color: isSelected ? Colors.red : Colors.grey,
-                            size: iconSize + 2,
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 5),
-
-                      Text(
-                        "Name: ${item['fullName']}",
-                        style: GoogleFonts.nunitoSans(
-                          fontSize: listSubtitleSize,
+                            Icon(
+                              isSelected
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_off,
+                              color: isSelected ? Colors.red : Colors.grey,
+                              size: iconSize + 2,
+                            ),
+                          ],
                         ),
-                      ),
 
-                      Text(
-                        "Mobile: ${item['contactNumber']}",
-                        style: GoogleFonts.nunitoSans(
-                          fontSize: listSubtitleSize,
+                        const SizedBox(height: 5),
+
+                        Text(
+                          "Name: ${item['fullName']}",
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: listSubtitleSize,
+                          ),
                         ),
-                      ),
 
-                      const SizedBox(height: 5),
+                        Text(
+                          "Mobile: ${item['contactNumber']}",
+                          style: GoogleFonts.nunitoSans(
+                            fontSize: listSubtitleSize,
+                          ),
+                        ),
 
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.edit,
-                                color: Colors.blue, size: iconSize),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => AddressFormScreen(
-                                    editAddressId: item['id'],
+                        const SizedBox(height: 5),
+
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit,
+                                  color: Colors.blue, size: iconSize),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => AddressFormScreen(
+                                      editAddressId: item['id'],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete,
-                                color: Colors.red, size: iconSize),
-                            onPressed: () => _deleteSelectedAddress(item['id']),
-                          ),
-                        ],
-                      )
-                    ],
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete,
+                                  color: Colors.red, size: iconSize),
+                              onPressed: () =>
+                                  _deleteSelectedAddress(item['id']),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
-
-            SizedBox(height: sectionSpacing),
-
-            /// Add New Address
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AddressFormScreen()),
                 );
-              },
-              child: Center(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red.shade600),
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.red.shade50.withOpacity(0.2),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Add New Shipping Address",
-                        style: GoogleFonts.nunitoSans(
-                          color: Colors.red.shade600,
-                          fontSize: width < 600 ? 16 : 20,
-                          fontWeight: FontWeight.w700,
+              }),
+
+              SizedBox(height: sectionSpacing),
+
+              /// Add New Address
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const AddressFormScreen()),
+                  );
+                },
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 14),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red.shade600),
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.red.shade50.withOpacity(0.2),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Add New Shipping Address",
+                          style: GoogleFonts.nunitoSans(
+                            color: Colors.red.shade600,
+                            fontSize: width < 600 ? 16 : 20,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            SizedBox(height: sectionSpacing),
+              SizedBox(height: sectionSpacing),
 
-            /// Save Button
-            Center(
-              child: CustomButton(
-                text: "Save Changes",
-                onTap: _saveSelectedAddress,
-                isProcessing: _isProcessing,
+              /// Save Button
+              Center(
+                child: CustomButton(
+                  text: "Save Changes",
+                  onTap: _saveSelectedAddress,
+                  isProcessing: _isProcessing,
+                ),
               ),
-            ),
 
-            SizedBox(height: sectionSpacing),
-          ],
+              SizedBox(height: sectionSpacing),
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+
 import 'package:Artisan/src/constants/colors.dart';
 
 import 'package:Artisan/src/routing/router.dart';
@@ -736,35 +738,25 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    final res = await ref
-                                        .read(signInPageModelProvider.notifier)
-                                        .signInWithApple(ref);
-                                    if (res.isNotEmpty) showErrorMessage(res);
-                                  },
-                                  child: Image.asset(
-                                    'assets/images/ic_apple.png',
-                                    width: 45.5,
-                                    height: 45.5,
+                                if (Platform.isIOS)
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final res = await ref
+                                          .read(
+                                              signInPageModelProvider.notifier)
+                                          .signInWithApple(ref);
+                                      // if (res.isNotEmpty) showErrorMessage(res);
+                                      if (res.isNotEmpty) {
+                                        showAlertBox(context, res);
+                                      }
+                                    },
+                                    child: Image.asset(
+                                      'assets/images/ic_apple.png',
+                                      width: 45.5,
+                                      height: 45.5,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 20),
-
-                                // GestureDetector(
-                                //   onTap: () async {
-                                //     final res = await ref
-                                //         .read(signInPageModelProvider.notifier)
-                                //         .appleSignInFirebase();
-                                //   },
-                                //   child: Image.asset(
-                                //     'assets/images/ic_apple.png',
-                                //     width: 45.5,
-                                //     height: 45.5,
-                                //   ),
-                                // ),
-
-                                // const SizedBox(width: 20),
+                                if (Platform.isIOS) const SizedBox(width: 20),
                                 GestureDetector(
                                   onTap: () async {
                                     if (isFbProcessing) return;

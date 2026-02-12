@@ -104,34 +104,27 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       print("Starting Google Sign-in process");
 
       if (!await hasInternetAccess()) {
-        print("No internet connection");
-        return "No Internet Connection";
+        return "No internet connection. Please check and try again.";
       }
 
-      print("Internet connection available");
-
-      // Create a GoogleSignIn instance
       final GoogleSignIn signIn = GoogleSignIn.instance;
+
       await signIn.initialize(
         serverClientId: Platform.isIOS
             ? "696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcq.apps.googleusercontent.com"
             : "696852379554-i91o5ktaudnci241627rq6i7rj9hnn6v.apps.googleusercontent.com",
       );
 
-      print("Fetching FCM token");
+      final googleUser = await signIn.authenticate();
+
+      // ❗ Cancel Case
+      if (googleUser == null) {
+        return "Google sign-in cancelled.";
+      }
+
       final fcmToken = await FirebaseMessaging.instance.getToken();
-      print("FCM token: $fcmToken");
-
-      print("Starting Google authentication");
-      final GoogleSignInAccount googleUser = await signIn.authenticate();
-
-      print("Google account email: ${googleUser.email}");
-
-      print("Fetching device ID");
       final deviceId = await getId();
-      print("Device ID: $deviceId");
 
-      print("Sending social login API request");
       final res = await apiService.socialLogin(
         socialLoginRequest: SocialLoginRequest(
           email: googleUser.email,
@@ -143,13 +136,10 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
         ),
       );
 
-      print("API response status: ${res.status}");
       if (res.status != ApiStatus.success) {
-        print("API error message: ${res.errorMessage}");
-        return res.errorMessage ?? "Something Went Wrong";
+        return res.errorMessage ?? "Unable to login. Please try again.";
       }
 
-      print("Updating user and setting tokens");
       ref.read(authRepositoryProvider.notifier).updateUser(res.data);
       ref.read(authRepositoryProvider.notifier).setIdToken(
             res.data?.token ?? "",
@@ -159,14 +149,34 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       ref
           .read(authRepositoryProvider.notifier)
           .changeState(AuthStatus.authenticated);
+
       ref.read(authRepositoryProvider.notifier).getAllUserDetails();
 
-      print("Google Sign-in completed successfully");
       return '';
-    } catch (e, stackTrace) {
-      print("Exception during Google Sign-in: $e");
-      print("StackTrace: $stackTrace");
-      return e.toString();
+    } catch (e) {
+      final error = e.toString();
+
+      if (error.contains("sign_in_canceled") ||
+          error.contains("User canceled") ||
+          error.contains("popup_closed")) {
+        return "Google sign-in cancelled.";
+      }
+
+      if (error.contains("network_error")) {
+        return "Network error — please check your connection.";
+      }
+
+      if (error.contains("access_denied") || error.contains("authorization")) {
+        return "Google login was denied. Please try again.";
+      }
+
+      if (error.contains("invalid_client") ||
+          error.contains("misconfigured") ||
+          error.contains("developer_error")) {
+        return "Google login unavailable at the moment.";
+      }
+
+      return "Unable to sign in. Please try again.";
     }
   }
 
@@ -174,301 +184,96 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
     state = state.copyWith(removedInd: state.removedInd.toList()..add(ind));
   }
 
-  // Future<void> _updateLoginInfo(FacebookLogin plugin) async {
-  //   final token = await plugin.accessToken;
-  //   FacebookUserProfile? profile;
-  //   String? email;
-  //   String? imageUrl;
-
-  //   if (token != null) {
-  //     profile = await plugin.getUserProfile();
-  //     if (token.permissions.contains(FacebookPermission.email.name)) {
-  //       email = await plugin.getUserEmail();
-  //     }
-  //     imageUrl = await plugin.getProfileImageUrl(width: 100);
-  //   }
-  //   print(email);
-  // }
-
-  // Future<String> signInWithFacebook() async {
-  //   // return
-  //   // "Feature Disabled by Admin";
-  //   if (!(await hasInternetAccess())) {
-  //     return 'No internet connection!';
-  //   }
-  //   try {
-  //     final plugin = FacebookLogin(debug: true);
-  //     try {
-  //       await plugin.logOut();
-  //       // plugin.
-  //     } catch (e) {}
-  //     await plugin.logIn(permissions: [
-  //       FacebookPermission.publicProfile,
-  //       FacebookPermission.email,
-  //     ]);
-  //     final deviceId = await getId();
-  //     final profile = await plugin.getUserProfile();
-  //     final email = await plugin.getUserEmail();
-  //     final token = await plugin.accessToken;
-  //     if (email != null && email.isNotEmpty && profile != null) {
-  //       final res = await apiService.socialLogin(
-  //         socialLoginRequest: SocialLoginRequest(
-  //           email: email,
-  //           fcmToken: '*',
-  //           deviceId: deviceId,
-  //           // loction: 'Social Test Address',
-  //           // lat: "23.2",
-  //           // lon: '33.2',
-  //           // fbUid: profile.userId,
-  //           // authToken: token?.authenticationToken ?? "facebook",
-  //           // isEmailVerified: 1,
-  //           loginSource: 'facebook',
-  //           name: profile.name ?? "Facebook User",
-  //           // os: Platform.isAndroid ? 'android' : 'ios',
-  //         ),
-  //       );
-  //       if (res.status != ApiStatus.success) {
-  //         return res.errorMessage ?? "Something Went Wrong";
-  //       }
-  //       if (mounted) {
-  //         ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-  //         ref
-  //             .read(authRepositoryProvider.notifier)
-  //             .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
-  //         ref
-  //             .read(authRepositoryProvider.notifier)
-  //             .changeState(AuthStatus.authenticated);
-  //         ref.read(authRepositoryProvider.notifier).getAllUserDetails();
-  //       }
-
-  //       return '';
-  //     } else {
-  //       return "Something Went Wrong!!!";
-  //     }
-  //   } catch (e) {
-  //     return e.toString();
-  //   }
-  // }
   Future<String> signInWithFacebook(WidgetRef ref) async {
     if (!(await hasInternetAccess())) {
-      return 'No internet connection!';
+      return "No internet connection! Please try again.";
     }
 
     try {
-      // Log out any existing Facebook session
+      // Ensure no previous FB session conflict
       await FacebookAuth.instance.logOut();
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
-      // Trigger login
+
+      final String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+      // Start Facebook Login
       final LoginResult result = await FacebookAuth.instance.login(
         permissions: ['email', 'public_profile'],
       );
 
+      // --- SUCCESS CASE ---
       if (result.status == LoginStatus.success) {
-        final accessToken = result.accessToken;
         final userData = await FacebookAuth.instance.getUserData();
+        final String? email = userData['email'];
+        final String name = userData['name'] ?? "Facebook User";
+        final String deviceId = await getId();
 
-        final email = userData['email'];
-        final name = userData['name'];
-        final fbUid = userData['id'];
-        final deviceId = await getId();
-
-        if (email != null && email.isNotEmpty) {
-          final res = await apiService.socialLogin(
-            socialLoginRequest: SocialLoginRequest(
-              email: email,
-              fcmToken: fcmToken.toString(),
-              deviceId: deviceId,
-              loginSource: 'facebook',
-              name: name ?? "Facebook User",
-            ),
-          );
-
-          if (res.status != ApiStatus.success) {
-            return res.errorMessage ?? "Something went wrong";
-          }
-
-          ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-          ref
-              .read(authRepositoryProvider.notifier)
-              .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
-          ref
-              .read(authRepositoryProvider.notifier)
-              .changeState(AuthStatus.authenticated);
-          ref.read(authRepositoryProvider.notifier).getAllUserDetails();
-
-          return '';
-        } else {
-          return "Failed to get email from Facebook.";
+        if (email == null || email.isEmpty) {
+          return "Unable to fetch email from Facebook.";
         }
-      } else if (result.status == LoginStatus.cancelled) {
-        return "Login cancelled by user.";
-      } else {
-        return result.message ?? "Facebook login failed.";
+
+        final res = await apiService.socialLogin(
+          socialLoginRequest: SocialLoginRequest(
+            email: email,
+            fcmToken: fcmToken ?? "",
+            deviceId: deviceId,
+            loginSource: 'facebook',
+            name: name,
+          ),
+        );
+
+        if (res.status != ApiStatus.success) {
+          return res.errorMessage ?? "Unable to login with Facebook.";
+        }
+
+        ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+        ref.read(authRepositoryProvider.notifier).setIdToken(
+              res.data?.token ?? "",
+              res.data?.userData.id ?? "",
+            );
+        ref
+            .read(authRepositoryProvider.notifier)
+            .changeState(AuthStatus.authenticated);
+        ref.read(authRepositoryProvider.notifier).getAllUserDetails();
+
+        return "";
       }
+
+      // --- CANCELLED CASE ---
+      else if (result.status == LoginStatus.cancelled) {
+        return "Facebook sign-in cancelled.";
+      }
+
+      // --- FAILED WITH MESSAGE FROM FB SDK ---
+      else if (result.status == LoginStatus.failed) {
+        final msg = result.message ?? "";
+
+        if (msg.contains("denied") || msg.contains("permission")) {
+          return "Facebook login permission denied.";
+        }
+
+        return "Unable to login with Facebook. Please try again.";
+      }
+
+      // Fallback for unknown states
+      return "Unable to login with Facebook.";
     } catch (e) {
-      return "Facebook login error: $e";
+      final error = e.toString();
+
+      if (error.contains("network") || error.contains("internet")) {
+        return "Network error — please check your connection.";
+      }
+
+      if (error.contains("invalid_key") ||
+          error.contains("appsecret") ||
+          error.contains("developer_error") ||
+          error.contains("misconfigured")) {
+        return "Facebook login unavailable at the moment.";
+      }
+
+      return "Something went wrong. Please try again.";
     }
   }
 
-  // Future<void> signInWithAppleTest() async {
-  //   try {
-  //     final credential = await SignInWithApple.getAppleIDCredential(
-  //       scopes: [
-  //         AppleIDAuthorizationScopes.email,
-  //         AppleIDAuthorizationScopes.fullName,
-  //       ],
-  //     );
-
-  //     print("User ID: ${credential.userIdentifier}");
-  //     print("Email: ${credential.email}");
-  //     print("Full Name: ${credential.givenName}");
-
-  //     // You will use credential.identityToken for backend or Firebase
-  //   } catch (e) {
-  //     print("Apple Signin Error: $e");
-  //   }
-  // }
-
-  // Future<User?> appleSignInFirebase() async {
-  //   try {
-  //     final appleCredential = await SignInWithApple.getAppleIDCredential(
-  //       scopes: [
-  //         AppleIDAuthorizationScopes.email,
-  //         AppleIDAuthorizationScopes.fullName,
-  //       ],
-  //     );
-  //     final oauthCredential = OAuthProvider("apple.com").credential(
-  //       idToken: appleCredential.identityToken,
-  //       accessToken: appleCredential.authorizationCode,
-  //     );
-
-  //     return await FirebaseAuth.instance
-  //         .signInWithCredential(oauthCredential)
-  //         .then((value) {
-  //       print("User ID: ${value.user?.uid}");
-  //       print("Email: ${value.user?.email}");
-  //       print("Full Name: ${value.user?.displayName}");
-  //       return value.user;
-  //     });
-  //   } catch (error) {
-  //     print("Apple Sign In Error: $error");
-  //     return null;
-  //   }
-  // }
-
-  // Future<String> signInWithApple(WidgetRef ref) async {
-  //   if (!(await hasInternetAccess())) {
-  //     return 'No internet connection!';
-  //   }
-
-  //   try {
-  //     // 1️⃣ Generate nonce
-  //     final rawNonce = generateNonce();
-  //     final hashedNonce = sha256ofString(rawNonce);
-
-  //     // 2️⃣ Request Apple Credential
-  //     final appleCredential = await SignInWithApple.getAppleIDCredential(
-  //       scopes: [
-  //         AppleIDAuthorizationScopes.email,
-  //         AppleIDAuthorizationScopes.fullName,
-  //       ],
-  //       // nonce: hashedNonce, // REQUIRED
-  //     );
-
-  //     // 3️⃣ Firebase Credentials
-  //     final oauth = OAuthProvider("apple.com").credential(
-  //         idToken: appleCredential.identityToken,
-  //         accessToken: appleCredential.authorizationCode
-  //         // rawNonce: rawNonce, // REQUIRED
-  //         );
-
-  //     final userCredential =
-  //         await FirebaseAuth.instance.signInWithCredential(oauth);
-
-  //     final firebaseUser = userCredential.user;
-
-  //     // 4️⃣ Extract email, name, id
-  //     final email = firebaseUser?.email ?? appleCredential.email ?? "";
-  //     final fullName =
-  //         "${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}"
-  //             .trim();
-
-  //     final appleUserId = appleCredential.userIdentifier;
-  //     if (appleUserId == null) return "Unable to get Apple user ID";
-
-  //     // 5️⃣ Device ID
-  //     final deviceId = await getId();
-
-  //     // 6️⃣ Social Login API
-  //     final res = await apiService.socialLogin(
-  //       socialLoginRequest: SocialLoginRequest(
-  //         email: email,
-  //         name: fullName.isNotEmpty ? fullName : "Apple User",
-  //         deviceId: deviceId,
-  //         fcmToken: "*",
-  //         loginSource: "apple",
-  //       ),
-  //     );
-
-  //     if (res.status != ApiStatus.success) {
-  //       return res.errorMessage ?? "Something went wrong";
-  //     }
-
-  //     // 7️⃣ Update auth provider
-  //     ref.read(authRepositoryProvider.notifier).updateUser(res.data);
-  //     ref
-  //         .read(authRepositoryProvider.notifier)
-  //         .setIdToken(res.data?.token ?? "", res.data?.userData.id ?? "");
-  //     ref
-  //         .read(authRepositoryProvider.notifier)
-  //         .changeState(AuthStatus.authenticated);
-  //     ref.read(authRepositoryProvider.notifier).getAllUserDetails();
-
-  //     return "";
-  //   } catch (e) {
-  //     if (e.toString().contains("AuthorizationDenied")) {
-  //       return "Apple sign in denied.";
-  //     }
-
-  //     if (e.toString().contains("AuthorizationCanceled")) {
-  //       return "Apple sign in cancelled.";
-  //     }
-
-  //     return "Apple login error: $e";
-  //   }
-  // }
-
-  // Future<UserCredential> signInWithAppleCred() async {
-  //   // To prevent replay attacks with the credential returned from Apple, we
-  //   // include a nonce in the credential request. When signing in with
-  //   // Firebase, the nonce in the id token returned by Apple, is expected to
-  //   // match the sha256 hash of `rawNonce`.
-  //   final rawNonce = generateNonce();
-  //   final nonce = sha256ofString(rawNonce);
-
-  //   // Request credential for the currently signed in Apple account.
-  //   final appleCredential = await SignInWithApple.getAppleIDCredential(
-  //     scopes: [
-  //       AppleIDAuthorizationScopes.email,
-  //       AppleIDAuthorizationScopes.fullName,
-  //     ],
-  //     nonce: nonce,
-  //   );
-
-  //   // Create an `OAuthCredential` from the credential returned by Apple.
-  //   final oauthCredential = OAuthProvider("apple.com").credential(
-  //     idToken: appleCredential.identityToken,
-  //     rawNonce: rawNonce,
-  //   );
-
-  //   // Sign in the user with Firebase. If the nonce we generated earlier does
-  //   // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-  //   final cred =
-  //       await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-  //   print('Cred: ${cred.user?.email}');
-  //   print('Cred: ${cred.user?.displayName}');
-  //   return cred;
-  // }
   Future<String> signInWithApple(WidgetRef ref) async {
     try {
       if (!(await hasInternetAccess())) {
@@ -512,10 +317,10 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
           e.toString().contains("PERMISSION_DENIED") ||
           e.toString().contains("403") ||
           e.toString().contains("App attestation failed")) {
-        return "Unable to sign in with Apple. Please try Google or Facebook.";
+        return "Apple Login Could Not Be Verified, you may still retry with Apple to create or access your Apple-linked account or Log in with Google/Facebook to login into your account.";
       }
 
-      return "Unable to sign in with Apple. Please try Google or Facebook.";
+      return "Apple Login Could Not Be Verified because the email linked to this Apple account is private or does not match an existing account.You may still retry with Apple to create or access your Apple-linked accountorLog in with Google/Facebook to connect your existing account.";
     }
   }
 

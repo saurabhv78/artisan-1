@@ -215,7 +215,7 @@ class _TrendingArtStylesPageState extends ConsumerState<TrendingArtStylesPage> {
         ref.watch(authRepositoryProvider.select((value) => value.cartData));
 
     return CustomScaffold(
-      topPadding: 35,
+      topPadding: 0,
       bgColor: const Color(0xffEFE4FF),
       child: RefreshIndicator(
         displacement: 60,
@@ -227,99 +227,99 @@ class _TrendingArtStylesPageState extends ConsumerState<TrendingArtStylesPage> {
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 15),
-
-              // ⭐ HEADER
-              Stack(
-                alignment: Alignment.centerLeft,
-                children: [
-                  BackBtn(
-                    onTap: () => context.maybePop(),
-                    iconColor: Colors.black,
-                  ),
-                  Center(
-                    child: Text(
-                      "Trending Art Styles",
-                      style: GoogleFonts.nunitoSans(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // ⭐ HEADER
+                Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    BackBtn(
+                      onTap: () => context.maybePop(),
+                      iconColor: Colors.black,
+                    ),
+                    Center(
+                      child: Text(
+                        "Trending Art Styles",
+                        style: GoogleFonts.nunitoSans(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
 
-                  // ⭐ CART + WISHLIST
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // ❤️ Wishlist
-                      GestureDetector(
-                        onTap: () => context.pushRoute(const WishlistRoute()),
-                        child: Stack(
-                          children: [
-                            Image.asset(
-                              'assets/images/ic_heart.png',
-                              height: 26,
-                              width: 30,
-                            ),
-                            if (wishlist.isNotEmpty)
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: _buildBadge(wishlist.length),
+                    // ⭐ CART + WISHLIST
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // ❤️ Wishlist
+                        GestureDetector(
+                          onTap: () => context.pushRoute(const WishlistRoute()),
+                          child: Stack(
+                            children: [
+                              Image.asset(
+                                'assets/images/ic_heart.png',
+                                height: 26,
+                                width: 30,
                               ),
-                          ],
+                              if (wishlist.isNotEmpty)
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: _buildBadge(wishlist.length),
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 13),
+                        const SizedBox(width: 13),
 
-                      // 🛒 Cart
-                      GestureDetector(
-                        onTap: () => context.pushRoute(const CartRoute()),
-                        child: Stack(
-                          children: [
-                            Image.asset(
-                              'assets/images/ic_cart.png',
-                              height: 26,
-                              width: 30,
-                            ),
-                            if (cartData.isNotEmpty)
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: _buildBadge(cartData.length),
+                        // 🛒 Cart
+                        GestureDetector(
+                          onTap: () => context.pushRoute(const CartRoute()),
+                          child: Stack(
+                            children: [
+                              Image.asset(
+                                'assets/images/ic_cart.png',
+                                height: 26,
+                                width: 30,
                               ),
-                          ],
+                              if (cartData.isNotEmpty)
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: _buildBadge(cartData.length),
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                Text(
+                  "Trending Styles this week",
+                  style: GoogleFonts.nunitoSans(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
                   ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              Text(
-                "Trending Styles this week",
-                style: GoogleFonts.nunitoSans(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
                 ),
-              ),
 
-              const SizedBox(height: 5),
+                const SizedBox(height: 5),
 
-              // ⭐ Responsive grid section
-              Expanded(
-                child: TrendingArtPagedListSection(
-                  key: ValueKey(refreshCounter),
+                // ⭐ Responsive grid section
+                Expanded(
+                  child: TrendingArtPagedListSection(
+                    key: ValueKey(refreshCounter),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

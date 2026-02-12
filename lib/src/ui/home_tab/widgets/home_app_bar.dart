@@ -204,98 +204,191 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
                   context.pushRoute(const WishlistRoute());
                 },
           child: SizedBox(
-            height: iconSize,
-            child: Row(
-              children: [
-                /// ❤️ WISHLIST
-                // GestureDetector(
-                //   onTap: () {
-                //     log('Navigating to Wishlist');
-                //     context.pushRoute(const WishlistRoute());
-                //   },
-                // child:
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Image.asset(
-                      'assets/images/ic_heart.png',
-                      height: iconSize,
-                      width: iconSize + 4,
-                    ),
-                    if (wishlist.isNotEmpty)
-                      Positioned(
-                        right: -2,
-                        top: -3,
-                        child: Container(
-                          height: badgeSize,
-                          width: badgeSize,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: primaryColor,
-                          ),
-                          child: Center(
-                            child: Text(
-                              wishlist.length > 99
-                                  ? "99"
-                                  : wishlist.length.toString(),
-                              style: GoogleFonts.nunitoSans(
-                                color: Colors.white,
-                                fontSize: badgeFont,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+              height: iconSize,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  /// ❤️ WISHLIST
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque, // 👈 IMPORTANT
+                    onTap: isGuest
+                        ? () => _showLoginPop(context)
+                        : () => context.pushRoute(const WishlistRoute()),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Image.asset(
+                          'assets/images/ic_heart.png',
+                          height: iconSize,
+                          width: iconSize + 4,
                         ),
-                      ),
-                  ],
-                ),
-
-                SizedBox(width: spacing),
-
-                /// 🛒 CART
-                GestureDetector(
-                  onTap: isGuest
-                      ? () => _showLoginPop(context)
-                      : () => context.pushRoute(const CartRoute()),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Image.asset(
-                        'assets/images/ic_cart.png',
-                        height: iconSize,
-                        width: iconSize + 4,
-                      ),
-                      if (cartData.isNotEmpty)
-                        Positioned(
-                          right: -2,
-                          top: -3,
-                          child: Container(
-                            height: badgeSize,
-                            width: badgeSize,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: primaryColor,
-                            ),
-                            child: Center(
-                              child: Text(
-                                cartData.length > 99
-                                    ? "99"
-                                    : cartData.length.toString(),
-                                style: GoogleFonts.nunitoSans(
-                                  color: Colors.white,
-                                  fontSize: badgeFont,
-                                  fontWeight: FontWeight.w600,
+                        if (wishlist.isNotEmpty)
+                          Positioned(
+                            right: -2,
+                            top: -3,
+                            child: Container(
+                              height: badgeSize,
+                              width: badgeSize,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: primaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  wishlist.length > 99
+                                      ? "99"
+                                      : wishlist.length.toString(),
+                                  style: GoogleFonts.nunitoSans(
+                                    color: Colors.white,
+                                    fontSize: badgeFont,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
+
+                  SizedBox(width: spacing),
+
+                  /// 🛒 CART
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque, // 👈 IMPORTANT
+                    onTap: isGuest
+                        ? () => _showLoginPop(context)
+                        : () => context.pushRoute(const CartRoute()),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Image.asset(
+                          'assets/images/ic_cart.png',
+                          height: iconSize,
+                          width: iconSize + 4,
+                        ),
+                        if (cartData.isNotEmpty)
+                          Positioned(
+                            right: -2,
+                            top: -3,
+                            child: Container(
+                              height: badgeSize,
+                              width: badgeSize,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: primaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  cartData.length > 99
+                                      ? "99"
+                                      : cartData.length.toString(),
+                                  style: GoogleFonts.nunitoSans(
+                                    color: Colors.white,
+                                    fontSize: badgeFont,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+              //  Row(
+              //   children: [
+              //     /// ❤️ WISHLIST
+              //     // GestureDetector(
+              //     //   onTap: () {
+              //     //     log('Navigating to Wishlist');
+              //     //     context.pushRoute(const WishlistRoute());
+              //     //   },
+              //     // child:
+              //     Stack(
+              //       clipBehavior: Clip.none,
+              //       children: [
+              //         Image.asset(
+              //           'assets/images/ic_heart.png',
+              //           height: iconSize,
+              //           width: iconSize + 4,
+              //         ),
+              //         if (wishlist.isNotEmpty)
+              //           Positioned(
+              //             right: -2,
+              //             top: -3,
+              //             child: Container(
+              //               height: badgeSize,
+              //               width: badgeSize,
+              //               decoration: BoxDecoration(
+              //                 borderRadius: BorderRadius.circular(30),
+              //                 color: primaryColor,
+              //               ),
+              //               child: Center(
+              //                 child: Text(
+              //                   wishlist.length > 99
+              //                       ? "99"
+              //                       : wishlist.length.toString(),
+              //                   style: GoogleFonts.nunitoSans(
+              //                     color: Colors.white,
+              //                     fontSize: badgeFont,
+              //                     fontWeight: FontWeight.w600,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //       ],
+              //     ),
+
+              //     SizedBox(width: spacing),
+
+              //     /// 🛒 CART
+              //     GestureDetector(
+              //       onTap: isGuest
+              //           ? () => _showLoginPop(context)
+              //           : () => context.pushRoute(const CartRoute()),
+              //       child: Stack(
+              //         clipBehavior: Clip.none,
+              //         children: [
+              //           Image.asset(
+              //             'assets/images/ic_cart.png',
+              //             height: iconSize,
+              //             width: iconSize + 4,
+              //           ),
+              //           if (cartData.isNotEmpty)
+              //             Positioned(
+              //               right: -2,
+              //               top: -3,
+              //               child: Container(
+              //                 height: badgeSize,
+              //                 width: badgeSize,
+              //                 decoration: BoxDecoration(
+              //                   borderRadius: BorderRadius.circular(30),
+              //                   color: primaryColor,
+              //                 ),
+              //                 child: Center(
+              //                   child: Text(
+              //                     cartData.length > 99
+              //                         ? "99"
+              //                         : cartData.length.toString(),
+              //                     style: GoogleFonts.nunitoSans(
+              //                       color: Colors.white,
+              //                       fontSize: badgeFont,
+              //                       fontWeight: FontWeight.w600,
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+
+              ),
         )
       ],
     );

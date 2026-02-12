@@ -275,131 +275,134 @@ class _AddressFormScreenState extends ConsumerState<AddressFormScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      topPadding: 35,
+      topPadding: 0,
       child: Stack(children: [
         SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(25, 15, 25, 10),
-                child: Row(
-                  children: [
-                    BackBtn(
-                      iconColor: Colors.black,
-                      onTap: () => Navigator.pop(context),
-                    ),
-                    const SizedBox(width: 20),
-                    Text(
-                      "Your Address",
-                      style: GoogleFonts.nunitoSans(
-                        fontWeight: FontWeight.w400,
-                        color: bgDark,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30),
-              Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
+          child: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 15, 25, 10),
+                  child: Row(
                     children: [
-                      buildInputField(
-                          _streetController, 'Flat/Building, Street'),
-                      const SizedBox(height: 16),
-                      buildInputField(_cityController, 'City'),
-                      const SizedBox(height: 16),
-                      buildInputField(_stateController, 'State'),
-                      const SizedBox(height: 16),
-                      buildInputField(_countryController, 'Country'),
-                      const SizedBox(height: 16),
-                      buildInputField(
-                        _postalCodeController,
-                        'Postal Code',
-                        inputType: TextInputType.number,
-                        maxLength: 10,
-                        minLength: 3,
+                      BackBtn(
+                        iconColor: Colors.black,
+                        onTap: () => Navigator.pop(context),
                       ),
-                      const SizedBox(height: 16),
-                      buildInputField(_fullNameController, 'Full Name'),
-                      const SizedBox(height: 16),
-                      buildInputField(
-                        _mobileController,
-                        'Mobile Number',
-                        inputType: TextInputType.number,
-                        minLength: 8,
-                        maxLength: 15,
+                      const SizedBox(width: 20),
+                      Text(
+                        "Your Address",
+                        style: GoogleFonts.nunitoSans(
+                          fontWeight: FontWeight.w400,
+                          color: bgDark,
+                          fontSize: 24,
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 25),
-
-              // Google Map with draggable marker
-              if (_selectedLocation != null) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SizedBox(
-                    height: 250,
-                    child: GoogleMap(
-                      zoomGesturesEnabled: true,
-                      zoomControlsEnabled: true,
-                      mapType: MapType.normal,
-                      initialCameraPosition: CameraPosition(
-                        target: _selectedLocation!,
-                        zoom: 15,
-                      ),
-                      onMapCreated: (controller) => _mapController = controller,
-                      markers: {
-                        Marker(
-                          consumeTapEvents: true,
-                          markerId: const MarkerId('selected-location'),
-                          position: _selectedLocation!,
-                          draggable: true,
-                          onDragEnd: (newPosition) async {
-                            setState(() {
-                              _selectedLocation = newPosition;
-                            });
-                            await _updateAddressFromLatLng(newPosition);
-                          },
+                const SizedBox(height: 30),
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        buildInputField(
+                            _streetController, 'Flat/Building, Street'),
+                        const SizedBox(height: 16),
+                        buildInputField(_cityController, 'City'),
+                        const SizedBox(height: 16),
+                        buildInputField(_stateController, 'State'),
+                        const SizedBox(height: 16),
+                        buildInputField(_countryController, 'Country'),
+                        const SizedBox(height: 16),
+                        buildInputField(
+                          _postalCodeController,
+                          'Postal Code',
+                          inputType: TextInputType.number,
+                          maxLength: 10,
+                          minLength: 3,
                         ),
-                      },
-                      onTap: (newPosition) async {
-                        setState(() {
-                          _selectedLocation = newPosition;
-                        });
-                        await _updateAddressFromLatLng(newPosition);
-                      },
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: true,
+                        const SizedBox(height: 16),
+                        buildInputField(_fullNameController, 'Full Name'),
+                        const SizedBox(height: 16),
+                        buildInputField(
+                          _mobileController,
+                          'Mobile Number',
+                          inputType: TextInputType.number,
+                          minLength: 8,
+                          maxLength: 15,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ] else
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
+                const SizedBox(height: 25),
 
-              const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: CustomButton(
-                  isProcessing: _isSaving,
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      _saveAddress();
-                    }
-                  },
-                  text: 'Save Changes',
+                // Google Map with draggable marker
+                if (_selectedLocation != null) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SizedBox(
+                      height: 250,
+                      child: GoogleMap(
+                        zoomGesturesEnabled: true,
+                        zoomControlsEnabled: true,
+                        mapType: MapType.normal,
+                        initialCameraPosition: CameraPosition(
+                          target: _selectedLocation!,
+                          zoom: 15,
+                        ),
+                        onMapCreated: (controller) =>
+                            _mapController = controller,
+                        markers: {
+                          Marker(
+                            consumeTapEvents: true,
+                            markerId: const MarkerId('selected-location'),
+                            position: _selectedLocation!,
+                            draggable: true,
+                            onDragEnd: (newPosition) async {
+                              setState(() {
+                                _selectedLocation = newPosition;
+                              });
+                              await _updateAddressFromLatLng(newPosition);
+                            },
+                          ),
+                        },
+                        onTap: (newPosition) async {
+                          setState(() {
+                            _selectedLocation = newPosition;
+                          });
+                          await _updateAddressFromLatLng(newPosition);
+                        },
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                      ),
+                    ),
+                  ),
+                ] else
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: CircularProgressIndicator(),
+                  ),
+
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: CustomButton(
+                    isProcessing: _isSaving,
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        _saveAddress();
+                      }
+                    },
+                    text: 'Save Changes',
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ]),
