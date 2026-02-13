@@ -106,21 +106,33 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       if (!await hasInternetAccess()) {
         return "No internet connection. Please check and try again.";
       }
+      final google = GoogleSignIn.instance;
+      await google.initialize();
 
-      final GoogleSignIn signIn = GoogleSignIn.instance;
+      // 1️⃣ Trigger Google Sign-In
+      final GoogleSignInAccount googleUser = await google.authenticate();
 
-      await signIn.initialize(
-        serverClientId: Platform.isIOS
-            ? "696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcq.apps.googleusercontent.com"
-            : "696852379554-i91o5ktaudnci241627rq6i7rj9hnn6v.apps.googleusercontent.com",
+/*       // 2️⃣ Obtain auth details
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      // 3️⃣ Create Firebase credential
+      final credential = GoogleAuthProvider.credential(
+        // accessToken: googleAuth.,
+        idToken: googleAuth.idToken,
       );
 
-      final googleUser = await signIn.authenticate();
+      // 4️⃣ Firebase sign-in
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // ❗ Cancel Case
-      if (googleUser == null) {
-        return "Google sign-in cancelled.";
-      }
+      final firebaseUser = userCredential.user;
+
+      if (firebaseUser == null) {
+        return "Google login failed. Please try again.";
+      } */
+
+      // // 5️⃣ Get Firebase ID Token (send THIS to backend)
+      // final firebaseIdToken = await firebaseUser.getIdToken();
 
       final fcmToken = await FirebaseMessaging.instance.getToken();
       final deviceId = await getId();
@@ -153,8 +165,10 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       ref.read(authRepositoryProvider.notifier).getAllUserDetails();
 
       return '';
-    } catch (e) {
+    } catch (e, st) {
       final error = e.toString();
+      print("Google Sign-in Error: $error");
+      print("Google Sign-in Error Stack Trace: $st");
 
       if (error.contains("sign_in_canceled") ||
           error.contains("User canceled") ||

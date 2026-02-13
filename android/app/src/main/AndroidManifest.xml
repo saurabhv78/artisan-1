@@ -61,7 +61,7 @@
             android:value="channel_id" />
         <meta-data
     android:name="com.google.android.geo.API_KEY"
-    android:value="AIzaSyBaw9AGzzsvd0TLdZrO6FI125-k-79dEVA"/>
+    android:value="AIzaSyBNf4kM_3eK-FcS-HRwElYIYTAQkN66SYA"/>
 
             
     </application>
