@@ -41,30 +41,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAxiS9z88ELgO9rzPWCcjJKlnHN5iqX2bw',
-    appId: '1:417343899993:android:4e384c687901c06adce448',
-    messagingSenderId: '417343899993',
-    projectId: 'artisan-5d023',
-    storageBucket: 'artisan-5d023.firebasestorage.app',
+    apiKey: 'AIzaSyDAYuFt-tbhwPwCwX5NYrldda1HWbylOwk',
+    appId: '1:85494246572:android:96d341668cc1e862a7c309',
+    messagingSenderId: '85494246572',
+    projectId: 'artisan-handsandbrushes',
+    storageBucket: 'artisan-handsandbrushes.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC7iNG6RNI80Fetfl6vvcpVXfWX8fJX9AM',
-    appId: '1:417343899993:ios:ce836081b3121ad0dce448',
-    messagingSenderId: '417343899993',
-    projectId: 'artisan-5d023',
-    storageBucket: 'artisan-5d023.firebasestorage.app',
-    iosBundleId: 'com.artisan.artisan',
+    apiKey: 'AIzaSyCiRJa4_mCI7V0MS7349XB5ZxttQR3ipf0',
+    appId: '1:85494246572:ios:98b6ca82a1c6625ea7c309',
+    messagingSenderId: '85494246572',
+    projectId: 'artisan-handsandbrushes',
+    storageBucket: 'artisan-handsandbrushes.firebasestorage.app',
+    iosClientId: '85494246572-d7hb3b6dks53pn7fl05hqp6gaivrd5gr.apps.googleusercontent.com',
+    iosBundleId: 'com.artisan.handsandbrushes',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAI9FsqfO5geIuQoyUH9yGmsnJpYtmuODM',
-    appId: '1:417343899993:web:92b552edd1407189dce448',
-    messagingSenderId: '417343899993',
-    projectId: 'artisan-5d023',
-    authDomain: 'artisan-5d023.firebaseapp.com',
-    storageBucket: 'artisan-5d023.firebasestorage.app',
-    measurementId: 'G-PCTX9MDGG5',
+    apiKey: 'AIzaSyB0rLgeZUH1Jd-fQe2jbU4MmX0SAkQiZGM',
+    appId: '1:85494246572:web:bd1c1009a6b4a294a7c309',
+    messagingSenderId: '85494246572',
+    projectId: 'artisan-handsandbrushes',
+    authDomain: 'artisan-handsandbrushes.firebaseapp.com',
+    storageBucket: 'artisan-handsandbrushes.firebasestorage.app',
+    measurementId: 'G-6GFKENKMRW',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

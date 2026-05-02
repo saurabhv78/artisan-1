@@ -1,4 +1,4 @@
-package com.artisan.artisan
+package com.artisan.handsandbrushes
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity

@@ -1,56 +1,40 @@
 {
   "project_info": {
-    "project_number": "417343899993",
-    "project_id": "artisan-5d023",
-    "storage_bucket": "artisan-5d023.firebasestorage.app"
+    "project_number": "85494246572",
+    "project_id": "artisan-handsandbrushes",
+    "storage_bucket": "artisan-handsandbrushes.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:417343899993:android:4e384c687901c06adce448",
+        "mobilesdk_app_id": "1:85494246572:android:96d341668cc1e862a7c309",
         "android_client_info": {
-          "package_name": "com.artisan.artisan"
+          "package_name": "com.artisan.handsandbrushes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "417343899993-2on4295mf4vlljtu0325v0i8d3o9iril.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.artisan.artisan",
-            "certificate_hash": "af3dc5e73ae053f0e34661ba72e2c002f71aecac"
-          }
-        },
-        {
-          "client_id": "417343899993-scooli5t0e5giu58ctl6fg0jdf2b92mo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.artisan.artisan",
-            "certificate_hash": "a8a71861ea97022683d5b083d0e3782303f538b4"
-          }
-        },
-        {
-          "client_id": "417343899993-0tt21ih2kn8m08sovvkadtp90t1smqqj.apps.googleusercontent.com",
+          "client_id": "85494246572-7bfk4m6vj7q4pus6p5r4tl7qtmi68nvt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAxiS9z88ELgO9rzPWCcjJKlnHN5iqX2bw"
+          "current_key": "AIzaSyDAYuFt-tbhwPwCwX5NYrldda1HWbylOwk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "417343899993-0tt21ih2kn8m08sovvkadtp90t1smqqj.apps.googleusercontent.com",
+              "client_id": "85494246572-7bfk4m6vj7q4pus6p5r4tl7qtmi68nvt.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "417343899993-215mmpfmqbdfjrulgvq96r3s7vd4dd41.apps.googleusercontent.com",
+              "client_id": "85494246572-d7hb3b6dks53pn7fl05hqp6gaivrd5gr.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.artisan.artisan"
+                "bundle_id": "com.artisan.handsandbrushes"
               }
             }
           ]

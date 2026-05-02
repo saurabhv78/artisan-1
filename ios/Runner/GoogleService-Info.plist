@@ -2,18 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>85494246572-d7hb3b6dks53pn7fl05hqp6gaivrd5gr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.85494246572-d7hb3b6dks53pn7fl05hqp6gaivrd5gr</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC7iNG6RNI80Fetfl6vvcpVXfWX8fJX9AM</string>
+	<string>AIzaSyCiRJa4_mCI7V0MS7349XB5ZxttQR3ipf0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>417343899993</string>
+	<string>85494246572</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.artisan.artisan</string>
+	<string>com.artisan.handsandbrushes</string>
 	<key>PROJECT_ID</key>
-	<string>artisan-5d023</string>
+	<string>artisan-handsandbrushes</string>
 	<key>STORAGE_BUCKET</key>
-	<string>artisan-5d023.firebasestorage.app</string>
+	<string>artisan-handsandbrushes.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:417343899993:ios:ce836081b3121ad0dce448</string>
+	<string>1:85494246572:ios:98b6ca82a1c6625ea7c309</string>
 </dict>
 </plist>
