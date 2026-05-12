@@ -75,63 +75,76 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
 
   Stack _headers(
       BuildContext context, List<String> wishlist, List<String> cartData) {
+    final isTablet = MediaQuery.of(context).size.width >= 600;
+
+    final double titleFont = isTablet ? 24 : 18;
+    final double iconSize = isTablet ? 32 : 26;
+    final double iconWidth = isTablet ? 36 : 30;
+    final double badgeSize = isTablet ? 20 : 16;
+    final double badgeFont = isTablet ? 12 : 10;
+    final double spacing = isTablet ? 20 : 13;
+
+    final String title = widget.artStyleId != null
+        ? "Trending Art Styles"
+        : widget.categoryName != null
+            ? "Categories"
+            : "Discounted Products";
+
     return Stack(
       alignment: Alignment.centerLeft,
       children: [
         BackBtn(
-          onTap: () {
-            context.maybePop();
-          },
+          onTap: () => context.maybePop(),
           iconColor: Colors.black,
         ),
         Center(
           child: Text(
-            widget.artStyleId != null
-                ? "Trending Art Styles"
-                : widget.categoryName != null
-                    ? "Categories"
-                    : "Discounted Products",
-            style: GoogleFonts.nunitoSans(
-              fontSize: widget.categoryName != null ? 20 : 20,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
+            title,
+            style: GoogleFonts.outfit(
+              fontSize: titleFont,
+              fontWeight: FontWeight.w700,
+              color: Colors.black87,
+              letterSpacing: 0.3,
             ),
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            // ❤️ Wishlist
             GestureDetector(
-              onTap: () {
-                context.pushRoute(const WishlistRoute());
-              },
+              behavior: HitTestBehavior.opaque,
+              onTap: () => context.pushRoute(const WishlistRoute()),
               child: Stack(
+                clipBehavior: Clip.none,
                 children: [
                   Image.asset(
                     'assets/images/ic_heart.png',
-                    height: 26,
-                    width: 30,
+                    height: iconSize,
+                    width: iconWidth,
                   ),
                   if (wishlist.isNotEmpty)
                     Positioned(
-                      right: 0,
-                      top: 0,
+                      right: -2,
+                      top: -4,
                       child: Container(
-                        height: 16,
-                        width: 16,
+                        height: badgeSize,
+                        width: badgeSize,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
+                          shape: BoxShape.circle,
                           color: primaryColor,
+                          border: Border.all(color: Colors.white, width: 1.5),
                         ),
                         child: Center(
                           child: Text(
                             wishlist.length > 99
                                 ? "99"
                                 : wishlist.length.toString(),
-                            style: GoogleFonts.nunitoSans(
+                            style: GoogleFonts.outfit(
                               color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
+                              fontSize: badgeFont,
+                              fontWeight: FontWeight.w700,
+                              height: 1.1,
                             ),
                           ),
                         ),
@@ -140,40 +153,41 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
                 ],
               ),
             ),
-            const SizedBox(
-              width: 13,
-            ),
+            SizedBox(width: spacing),
+            // 🛒 Cart
             GestureDetector(
-              onTap: () {
-                context.pushRoute(const CartRoute());
-              },
+              behavior: HitTestBehavior.opaque,
+              onTap: () => context.pushRoute(const CartRoute()),
               child: Stack(
+                clipBehavior: Clip.none,
                 children: [
                   Image.asset(
                     'assets/images/ic_cart.png',
-                    height: 26,
-                    width: 30,
+                    height: iconSize,
+                    width: iconWidth,
                   ),
                   if (cartData.isNotEmpty)
                     Positioned(
-                      right: 0,
-                      top: 0,
+                      right: -2,
+                      top: -4,
                       child: Container(
-                        height: 16,
-                        width: 16,
+                        height: badgeSize,
+                        width: badgeSize,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
+                          shape: BoxShape.circle,
                           color: primaryColor,
+                          border: Border.all(color: Colors.white, width: 1.5),
                         ),
                         child: Center(
                           child: Text(
                             cartData.length > 99
                                 ? "99"
                                 : cartData.length.toString(),
-                            style: GoogleFonts.nunitoSans(
+                            style: GoogleFonts.outfit(
                               color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
+                              fontSize: badgeFont,
+                              fontWeight: FontWeight.w700,
+                              height: 1.1,
                             ),
                           ),
                         ),
@@ -191,14 +205,18 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
   List<Widget> get _categoryView {
     return [
       const SizedBox(height: 20),
-      Text(
-        "Shop in “${widget.categoryName}”",
-        style: GoogleFonts.nunitoSans(
-          fontSize: 20,
-          fontWeight: FontWeight.w400,
-          color: Colors.black,
-        ),
-      ),
+      Builder(builder: (context) {
+        final isTablet = MediaQuery.of(context).size.width >= 600;
+        return Text(
+          "Shop in \"${widget.categoryName}\"",
+          style: GoogleFonts.outfit(
+            fontSize: isTablet ? 24 : 18,
+            fontWeight: FontWeight.w700,
+            color: Colors.black87,
+            letterSpacing: 0.3,
+          ),
+        );
+      }),
     ];
   }
 }
