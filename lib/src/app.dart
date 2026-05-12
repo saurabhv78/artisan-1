@@ -80,6 +80,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 import '../services/notification_service.dart';
 import 'constants/colors.dart';
@@ -103,6 +104,10 @@ class _AppState extends State<MyApp> {
     setState(() {
       NotificationService.initialize();
       LocationService.initialize();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ScreenProtector.protectDataLeakageWithBlur();
+      await ScreenProtector.preventScreenshotOn();
     });
     // 👈 Enable location on app start
   }

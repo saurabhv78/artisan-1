@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/routing/router.dart';
 import 'package:Artisan/src/widgets/components/images.dart';
@@ -151,22 +152,22 @@ class _DiscountCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Use a placeholder or a nicer loading state if needed
+              // Image
               NetworkImageWidget(
                 data.discountImage.toString(),
                 fit: BoxFit.fill,
               ),
-              // More sophisticated gradient for better text readability and premium look
+              // Refined gradient targeting just the bottom-left corner
               DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.black.withOpacity(0.85),
-                      Colors.black.withOpacity(0.4),
+                      Colors.black.withOpacity(0.6),
+                      Colors.black.withOpacity(0.15),
                       Colors.transparent,
                     ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.center,
                     stops: const [0.0, 0.5, 1.0],
                   ),
                 ),
@@ -175,19 +176,26 @@ class _DiscountCard extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(padding),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "UPTO",
-                        style: GoogleFonts.outfit(
-                          fontWeight: FontWeight.w500,
-                          fontSize: titleSize * 0.8,
-                          color: Colors.white.withOpacity(0.9),
-                          letterSpacing: 2,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
+                      // Text(
+                      //   "UPTO",
+                      //   style: GoogleFonts.outfit(
+                      //     fontWeight: FontWeight.w600,
+                      //     fontSize: titleSize * 0.8,
+                      //     color: Colors.white.withOpacity(0.95),
+                      //     letterSpacing: 2,
+                      //     shadows: [
+                      //       Shadow(
+                      //         color: Colors.black.withOpacity(0.4),
+                      //         offset: const Offset(0, 2),
+                      //         blurRadius: 6,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      const SizedBox(height: 2),
                       Text(
                         "${data.discountVal}% OFF",
                         style: GoogleFonts.outfit(
@@ -195,29 +203,48 @@ class _DiscountCard extends StatelessWidget {
                           fontSize: offerSize,
                           color: Colors.white,
                           height: 1.1,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.4),
+                              offset: const Offset(0, 4),
+                              blurRadius: 10,
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: Text(
-                          data.discountName.toString().toUpperCase(),
-                          style: GoogleFonts.outfit(
-                            fontWeight: FontWeight.w600,
-                            fontSize: titleSize * 0.7,
-                            color: Colors.white,
-                            letterSpacing: 1,
+                      const SizedBox(height: 10),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.15),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.4),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: Text(
+                              data.discountName.toString().toUpperCase(),
+                              style: GoogleFonts.outfit(
+                                fontWeight: FontWeight.w700,
+                                fontSize: titleSize * 0.7,
+                                color: Colors.white,
+                                letterSpacing: 1.2,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    offset: const Offset(0, 1),
+                                    blurRadius: 2,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),

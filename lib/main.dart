@@ -12,7 +12,6 @@ import 'src/logic/services/preference_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await ScreenProtector.protectDataLeakageWithBlur();
   final sharedPreferences = await SharedPreferences.getInstance();
 
   final container = ProviderContainer(overrides: [
