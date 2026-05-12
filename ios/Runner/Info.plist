@@ -23,7 +23,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.6</string>
+	<string>1.0.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -34,12 +34,13 @@
 				<string>fb873707391752668</string>
 				<string>com.googleusercontent.apps.696852379554-4fdea2ptmshsnassad4qvd5b1s1etjcq</string>
 				<string>com.googleusercontent.apps.178888187457-msbo9gal2uce81u2cdfe0thna878h2j3</string>
+				<string>com.googleusercontent.apps.85494246572-d7hb3b6dks53pn7fl05hqp6gaivrd5gr</string>
 				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>17</string>
+	<string>2</string>
 	<key>FacebookAdvertiserIDCollectionEnabled</key>
 	<false/>
 	<key>FacebookAppID</key>

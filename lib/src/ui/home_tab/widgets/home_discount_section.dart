@@ -1,158 +1,3 @@
-// import 'dart:async';
-// import 'package:Artisan/src/routing/router.dart';
-// import 'package:Artisan/src/widgets/components/images.dart';
-// import 'package:auto_route/auto_route.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import '../../../models/discount_data/discount_data.dart';
-
-// class HomeDiscountSection extends StatefulWidget {
-//   final List<DiscountData> data;
-//   const HomeDiscountSection({super.key, required this.data});
-
-//   @override
-//   State<HomeDiscountSection> createState() => _HomeDiscountSectionState();
-// }
-
-// class _HomeDiscountSectionState extends State<HomeDiscountSection> {
-//   late final PageController _pageController;
-//   int _currentPage = 0;
-//   Timer? _timer;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _pageController =
-//         PageController(viewportFraction: 0.9); // show partial next
-//     if (widget.data.isNotEmpty) {
-//       _timer = Timer.periodic(const Duration(seconds: 3), (_) {
-//         if (_pageController.hasClients) {
-//           _currentPage++;
-//           if (_currentPage >= widget.data.length) {
-//             _currentPage = 0;
-//           }
-//           _pageController.animateToPage(
-//             _currentPage,
-//             duration: const Duration(milliseconds: 500),
-//             curve: Curves.easeInOut,
-//           );
-//         }
-//       });
-//     }
-//   }
-
-//   @override
-//   void dispose() {
-//     _timer?.cancel();
-//     _pageController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     if (widget.data.isEmpty) return const SizedBox.shrink();
-
-//     return SizedBox(
-//       height: 150,
-//       child: PageView.builder(
-//         controller: _pageController,
-//         itemCount: widget.data.length,
-//         itemBuilder: (context, index) {
-//           final discount = widget.data[index];
-//           return GestureDetector(
-//             onTap: () {
-//               context.navigateTo(ProductListRoute(discountId: discount.id));
-//             },
-//             child: _DiscountCard(data: discount),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
-// class _DiscountCard extends StatelessWidget {
-//   final DiscountData data;
-//   const _DiscountCard({super.key, required this.data});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 6),
-//       child: ClipRRect(
-//         borderRadius: BorderRadius.circular(12),
-//         child: Container(
-//           decoration: BoxDecoration(
-//             color: const Color(0xff141516),
-//             borderRadius: BorderRadius.circular(12),
-//             boxShadow: const [
-//               BoxShadow(
-//                 color: Color.fromRGBO(0, 0, 0, 0.25),
-//                 offset: Offset(1, 2),
-//                 blurRadius: 4,
-//               ),
-//             ],
-//           ),
-//           child: Stack(
-//             fit: StackFit.expand,
-//             children: [
-//               NetworkImageWidget(
-//                 data.discountImage.toString(),
-//                 fit: BoxFit.cover,
-//               ),
-//               Container(
-//                 decoration: BoxDecoration(
-//                   gradient: LinearGradient(
-//                     colors: [
-//                       Colors.black.withOpacity(0.7),
-//                       Colors.black.withOpacity(0.0),
-//                     ],
-//                     begin: Alignment.centerLeft,
-//                     end: Alignment.center,
-//                   ),
-//                 ),
-//               ),
-//               if (data.isDiscountTextEnabled == true)
-//                 Padding(
-//                   padding: const EdgeInsets.all(12.0),
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       Text(
-//                         "UPTO",
-//                         style: GoogleFonts.nunitoSans(
-//                           fontWeight: FontWeight.w400,
-//                           fontSize: 15,
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                       Text(
-//                         "${data.discountVal}% OFF",
-//                         style: GoogleFonts.nunitoSans(
-//                           fontWeight: FontWeight.w700,
-//                           fontSize: 20,
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                       Text(
-//                         data.discountName.toString(),
-//                         style: GoogleFonts.nunitoSans(
-//                           fontWeight: FontWeight.w400,
-//                           fontSize: 15,
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'dart:async';
 import 'package:Artisan/src/logic/repositories/auth_repository.dart';
 import 'package:Artisan/src/routing/router.dart';
@@ -230,13 +75,14 @@ class _HomeDiscountSectionState extends ConsumerState<HomeDiscountSection> {
     final width = MediaQuery.of(context).size.width;
     final isTablet = width >= 600;
 
-    final double sectionHeight = isTablet ? 300 : 170;
+    // Increased height to prevent clipping of shadows and give more breathing room
+    final double sectionHeight = isTablet ? 320 : 190;
 
     return SizedBox(
       height: sectionHeight,
       child: PageView.builder(
         controller: _pageController,
-        padEnds: false, // FIX: स्लाइड अब center पर नहीं आएगी
+        padEnds: false,
         itemCount: widget.data.length,
         itemBuilder: (context, index) {
           final discount = widget.data[index];
@@ -276,43 +122,52 @@ class _DiscountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double borderRadius = isTablet ? 20 : 14;
-    final double padding = isTablet ? 28 : 16;
-    final double titleSize = isTablet ? 24 : 16;
-    final double offerSize = isTablet ? 44 : 22;
+    final double borderRadius = isTablet ? 24 : 16;
+    final double padding = isTablet ? 32 : 20;
+    final double titleSize = isTablet ? 26 : 14;
+    final double offerSize = isTablet ? 52 : 28;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: isTablet ? 25 : 15),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(borderRadius),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(borderRadius),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(1, 2),
-                blurRadius: 4,
-              ),
-            ],
-          ),
+      // Added vertical padding to allow shadows to breathe without being cut
+      padding: EdgeInsets.symmetric(
+        horizontal: isTablet ? 20 : 10,
+        vertical: 10,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(borderRadius),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              offset: const Offset(0, 8),
+              blurRadius: 16,
+              spreadRadius: -4,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadius),
           child: Stack(
             fit: StackFit.expand,
             children: [
+              // Use a placeholder or a nicer loading state if needed
               NetworkImageWidget(
                 data.discountImage.toString(),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
-              Container(
+              // More sophisticated gradient for better text readability and premium look
+              DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.black.withOpacity(0.75),
-                      Colors.black.withOpacity(0.0),
+                      Colors.black.withOpacity(0.85),
+                      Colors.black.withOpacity(0.4),
+                      Colors.transparent,
                     ],
                     begin: Alignment.centerLeft,
-                    end: Alignment.center,
+                    end: Alignment.centerRight,
+                    stops: const [0.0, 0.5, 1.0],
                   ),
                 ),
               ),
@@ -325,27 +180,45 @@ class _DiscountCard extends StatelessWidget {
                     children: [
                       Text(
                         "UPTO",
-                        style: GoogleFonts.nunitoSans(
-                          fontWeight: FontWeight.w400,
-                          fontSize: titleSize,
-                          color: Colors.white,
+                        style: GoogleFonts.outfit(
+                          fontWeight: FontWeight.w500,
+                          fontSize: titleSize * 0.8,
+                          color: Colors.white.withOpacity(0.9),
+                          letterSpacing: 2,
                         ),
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         "${data.discountVal}% OFF",
-                        style: GoogleFonts.nunitoSans(
-                          fontWeight: FontWeight.w800,
+                        style: GoogleFonts.outfit(
+                          fontWeight: FontWeight.w900,
                           fontSize: offerSize,
                           color: Colors.white,
+                          height: 1.1,
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        data.discountName.toString(),
-                        style: GoogleFonts.nunitoSans(
-                          fontWeight: FontWeight.w400,
-                          fontSize: titleSize,
-                          color: Colors.white,
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.3),
+                            width: 0.5,
+                          ),
+                        ),
+                        child: Text(
+                          data.discountName.toString().toUpperCase(),
+                          style: GoogleFonts.outfit(
+                            fontWeight: FontWeight.w600,
+                            fontSize: titleSize * 0.7,
+                            color: Colors.white,
+                            letterSpacing: 1,
+                          ),
                         ),
                       ),
                     ],

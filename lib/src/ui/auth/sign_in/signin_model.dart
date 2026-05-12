@@ -187,7 +187,9 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
       if (error.contains("invalid_client") ||
           error.contains("misconfigured") ||
           error.contains("developer_error")) {
+
         return "Google login unavailable at the moment.";
+        
       }
 
       return "Unable to sign in. Please try again.";
@@ -310,7 +312,42 @@ class SignInPageModel extends StateNotifier<SignInPageState> {
         rawNonce: rawNonce,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(oauth);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(oauth);
+      final firebaseUser = userCredential.user;
+
+      if (firebaseUser == null) {
+        return "Apple login failed. Please try again.";
+      }
+
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      final deviceId = await getId();
+
+      final res = await apiService.socialLogin(
+        socialLoginRequest: SocialLoginRequest(
+          email: firebaseUser.email ?? "",
+          fcmToken: fcmToken ?? "",
+          deviceId: deviceId,
+          loginSource: 'apple',
+          name: firebaseUser.displayName ?? "Apple User",
+        ),
+      );
+
+      if (res.status != ApiStatus.success) {
+        return res.errorMessage ?? "Unable to login with Apple.";
+      }
+
+      ref.read(authRepositoryProvider.notifier).updateUser(res.data);
+      ref.read(authRepositoryProvider.notifier).setIdToken(
+            res.data?.token ?? "",
+            res.data?.userData.id ?? "",
+          );
+
+      ref
+          .read(authRepositoryProvider.notifier)
+          .changeState(AuthStatus.authenticated);
+
+      ref.read(authRepositoryProvider.notifier).getAllUserDetails();
 
       return ""; // success
     } catch (e) {

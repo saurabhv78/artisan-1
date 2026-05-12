@@ -13,7 +13,7 @@ import GoogleMaps
   ) -> Bool {
 
       // Google Maps **must be initialized first**
-      GMSServices.provideAPIKey("AIzaSyCr8az6JaT_rY5r3-w3euSmjaaGXbNwmVM")   // <-- ADD YOUR KEY HERE
+      GMSServices.provideAPIKey("AIzaSyAegwv8hs8CIaNN6-UWhdL7THEAEhue2IY")   // <-- ADD YOUR KEY HERE
       
       // Firebase Init
       FirebaseApp.configure()
