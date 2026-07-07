@@ -24,6 +24,9 @@ class _PopularProductsSectionState
     extends ConsumerState<PopularProductsSection> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width >= 600;
+
     return widget.data.isNotEmpty
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -40,9 +43,9 @@ class _PopularProductsSectionState
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.only(top: 10, bottom: 40),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisExtent: 250,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isTablet ? 3 : 2,
+                  mainAxisExtent: isTablet ? 320 : 250,
                 ),
                 itemCount: widget.data.length,
                 itemBuilder: (BuildContext context, int index) {

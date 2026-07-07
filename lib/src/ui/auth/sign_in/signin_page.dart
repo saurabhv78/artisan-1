@@ -249,82 +249,82 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
                             const SizedBox(height: 50),
 
-                            // Row(
-                            //   children: [
-                            //     const Expanded(
-                            //         child: Divider(color: Colors.black)),
-                            //     Text(" Or Continue with ",
-                            //         style:
-                            //             GoogleFonts.nunitoSans(fontSize: 14)),
-                            //     const Expanded(
-                            //         child: Divider(color: Colors.black)),
-                            //   ],
-                            // ),
+                            Row(
+                              children: [
+                                const Expanded(
+                                    child: Divider(color: Colors.black)),
+                                Text(" Or Continue with ",
+                                    style:
+                                        GoogleFonts.nunitoSans(fontSize: 14)),
+                                const Expanded(
+                                    child: Divider(color: Colors.black)),
+                              ],
+                            ),
 
-                            // const SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   children: [
-                            //     if (Platform.isIOS)
-                            //       GestureDetector(
-                            //         onTap: () async {
-                            //           final res = await ref
-                            //               .read(
-                            //                   signInPageModelProvider.notifier)
-                            //               .signInWithApple(ref);
-                            //           // if (res.isNotEmpty) showErrorMessage(res);
-                            //           if (res.isNotEmpty) {
-                            //             showAlertBox(context, res);
-                            //           }
-                            //         },
-                            //         child: Image.asset(
-                            //           'assets/images/ic_apple.png',
-                            //           width: 45.5,
-                            //           height: 45.5,
-                            //         ),
-                            //       ),
-                            //     if (Platform.isIOS) const SizedBox(width: 20),
-                            //     GestureDetector(
-                            //       onTap: () async {
-                            //         if (isFbProcessing) return;
-                            //         setState(() => isFbProcessing = true);
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (Platform.isIOS)
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final res = await ref
+                                          .read(
+                                              signInPageModelProvider.notifier)
+                                          .signInWithApple(ref);
+                                      // if (res.isNotEmpty) showErrorMessage(res);
+                                      if (res.isNotEmpty) {
+                                        showAlertBox(context, res);
+                                      }
+                                    },
+                                    child: Image.asset(
+                                      'assets/images/ic_apple.png',
+                                      width: 45.5,
+                                      height: 45.5,
+                                    ),
+                                  ),
+                                if (Platform.isIOS) const SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () async {
+                                    if (isFbProcessing) return;
+                                    setState(() => isFbProcessing = true);
 
-                            //         final res = await ref
-                            //             .read(signInPageModelProvider.notifier)
-                            //             .signInWithFacebook(ref);
+                                    final res = await ref
+                                        .read(signInPageModelProvider.notifier)
+                                        .signInWithFacebook(ref);
 
-                            //         if (res.isNotEmpty) showErrorMessage(res);
+                                    if (res.isNotEmpty) showErrorMessage(res);
 
-                            //         if (mounted) {
-                            //           setState(() => isFbProcessing = false);
-                            //         }
-                            //       },
-                            //       child: Image.asset(
-                            //         'assets/images/ic_facebook.png',
-                            //         width: 45,
-                            //         height: 45,
-                            //       ),
-                            //     ),
-                            //     const SizedBox(width: 20),
-                            //     GestureDetector(
-                            //       onTap: () async {
-                            //         final res = await ref
-                            //             .read(signInPageModelProvider.notifier)
-                            //             .signinWithGoogle();
+                                    if (mounted) {
+                                      setState(() => isFbProcessing = false);
+                                    }
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/ic_facebook.png',
+                                    width: 45,
+                                    height: 45,
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () async {
+                                    final res = await ref
+                                        .read(signInPageModelProvider.notifier)
+                                        .signinWithGoogle();
 
-                            //         if (res.isNotEmpty) showErrorMessage(res);
-                            //       },
-                            //       child: Image.asset(
-                            //         'assets/images/ic_google.png',
-                            //         width: 45,
-                            //         height: 45,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
+                                    if (res.isNotEmpty) showErrorMessage(res);
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/ic_google.png',
+                                    width: 45,
+                                    height: 45,
+                                  ),
+                                ),
+                              ],
+                            ),
 
-                            // const SizedBox(height: 30),
+                            const SizedBox(height: 30),
 
                             RichText(
                               text: TextSpan(

@@ -38,6 +38,15 @@ class ProfileTabPage extends ConsumerStatefulWidget {
 class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
   bool isProcessing = false;
   final _baseurl = apiBaseUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(authRepositoryProvider.notifier).fetchUserDetails();
+    });
+  }
+
   Future<bool> deactivateUserAPI() async {
     try {
       final token =

@@ -143,91 +143,101 @@ class _ProductCardState extends ConsumerState<ProductCard> {
       ),
       child: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(borderRadius),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // ⭐ PRODUCT IMAGE - RESPONSIVE
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  child: Container(
-                    height: imageHeight,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300.withOpacity(0.5),
-                    ),
-                    child: Stack(
-                      children: [
-                        NetworkImageWidget(
-                          widget.data.thumbnail.toString(),
-                          height: imageHeight,
-                          width: double.infinity,
-                          fit: BoxFit.cover, // ⭐ prevents stretching + cutting
-                        ),
-                        if (widget.data.isSold == true)
-                          Positioned(
-                            bottom: 30,
-                            left: 20,
-                            right: 20,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 10),
-                              margin: const EdgeInsets.symmetric(horizontal: 0),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Text(
-                                "SOLD OUT",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  letterSpacing: 2,
-                                ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isBounded = constraints.hasBoundedHeight;
+
+              Widget imageContent = ClipRRect(
+                borderRadius: BorderRadius.circular(borderRadius),
+                child: Container(
+                  height: isBounded ? null : imageHeight,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300.withOpacity(0.5),
+                  ),
+                  child: Stack(
+                    fit: isBounded ? StackFit.expand : StackFit.loose,
+                    children: [
+                      NetworkImageWidget(
+                        widget.data.thumbnail.toString(),
+                        height: isBounded ? null : imageHeight,
+                        width: double.infinity,
+                        fit: BoxFit.cover, // ⭐ prevents stretching + cutting
+                      ),
+                      if (widget.data.isSold == true)
+                        Positioned(
+                          bottom: 10,
+                          left: 10,
+                          right: 10,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 6),
+                            margin: const EdgeInsets.symmetric(horizontal: 0),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              "SOLD OUT",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                letterSpacing: 2,
                               ),
                             ),
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
                 ),
+              );
 
-                const SizedBox(height: 6),
-
-                // ⭐ PRODUCT NAME
-                Row(
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(borderRadius),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Expanded(
-                      child: Text(
-                        widget.data.prodName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.nunitoSans(
-                          fontSize: titleFont,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                    // ⭐ PRODUCT IMAGE - RESPONSIVE
+                    isBounded ? Expanded(child: imageContent) : imageContent,
+
+                    const SizedBox(height: 6),
+
+                    // ⭐ PRODUCT NAME
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.data.prodName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.nunitoSans(
+                              fontSize: titleFont,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
+                      ],
+                    ),
+
+                    // ⭐ PRICE WITH DISCOUNT SUPPORT
+                    Text(
+                      "\$${(widget.data.discountData != null ? (widget.data.prodPrice - widget.data.prodPrice * widget.data.discountData!.discountVal / 100) : widget.data.prodPrice).toStringAsFixed(2)}",
+                      style: GoogleFonts.nunitoSans(
+                        fontWeight: FontWeight.w400,
+                        color: bgDark,
+                        fontSize: priceFont,
+                        letterSpacing: .2,
                       ),
                     ),
                   ],
                 ),
-
-                // ⭐ PRICE WITH DISCOUNT SUPPORT
-                Text(
-                  "\$${(widget.data.discountData != null ? (widget.data.prodPrice - widget.data.prodPrice * widget.data.discountData!.discountVal / 100) : widget.data.prodPrice).toStringAsFixed(2)}",
-                  style: GoogleFonts.nunitoSans(
-                    fontWeight: FontWeight.w400,
-                    color: bgDark,
-                    fontSize: priceFont,
-                    letterSpacing: .2,
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ],
       ),
