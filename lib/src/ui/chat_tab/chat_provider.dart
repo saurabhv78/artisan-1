@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:Artisan/src/logic/services/preference_services.dart';
@@ -34,8 +35,40 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
     // single incoming message handler
     socket.onMessage((message) {
       log("Received message: $message");
+
+      dynamic parsedMessage = message;
+      if (message is String) {
+        try {
+          parsedMessage = jsonDecode(message);
+        } catch (_) {}
+      }
+
+      String text = "";
+      String fromId = "";
+
+      if (parsedMessage is Map) {
+        text = parsedMessage["message"]?.toString() ??
+            parsedMessage["text"]?.toString() ??
+            parsedMessage["msg"]?.toString() ??
+            parsedMessage.toString();
+        fromId = parsedMessage["fromId"]?.toString() ?? "";
+      } else {
+        text = parsedMessage.toString();
+      }
+
+      if (text.isEmpty) return;
+
+      // Ignore user's own echoed messages (added locally in sendMessage)
+      final String? myId = ref
+          .read(sharedPreferencesProvider)
+          .getString(PreferenceService.userId);
+      if (fromId.isNotEmpty && fromId == myId) {
+        log("Ignoring user's own message from socket broadcast");
+        return;
+      }
+
       addMessage(ChatMessage(
-        text: message.toString(),
+        text: text,
         isMe: false,
         createdAt: DateTime.now(),
       ));
@@ -98,16 +131,30 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
 
     for (var e in historyList) {
       if (e is Map) {
-        DateTime dt;
-        final createdAtStr = e["createdAt"]?.toString() ?? '';
-        if (createdAtStr.isNotEmpty) {
+        DateTime? dt;
+        final rawCreated = e["createdAt"] ?? e["timestamp"];
+        if (rawCreated != null) {
           try {
-            dt = DateTime.parse(createdAtStr);
-          } catch (_) {
-            dt = DateTime.now();
-          }
-        } else {
-          dt = DateTime.now();
+            if (rawCreated is String && rawCreated.isNotEmpty) {
+              dt = DateTime.parse(rawCreated).toLocal();
+            } else if (rawCreated is num) {
+              if (rawCreated < 10000000000) {
+                dt = DateTime.fromMillisecondsSinceEpoch(
+                        (rawCreated * 1000).toInt())
+                    .toLocal();
+              } else {
+                dt = DateTime.fromMillisecondsSinceEpoch(rawCreated.toInt())
+                    .toLocal();
+              }
+            } else if (rawCreated is Map) {
+              final seconds = rawCreated["seconds"] ?? rawCreated["_seconds"];
+              if (seconds != null) {
+                dt = DateTime.fromMillisecondsSinceEpoch(
+                        (seconds * 1000).toInt())
+                    .toLocal();
+              }
+            }
+          } catch (_) {}
         }
 
         final String fromId = e["fromId"]?.toString() ?? '';
@@ -116,19 +163,46 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
                 .read(sharedPreferencesProvider)
                 .getString(PreferenceService.userId);
 
-        final ChatMessage cm = ChatMessage(
-          text: e["message"]?.toString() ?? "",
-          isMe: isMe,
-          createdAt: dt, // ✅ new field
-        );
-
-        tmp.add({"dt": dt, "msg": cm});
+        tmp.add({
+          "text": e["message"]?.toString() ?? "",
+          "isMe": isMe,
+          "dt": dt,
+        });
       }
     }
 
-    tmp.sort((a, b) => (a["dt"] as DateTime).compareTo(b["dt"] as DateTime));
+    // Interpolate missing dates forward (use previous message's date)
+    DateTime? lastValidDate;
+    for (var i = 0; i < tmp.length; i++) {
+      if (tmp[i]["dt"] != null) {
+        lastValidDate = tmp[i]["dt"] as DateTime;
+      } else if (lastValidDate != null) {
+        tmp[i]["dt"] = lastValidDate;
+      }
+    }
 
-    state = tmp.map<ChatMessage>((m) => m["msg"] as ChatMessage).toList();
+    // Interpolate missing dates backward (for initial messages with null dates)
+    DateTime? nextValidDate;
+    for (var i = tmp.length - 1; i >= 0; i--) {
+      if (tmp[i]["dt"] != null) {
+        nextValidDate = tmp[i]["dt"] as DateTime;
+      } else if (nextValidDate != null) {
+        tmp[i]["dt"] = nextValidDate;
+      }
+    }
+
+    final finalMessages = tmp.map<ChatMessage>((m) {
+      return ChatMessage(
+        text: m["text"] as String,
+        isMe: m["isMe"] as bool,
+        createdAt: (m["dt"] as DateTime?) ?? DateTime.now(),
+      );
+    }).toList();
+
+    // Sort chronologically
+    finalMessages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+    state = finalMessages;
   }
 
   void sendMessage(String text, {required String fromId}) {

@@ -30,6 +30,15 @@ class WebSocketService {
     socket.onDisconnect((_) {
       debugPrint("Socket disconnected");
     });
+    socket.on('connect_error', (data) {
+      debugPrint("Socket Connect Error: $data");
+    });
+    socket.on('connect_timeout', (data) {
+      debugPrint("Socket Connect Timeout: $data");
+    });
+    socket.on('error', (data) {
+      debugPrint("Socket Error: $data");
+    });
     socket.connect();
   }
   // Listen to chat history
