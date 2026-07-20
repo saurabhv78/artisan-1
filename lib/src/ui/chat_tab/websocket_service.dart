@@ -68,11 +68,12 @@ class WebSocketService {
   }
 
   // Send a message
-  void send(String message, String fromId) {
+  void send(String message, String fromId, {String messageStatus = "sent"}) {
     final payload = {
       "message": message,
       // "sessionId": sessionId,
       "fromId": fromId,
+      "messageStatus": messageStatus,
     };
     debugPrint("Sending message: $payload");
     socket.emit(sendChatEvent, payload);

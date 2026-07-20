@@ -63,7 +63,8 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
           .read(sharedPreferencesProvider)
           .getString(PreferenceService.userId);
       if (fromId.isNotEmpty && fromId == myId) {
-        log("Ignoring user's own message from socket broadcast");
+        log("Ignoring user's own message from socket broadcast, updating status to delivered");
+        updateMessageStatus(text, MessageStatus.delivered);
         return;
       }
 
@@ -125,6 +126,21 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
     state = [...state, msg];
   }
 
+  void updateMessageStatus(String text, MessageStatus newStatus) {
+    state = [
+      for (final msg in state)
+        if (msg.isMe && msg.text == text && msg.status.index < newStatus.index)
+          ChatMessage(
+            text: msg.text,
+            isMe: msg.isMe,
+            createdAt: msg.createdAt,
+            status: newStatus,
+          )
+        else
+          msg
+    ];
+  }
+
   /// Parse list of message objects (from server) -> ChatMessage list
   void setHistory(List<dynamic> historyList) {
     final tmp = <Map<String, dynamic>>[];
@@ -167,6 +183,7 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
           "text": e["message"]?.toString() ?? "",
           "isMe": isMe,
           "dt": dt,
+          "original": e,
         });
       }
     }
@@ -192,10 +209,31 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
     }
 
     final finalMessages = tmp.map<ChatMessage>((m) {
+      final isMe = m["isMe"] as bool;
+      MessageStatus status = MessageStatus.sent;
+
+      if (isMe) {
+        final original = m["original"];
+        if (original is Map) {
+          final String serverStatus = original["messageStatus"]?.toString() ?? "";
+          if (serverStatus == "read") {
+            status = MessageStatus.read;
+          } else if (serverStatus == "delivered") {
+            status = MessageStatus.delivered;
+          } else if (serverStatus == "sent") {
+            status = MessageStatus.sent;
+          } else {
+            // Fallback for history messages
+            status = MessageStatus.delivered;
+          }
+        }
+      }
+
       return ChatMessage(
         text: m["text"] as String,
-        isMe: m["isMe"] as bool,
+        isMe: isMe,
         createdAt: (m["dt"] as DateTime?) ?? DateTime.now(),
+        status: status,
       );
     }).toList();
 
@@ -208,12 +246,13 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
   void sendMessage(String text, {required String fromId}) {
     final socket = ref.read(webSocketProvider);
 
-    socket.send(text, fromId);
+    socket.send(text, fromId, messageStatus: "sent");
 
     addMessage(ChatMessage(
       text: text,
       isMe: true,
       createdAt: DateTime.now(),
+      status: MessageStatus.sent,
     ));
   }
 }

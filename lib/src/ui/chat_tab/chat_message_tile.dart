@@ -10,7 +10,8 @@ class ChatMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeString = DateFormat('hh:mm a').format(message.createdAt.toLocal());
+    final timeString =
+        DateFormat('hh:mm a').format(message.createdAt.toLocal());
 
     final bubbleColor = message.isMe ? primaryColor : Colors.grey[300];
     final textColor = message.isMe ? Colors.white : Colors.black87;
@@ -57,17 +58,49 @@ class ChatMessageTile extends StatelessWidget {
             ),
             const SizedBox(height: 4),
 
-            // Time
-            Text(
-              timeString,
-              style: TextStyle(
-                fontSize: 11,
-                color: message.isMe ? Colors.white : Colors.black54,
-              ),
+            // Time and Ticks Status
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  timeString,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: message.isMe ? Colors.white70 : Colors.black54,
+                  ),
+                ),
+                if (message.isMe) ...[
+                  const SizedBox(width: 4),
+                  _buildStatusIcon(message.status),
+                ],
+              ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildStatusIcon(MessageStatus status) {
+    switch (status) {
+      case MessageStatus.sent:
+        return const Icon(
+          Icons.done,
+          size: 13,
+          color: Colors.white70,
+        );
+      case MessageStatus.delivered:
+        return const Icon(
+          Icons.done_all,
+          size: 13,
+          color: Colors.white70,
+        );
+      case MessageStatus.read:
+        return const Icon(
+          Icons.done_all,
+          size: 13,
+          color: Color(0xff40C4FF), // Light blue for read status
+        );
+    }
   }
 }
